@@ -1,0 +1,42 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.25rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  color: var(--tag-text, #fff);
+  background-color: var(--tag-background, #334155);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  &--success {
+    --tag-background: var(--color-tag-success, #16a34a);
+  }
+
+  &--primary {
+    --tag-background: var(--color-tag-primary, #0750b5);
+  }
+
+  &--secondary {
+    --tag-background: var(--color-tag-secondary, #475569);
+  }
+
+  &--dam {
+    --tag-background: var(--color-tag-dam, #9d126d);
+  }
+
+  &--joysound {
+    --tag-background: var(--color-tag-joysound, #0750b5);
+  }
+
+  &--vacant {
+    --tag-background: var(--color-tag-vacant, #16a34a);
+  }
+
+  &--custom-color {
+    --tag-background: var(--tag-custom-color);
+  }
+}
