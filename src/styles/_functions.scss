@@ -1,0 +1,6 @@
+@use 'sass:math';
+
+// Figmaのpx値を、標準のルート文字サイズ16pxを基準にremへ変換する。
+@function rem($value) {
+  @return math.div($value, 16) * 1rem;
+}

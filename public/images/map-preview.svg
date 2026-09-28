@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 420" fill="none">
+  <title>名古屋駅周辺をイメージした仮の地図</title>
+  <defs>
+    <pattern id="blocks" width="96" height="84" patternUnits="userSpaceOnUse" patternTransform="rotate(-5)">
+      <rect width="96" height="84" fill="#1b2d43"/>
+      <path d="M0 0H96V84H0ZM34 0V84M0 44H96M67 0V44" stroke="#354d63" stroke-width="3"/>
+    </pattern>
+  </defs>
+  <path fill="url(#blocks)" d="M0 0h750v420H0z"/>
+  <path d="M502-20 574 130 548 238 612 440 707 440 627 220 641 125 561-20Z" fill="#263c51"/>
+  <g stroke="#0b1d2c" stroke-width="19">
+    <path d="m94-10-7 450M0 176l399 8 128 44M263-10l-7 281 76 169M0 329l453 28 93-66M520-10l-39 102 46 136-29 205"/>
+  </g>
+  <g stroke="#49657b" stroke-width="11">
+    <path d="m94-10-7 450M0 176l399 8 128 44M263-10l-7 281 76 169M0 329l453 28 93-66M520-10l-39 102 46 136-29 205"/>
+  </g>
+  <g stroke="#49657b" stroke-width="5">
+    <path d="M0 91h270l157 9 78-29M168 0l7 156-26 162 14 102M347 0l-7 98 68 167-6 155M0 257l169 4 213 42 116-12M441 0l17 132-49 133M571 0l45 123 38 121 48 176M0 392l199-8 203 18"/>
+  </g>
+  <path d="m507-10 24 103 36 100 37 114 31 113" stroke="#167281" stroke-width="5"/>
+  <path d="M446 430 528 365 633 323 760 285" stroke="#18212d" stroke-width="13"/>
+  <path d="M446 430 528 365 633 323 760 285" stroke="#d05b53" stroke-width="6"/>
+  <path d="m671-10 30 97 59 126" stroke="#ddb369" stroke-width="6"/>
+  <g fill="#d6dfdf" font-family="sans-serif" font-size="29" font-weight="700" stroke="#1b2d43" stroke-width="5" paint-order="stroke">
+    <text x="111" y="66" transform="rotate(-5 111 66)">中村郷道</text>
+    <text x="425" y="288">名古屋</text>
+    <text x="566" y="391">名鉄名古屋</text>
+  </g>
+  <g fill="#b6c5cd" font-family="sans-serif" font-size="19">
+    <text x="25" y="297">カラオケ</text>
+    <text x="584" y="115">名駅通</text>
+  </g>
+  <rect x="552" y="255" width="40" height="42" rx="12" fill="#c1c9ca"/>
+  <rect x="561" y="261" width="22" height="25" rx="5" fill="#182738"/>
+  <path d="M565 266h14v9h-14m2 14-3 5m13-5 3 5" stroke="#c1c9ca" stroke-width="3"/>
+</svg>

@@ -1,3 +1,5 @@
+@use './functions' as *;
+
 $color-background: #030a1c;
 $color-text: #fff;
 $color-location: #031943;
@@ -14,8 +16,8 @@ $color-available: #37d000;
 $color-logo-blue: #7ce8ff;
 $color-logo-pink: #fba3ff;
 $font-family: Arial, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-$page-width: 480px;
-$page-gutter: 20px;
-$radius-panel: 18px;
-$radius-card: 14px;
-$breakpoint-desktop: 768px;
+$page-width: rem(480);
+$page-gutter: rem(20);
+$radius-panel: rem(18);
+$radius-card: rem(14);
+$breakpoint-desktop: rem(768);
