@@ -1,3 +1,4 @@
+// Base palette and layout tokens used by the home screen.
 $color-background: #030a1c;
 $color-text: #fff;
 $color-location: #031943;
@@ -14,6 +15,23 @@ $color-available: #37d000;
 $color-logo-blue: #7ce8ff;
 $color-logo-pink: #fba3ff;
 $font-family: Arial, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+
+// Shared component tokens.
+$color-surface: #071735;
+$color-text-primary: $color-text;
+$color-text-secondary: #c4ccdc;
+$color-border: $color-blue-border;
+$color-border-hover: #2864c7;
+$color-focus: $color-purple-border;
+$color-nav-active: #d22bfa;
+$color-primary: $color-blue;
+$color-secondary: #475569;
+$color-success: $color-available;
+$color-vacant: $color-available;
+$color-dam: #9d126d;
+$color-joysound: $color-blue;
+
+// Shared layout tokens.
 $page-width: 480px;
 $page-gutter: 20px;
 $radius-panel: 18px;

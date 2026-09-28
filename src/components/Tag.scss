@@ -1,42 +1,45 @@
+@use '../styles/functions' as *;
+@use '../styles/variables' as v;
+
 .tag {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 1.25rem;
-  padding: 0.125rem 0.625rem;
+  min-height: rem(20px);
+  padding: rem(2px) rem(10px);
   border-radius: 999px;
-  color: var(--tag-text, #fff);
-  background-color: var(--tag-background, #334155);
-  font-size: 0.75rem;
+  color: v.$color-text-primary;
+  background-color: var(--tag-custom-color, v.$color-secondary);
+  font-size: rem(12px);
   font-weight: 600;
   line-height: 1.4;
   white-space: nowrap;
 
   &--success {
-    --tag-background: var(--color-tag-success, #16a34a);
+    background-color: v.$color-success;
   }
 
   &--primary {
-    --tag-background: var(--color-tag-primary, #0750b5);
+    background-color: v.$color-primary;
   }
 
   &--secondary {
-    --tag-background: var(--color-tag-secondary, #475569);
+    background-color: v.$color-secondary;
   }
 
   &--dam {
-    --tag-background: var(--color-tag-dam, #9d126d);
+    background-color: v.$color-dam;
   }
 
   &--joysound {
-    --tag-background: var(--color-tag-joysound, #0750b5);
+    background-color: v.$color-joysound;
   }
 
   &--vacant {
-    --tag-background: var(--color-tag-vacant, #16a34a);
+    background-color: v.$color-vacant;
   }
 
   &--custom-color {
-    --tag-background: var(--tag-custom-color);
+    background-color: var(--tag-custom-color);
   }
 }

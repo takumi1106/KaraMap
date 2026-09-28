@@ -1,0 +1,73 @@
+@use '../styles/functions' as *;
+@use '../styles/variables' as v;
+
+.store-card {
+  display: flex;
+  gap: rem(12px);
+  min-width: 0;
+  padding: rem(10px);
+  border: 1px solid v.$color-border;
+  border-radius: rem(16px);
+  background-color: v.$color-background;
+  color: v.$color-text-primary;
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: v.$color-border-hover;
+    box-shadow: 0 0 rem(12px) rgb(22 91 208 / 30%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid v.$color-focus;
+    outline-offset: 3px;
+  }
+
+  &__image {
+    flex: 0 0 rem(104px);
+    width: rem(104px);
+    min-height: rem(112px);
+    border-radius: rem(12px);
+    object-fit: cover;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: rem(6px);
+    min-width: 0;
+  }
+
+  &__name {
+    overflow: hidden;
+    max-width: 100%;
+    font-size: rem(15px);
+    font-weight: 700;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__distance {
+    color: v.$color-text-secondary;
+    font-size: rem(13px);
+    line-height: 1.4;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(6px);
+    margin-top: rem(2px);
+  }
+
+  &__tag {
+    font-size: rem(10px);
+  }
+}
