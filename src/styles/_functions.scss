@@ -1,5 +1,10 @@
 @use 'sass:math';
 
-@function rem($pixels) {
-  @return math.div($pixels, 16px) * 1rem;
+// Accept both numeric px values (rem(16)) and explicit px values (rem(16px)).
+@function rem($value) {
+  @if math.is-unitless($value) {
+    @return math.div($value, 16) * 1rem;
+  }
+
+  @return math.div(math.div($value, 1px), 16) * 1rem;
 }

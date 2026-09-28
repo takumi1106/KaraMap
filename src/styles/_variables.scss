@@ -1,4 +1,6 @@
-// Base palette and layout tokens used by the home screen.
+@use './functions' as *;
+
+// Base palette and typography shared by the existing screens.
 $color-background: #030a1c;
 $color-text: #fff;
 $color-location: #031943;
@@ -32,8 +34,8 @@ $color-dam: #9d126d;
 $color-joysound: $color-blue;
 
 // Shared layout tokens.
-$page-width: 480px;
-$page-gutter: 20px;
-$radius-panel: 18px;
-$radius-card: 14px;
-$breakpoint-desktop: 768px;
+$page-width: rem(480);
+$page-gutter: rem(20);
+$radius-panel: rem(18);
+$radius-card: rem(14);
+$breakpoint-desktop: rem(768);
