@@ -1,0 +1,39 @@
+// src/components/Button.scss
+.button {
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-control, 0.5rem);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        color 160ms ease;
+
+    &:focus-visible {
+        outline: 3px solid var(--color-focus, #7c3aed);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &--primary {
+        color: var(--color-button-primary-text, #fff);
+        background-color: var(--color-button-primary, #7c3aed);
+
+        &:hover:not(:disabled) {
+            background-color: var(--color-button-primary-hover, #6d28d9);
+        }
+    }
+
+    &--secondary {
+        color: var(--color-button-secondary-text, #292333);
+        background-color: var(--color-button-secondary, #f3f0f7);
+        border-color: var(--color-button-secondary-border, #d8d1e2);
+    }
+}
