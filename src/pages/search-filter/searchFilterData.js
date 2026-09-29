@@ -26,6 +26,7 @@ export const filterGroups = [
   },
   {
     id: 'features',
+    multiple: true,
     label: '採点・録音',
     options: [
       { value: 'aiScoring', label: 'AI採点' },

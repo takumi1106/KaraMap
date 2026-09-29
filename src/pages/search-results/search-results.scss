@@ -163,10 +163,7 @@
     font-weight: 700;
   }
 
-  &__back {
-    --color-button-primary: transparent;
-    --color-button-primary-hover: #{rgba(v.$color-text, 0.08)};
-
+  &__back.button {
     position: absolute;
     bottom: rem(10);
     left: rem(12);
@@ -176,6 +173,11 @@
     height: rem(44);
     padding: rem(8);
     color: v.$color-text;
+    background-color: transparent;
+
+    &:hover:not(:disabled) {
+      background-color: transparent;
+    }
   }
 
   &__back-icon {
@@ -201,7 +203,7 @@
   &__list {
     display: grid;
     gap: rem(20);
-    margin: 0;
+    margin-bottom: rem(100);
     padding: 0;
     list-style: none;
   }

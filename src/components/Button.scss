@@ -26,11 +26,7 @@
 
   &--primary {
     color: v.$color-text-primary;
-    background-color: v.$color-primary;
-
-    &:hover:not(:disabled) {
-      background-color: v.$color-border-hover;
-    }
+    background-color: v.$color-location;
   }
 
   &--secondary {

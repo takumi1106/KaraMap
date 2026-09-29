@@ -1,0 +1,28 @@
+.button {
+  min-height: 2.75rem;
+  padding: 0.625rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.button:focus-visible {
+  outline: 3px solid #6500c7;
+  outline-offset: 2px;
+}
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.button--primary {
+  color: #fff;
+  background-color: #031943;
+}
+.button--secondary {
+  color: #fff;
+  background-color: #071735;
+  border-color: #075bce;
+}
+/*# sourceMappingURL=Button.css.map */

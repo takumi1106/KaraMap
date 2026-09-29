@@ -60,9 +60,9 @@
 <BottomNavigation activeItem="search" />
 ```
 
-- `activeItem`: 現在の項目の ID（`home`、`search`、`favorites`、`mypage`）。既定値は `home`
+- `activeItem`: 現在の項目の ID（`home`、`search`、`map`、`mypage`）。既定値は `home`
 - `items`: ナビゲーション項目の配列。各項目は `{ id, label, href, icon }` を受け取る
-- `icon`: `home`、`search`、`favorites`、`mypage` のいずれか
+- `icon`: `home`、`search`、`map`、`mypage` のいずれか
 
 ## RoomCard
 
@@ -90,3 +90,5 @@
 - `room.priceUnit`: 料金単位（既定値は `1時間`）
 - `room.machines`: 対応機種の配列。DAM・JOYSOUND は対応する `Tag` variant で表示
 - `room.image` / `room.imageAlt`: 任意の室内画像と代替テキスト
+
+「地図から探す」は白いピンアイコンを表示し、現在は地図付き検索結果 `/search?view=map` に移動します。専用地図ページは未実装です。

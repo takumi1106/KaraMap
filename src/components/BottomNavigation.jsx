@@ -2,8 +2,8 @@ import './BottomNavigation.scss'
 
 const defaultItems = [
   { id: 'home', label: 'ホーム', href: '/', icon: 'home' },
-  { id: 'search', label: '検索', href: '/search', icon: 'search' },
-  { id: 'favorites', label: 'お気に入り', href: '/favorites', icon: 'favorites' },
+  { id: 'search', label: '検索', href: '/search-filter', icon: 'search' },
+  { id: 'map', label: '地図から探す', href: '/search?view=map', icon: 'map' },
   { id: 'mypage', label: 'マイページ', href: '/mypage', icon: 'mypage' },
 ]
 
@@ -26,10 +26,10 @@ function renderIcon(icon) {
     )
   }
 
-  if (icon === 'favorites') {
+  if (icon === 'map') {
     return (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M20.8 8.8c0 5.2-8.8 11-8.8 11s-8.8-5.8-8.8-11A4.7 4.7 0 0 1 12 6.1a4.7 4.7 0 0 1 8.8 2.7Z" />
+        <use href="/images/icon-map-pin.svg?v=outline#map-pin" />
       </svg>
     )
   }

@@ -3,8 +3,9 @@ import Tag from '../../components/Tag.jsx'
 import { sampleResults } from './searchResultsData.js'
 import './search-results.scss'
 
-function returnHome() {
-  window.location.assign('/')
+function returnToSource() {
+  const from = new URLSearchParams(window.location.search).get('from')
+  window.location.assign(from === 'search-filter' ? '/search-filter' : '/')
 }
 
 // 共通カードが完成するまでの画面専用表示。店舗データを1つのpropで受け取る。
@@ -55,7 +56,7 @@ function MapPreview() {
 
 function SearchResults({
   shops = sampleResults,
-  onBack = returnHome,
+  onBack = returnToSource,
   mapContent = <MapPreview />,
   renderShop = renderDefaultShop,
   bottomNavigation = null,

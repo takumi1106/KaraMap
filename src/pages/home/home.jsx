@@ -15,7 +15,7 @@ function Home({ areaLabel = '名古屋市中村区付近', shops = sampleShops }
       </header>
 
       <div className="home__content">
-        <a className="home__location" href="/search?mode=location">
+        <a className="home__location" href="/search?mode=location&view=map">
           <svg className="home__location-icon" aria-hidden="true"><use href="/images/icons.svg#pin" /></svg>
           <span className="home__location-copy">
             <span className="home__location-title">現在地から探す</span>

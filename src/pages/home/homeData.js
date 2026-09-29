@@ -1,6 +1,6 @@
 // 遷移先は画面統合時の接続ポイント。検索・詳細ページは本実装の対象外。
 export const homeActions = [
-  { id: 'location', label: '現在地検索', icon: 'pin', href: '/search?mode=location' },
+  { id: 'location', label: 'エリア検索', icon: 'pin', href: '/search?mode=area' },
   { id: 'keyword', label: 'キーワード検索', icon: 'search', href: '/search?mode=keyword' },
   { id: 'recommended', label: 'おすすめ店舗', icon: 'crown', href: '/search?sort=recommended' },
   { id: 'promotion', label: 'プロモーション', icon: 'ticket', href: '/promotions' },

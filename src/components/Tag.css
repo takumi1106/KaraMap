@@ -1,0 +1,36 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.25rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  color: #fff;
+  background-color: var(--tag-custom-color, #475569);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.tag--success {
+  background-color: #37d000;
+}
+.tag--primary {
+  background-color: #003da9;
+}
+.tag--secondary {
+  background-color: #475569;
+}
+.tag--dam {
+  background-color: #9d126d;
+}
+.tag--joysound {
+  background-color: #003da9;
+}
+.tag--vacant {
+  background-color: #37d000;
+}
+.tag--custom-color {
+  background-color: var(--tag-custom-color);
+}
+/*# sourceMappingURL=Tag.css.map */

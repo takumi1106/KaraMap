@@ -60,7 +60,7 @@
   }
 
   &__content {
-    padding: rem(15) v.$page-gutter 0;
+    padding: rem(16) v.$page-gutter 0;
   }
 
   &__location {
@@ -109,7 +109,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: rem(25) rem(14);
-    margin-top: rem(29);
+    margin-top: rem(30);
   }
 
   &__action {
@@ -155,7 +155,7 @@
   }
 
   &__popular {
-    margin-top: rem(26);
+    margin-top: rem(30);
   }
 
   &__section-heading {
@@ -177,7 +177,7 @@
     justify-content: flex-end;
     gap: rem(8);
     min-height: rem(44);
-    font-size: rem(10);
+    font-size: rem(12);
     text-decoration: none;
   }
 

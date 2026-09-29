@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <symbol id="profile" viewBox="0 0 64 64">
+    <circle cx="32" cy="24" r="13.5" fill="currentColor"/>
+    <path d="M10 64v-5c0-11 7-19 17-19h10c10 0 17 8 17 19v5Z" fill="currentColor"/>
+  </symbol>
+</svg>
