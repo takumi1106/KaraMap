@@ -1,3 +1,4 @@
+@use '../../styles/functions' as *;
 @use '../../styles/variables' as v;
 
 .home {
@@ -5,7 +6,7 @@
   max-width: v.$page-width;
   min-height: 100svh;
   margin-inline: auto;
-  padding-bottom: 28px;
+  padding-bottom: rem(88);
   background: v.$color-background;
 
   &__hero {
@@ -28,78 +29,78 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: rem(7);
     margin: 0;
-    font-size: clamp(30px, 8.8vw, 42px);
+    font-size: clamp(rem(30), 8.8vw, rem(42));
     font-weight: 400;
-    letter-spacing: 2px;
+    letter-spacing: rem(2);
   }
 
   &__logo-kana {
     color: v.$color-logo-blue;
-    text-shadow: 0 0 7px v.$color-logo-blue, 0 0 18px v.$color-glow;
+    text-shadow: 0 0 rem(7) v.$color-logo-blue, 0 0 rem(18) v.$color-glow;
   }
 
   &__logo-latin {
     color: transparent;
     -webkit-text-stroke: 1px v.$color-logo-pink;
-    text-shadow: 0 0 7px v.$color-pink-border;
+    text-shadow: 0 0 rem(7) v.$color-pink-border;
   }
 
   &__logo-icon {
-    width: 34px;
-    height: 38px;
+    width: rem(34);
+    height: rem(38);
     color: v.$color-logo-blue;
-    filter: drop-shadow(0 0 5px v.$color-glow);
+    filter: drop-shadow(0 0 rem(5) v.$color-glow);
 
     &--music {
       color: v.$color-logo-pink;
-      filter: drop-shadow(0 0 5px v.$color-pink-border);
+      filter: drop-shadow(0 0 rem(5) v.$color-pink-border);
     }
   }
 
   &__content {
-    padding: 15px v.$page-gutter 0;
+    padding: rem(15) v.$page-gutter 0;
   }
 
   &__location {
     display: flex;
     align-items: center;
-    gap: 14px;
-    min-height: 65px;
-    padding: 10px 20px 10px 16px;
+    gap: rem(14);
+    min-height: rem(65);
+    padding: rem(10) rem(20) rem(10) rem(16);
     border: 1px solid v.$color-blue;
     border-radius: v.$radius-panel;
     background: v.$color-location;
-    box-shadow: 0 0 7px v.$color-glow, inset 0 0 5px v.$color-blue;
+    box-shadow: 0 0 rem(7) v.$color-glow, inset 0 0 rem(5) v.$color-blue;
     text-decoration: none;
   }
 
   &__location-icon {
-    flex: 0 0 30px;
-    width: 30px;
-    height: 34px;
+    flex: 0 0 rem(30);
+    width: rem(30);
+    height: rem(34);
   }
 
   &__location-copy {
     display: grid;
-    gap: 2px;
+    gap: rem(2);
   }
 
   &__location-title {
-    font-size: 19px;
+    font-size: rem(19);
     font-weight: 700;
     line-height: 1.4;
   }
 
   &__location-area {
-    font-size: 10px;
+    font-size: rem(10);
     line-height: 1.4;
   }
 
   &__location-arrow {
-    width: 24px;
-    height: 24px;
+    width: rem(24);
+    height: rem(24);
     margin-left: auto;
     flex-shrink: 0;
   }
@@ -107,8 +108,8 @@
   &__actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 25px 14px;
-    margin-top: 29px;
+    gap: rem(25) rem(14);
+    margin-top: rem(29);
   }
 
   &__action {
@@ -116,13 +117,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    min-height: 83px;
-    padding: 10px 4px;
+    gap: rem(9);
+    min-height: rem(83);
+    padding: rem(10) rem(4);
     border: 1px solid;
     border-radius: v.$radius-panel;
-    box-shadow: 0 0 7px rgba(v.$color-glow, 0.65);
-    font-size: 16px;
+    box-shadow: 0 0 rem(7) rgba(v.$color-glow, 0.65);
+    font-size: rem(16);
     line-height: 1.4;
     white-space: nowrap;
     text-decoration: none;
@@ -149,24 +150,24 @@
   }
 
   &__action-icon {
-    width: 29px;
-    height: 29px;
+    width: rem(29);
+    height: rem(29);
   }
 
   &__popular {
-    margin-top: 26px;
+    margin-top: rem(26);
   }
 
   &__section-heading {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 34px;
+    min-height: rem(34);
   }
 
   &__section-title {
     margin: 0;
-    font-size: 16px;
+    font-size: rem(16);
     line-height: 1.5;
   }
 
@@ -174,25 +175,25 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
-    min-height: 44px;
-    font-size: 10px;
+    gap: rem(8);
+    min-height: rem(44);
+    font-size: rem(10);
     text-decoration: none;
   }
 
   &__more-icon {
-    width: 16px;
-    height: 16px;
+    width: rem(16);
+    height: rem(16);
   }
 
   &__shops {
     display: flex;
-    gap: 13px;
+    gap: rem(13);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    margin: -6px calc(-1 * v.$page-gutter) 0 0;
-    padding: 4px v.$page-gutter 6px 0;
+    margin: rem(-6) calc(-1 * v.$page-gutter) 0 0;
+    padding: rem(4) v.$page-gutter rem(6) 0;
     list-style: none;
 
     &::-webkit-scrollbar {
@@ -224,27 +225,27 @@
 
   &__shop-caption {
     position: absolute;
-    bottom: 6px;
+    bottom: rem(6);
     left: 0;
     display: flex;
     align-items: center;
-    gap: 5px;
-    max-width: calc(100% - 8px);
-    min-height: 26px;
-    padding: 4px 7px;
-    border-radius: 20px;
+    gap: rem(5);
+    max-width: calc(100% - rem(8));
+    min-height: rem(26);
+    padding: rem(4) rem(7);
+    border-radius: rem(20);
     background: v.$color-location;
   }
 
   &__shop-icon {
-    width: 15px;
-    height: 18px;
+    width: rem(15);
+    height: rem(18);
     flex-shrink: 0;
   }
 
   &__shop-name {
     overflow: hidden;
-    font-size: 12px;
+    font-size: rem(12);
     font-weight: 700;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -252,31 +253,34 @@
 
   &__shop-status {
     flex-shrink: 0;
-    padding: 3px 6px;
-    border-radius: 12px;
+    padding: rem(3) rem(6);
+    border-radius: rem(12);
     background: v.$color-available;
-    font-size: 7px;
+    font-size: rem(7);
     font-weight: 700;
     white-space: nowrap;
   }
 
   @media (hover: hover) {
-    &__action:hover, &__location:hover, &__shop-link:hover, &__more:hover {
+    &__action:hover,
+    &__location:hover,
+    &__shop-link:hover,
+    &__more:hover {
       filter: brightness(1.15);
     }
   }
 
   @media (min-width: v.$breakpoint-desktop) {
     &__content {
-      padding-top: 20px;
+      padding-top: rem(20);
     }
 
     &__actions {
-      gap: 25px 18px;
+      gap: rem(25) rem(18);
     }
 
     &__action {
-      min-height: 100px;
+      min-height: rem(100);
     }
   }
 }

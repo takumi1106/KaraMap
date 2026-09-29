@@ -1,26 +1,26 @@
-import StoreCard from './components/StoreCard'
 import BottomNavigation from './components/BottomNavigation'
-import './App.css'
+import Home from './pages/home/home.jsx'
+import SearchResults from './pages/search-results/search-results.jsx'
+import SearchFilter from './pages/search-filter/search-filter.jsx'
+import ShopDetail from './pages/shop-detail/shop-detail.jsx'
+
+const pages = {
+  '/': { component: Home, activeItem: 'home' },
+  '/search': { component: SearchResults, activeItem: 'search' },
+  '/search-filter': { component: SearchFilter, activeItem: 'search' },
+  '/shop-detail': { component: ShopDetail, activeItem: 'search' },
+}
 
 function App() {
-  return (
-    <main className="app-preview">
-      <section className="app-preview__content" aria-labelledby="store-list-title">
-        <h1 className="app-preview__title" id="store-list-title">
-          検索結果
-        </h1>
-        <p className="app-preview__count">近くの店舗 12件</p>
+  const pathname = window.location.pathname.replace(/\/$/, '') || '/'
+  const route = pathname.startsWith('/shops/') ? '/shop-detail' : pathname
+  const { component: Page, activeItem } = pages[route] ?? pages['/']
 
-        <StoreCard
-          href="/stores/jankara-meieki"
-          name="ジャンカラ 名駅東口店"
-          distance="徒歩3分（200m）"
-          status="営業中"
-          tags={['空室あり（残り5部屋）', 'DAM', 'JOYSOUND']}
-        />
-      </section>
-      <BottomNavigation activeItem="search" />
-    </main>
+  return (
+    <>
+      <Page />
+      <BottomNavigation activeItem={activeItem} />
+    </>
   )
 }
 

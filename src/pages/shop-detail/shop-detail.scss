@@ -1,0 +1,163 @@
+@use '../../styles/functions' as *;
+@use '../../styles/variables' as v;
+
+$color-rating: #d1cc00;
+$color-vacancy: #00c5bc;
+
+.shop-detail {
+  --color-tag-success: #{v.$color-available};
+  --color-tag-vacant: #{$color-vacancy};
+
+  max-width: v.$page-width;
+  min-height: 100svh;
+  margin-inline: auto;
+  background: v.$color-background;
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: rem(98);
+    padding: rem(25) rem(54) rem(23);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: rem(20);
+    line-height: 1.4;
+  }
+
+  &__back {
+    --color-button-primary: transparent;
+    --color-button-primary-hover: #{rgba(v.$color-text, 0.08)};
+
+    position: absolute;
+    left: rem(12);
+    bottom: rem(16);
+    display: grid;
+    place-items: center;
+    width: rem(44);
+    height: rem(44);
+    padding: rem(9);
+  }
+
+  &__back-icon {
+    width: rem(26);
+    height: rem(26);
+    transform: rotate(180deg);
+  }
+
+  &__hero {
+    display: block;
+    width: 100%;
+    aspect-ratio: 750 / 360;
+    height: auto;
+    object-fit: cover;
+  }
+
+  &__content {
+    padding: rem(20) rem(20) rem(90);
+  }
+
+  &__name {
+    display: flex;
+    align-items: center;
+    gap: rem(9);
+    margin: 0;
+    font-size: rem(19);
+    line-height: 1.5;
+  }
+
+  &__crown {
+    width: rem(24);
+    height: rem(26);
+    flex-shrink: 0;
+    color: $color-rating;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: rem(5) rem(15);
+    margin-top: rem(9);
+    font-size: rem(13);
+    line-height: 1.5;
+  }
+
+  &__distance,
+  &__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: rem(7);
+  }
+
+  &__pin {
+    width: rem(23);
+    height: rem(23);
+  }
+
+  &__star {
+    color: $color-rating;
+    font-size: rem(23);
+    line-height: 1;
+  }
+
+  &__statuses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(12) rem(15);
+    margin-top: rem(21);
+  }
+
+  &__status {
+    min-height: rem(25);
+    padding: rem(3) rem(14);
+    font-size: rem(13);
+    line-height: 1.5;
+  }
+
+  &__rooms {
+    margin-top: rem(30);
+  }
+
+  &__room-list {
+    display: grid;
+    gap: rem(16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__empty {
+    font-size: rem(14);
+    line-height: 1.6;
+  }
+
+  &__reserve {
+    --color-button-primary: #{v.$color-purple};
+    --color-button-primary-hover: #{v.$color-purple};
+
+    width: 100%;
+    min-height: rem(64);
+    margin-top: rem(52);
+    padding: rem(15);
+    border: 1px solid v.$color-purple-border;
+    border-radius: v.$radius-panel;
+    box-shadow: 0 0 rem(7) rgba(v.$color-glow, 0.65);
+    font-size: rem(20);
+    font-weight: 700;
+
+    &[aria-disabled='true'] {
+      cursor: default;
+    }
+  }
+
+  &__navigation {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    background: v.$color-background;
+  }
+}

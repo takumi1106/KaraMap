@@ -1,22 +1,41 @@
-$color-background: #03091b;
+@use './functions' as *;
+
+// Screen palette and typography.
+$color-background: #030a1c;
+$color-text: #fff;
+$color-location: #031943;
+$color-blue: #003da9;
+$color-blue-border: #075bce;
+$color-purple: #3d108d;
+$color-purple-border: #6500c7;
+$color-pink: #810b65;
+$color-pink-border: #b50083;
+$color-lime: #747d00;
+$color-lime-border: #a0a500;
+$color-glow: #0068e0;
+$color-available: #37d000;
+$color-logo-blue: #7ce8ff;
+$color-logo-pink: #fba3ff;
+$font-family: Arial, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+
+// Shared component tokens.
 $color-surface: #071735;
-$color-text-primary: #fff;
+$color-text-primary: $color-text;
 $color-text-secondary: #c4ccdc;
-$color-border: #12316b;
+$color-border: $color-blue-border;
 $color-border-hover: #2864c7;
-$color-focus: #7c3aed;
+$color-focus: $color-purple-border;
 $color-nav-active: #d22bfa;
-
-$color-primary: #0750b5;
+$color-primary: $color-blue;
 $color-secondary: #475569;
-$color-success: #16a34a;
-$color-vacant: #16a34a;
+$color-success: $color-available;
+$color-vacant: $color-available;
 $color-dam: #9d126d;
-$color-joysound: #0750b5;
-$color-purple: #40149c;
+$color-joysound: $color-blue;
 
-$page-width: 520px;
-$page-gutter: 20px;
-$radius-panel: 20px;
-$radius-card: 12px;
-$breakpoint-desktop: 768px;
+// Shared layout tokens.
+$page-width: rem(480);
+$page-gutter: rem(20);
+$radius-panel: rem(18);
+$radius-card: rem(14);
+$breakpoint-desktop: rem(768);

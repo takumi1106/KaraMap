@@ -1,0 +1,33 @@
+// UI確認用の仮データ。画像・距離・営業／空室情報は実店舗の情報ではありません。
+export const sampleResults = [
+  {
+    id: 'sample-1',
+    name: 'ジャンカラ 名駅東口店',
+    image: '/images/shop-karaoke.webp',
+    walkingMinutes: 3,
+    distanceMeters: 200,
+    isOpen: true,
+    availableRooms: 5,
+    machines: ['DAM', 'JOYSOUND'],
+  },
+  {
+    id: 'sample-2',
+    name: 'カラオケ 名駅中央店',
+    image: '/images/shop-karaoke.webp',
+    walkingMinutes: 5,
+    distanceMeters: 350,
+    isOpen: true,
+    availableRooms: 3,
+    machines: ['DAM', 'JOYSOUND'],
+  },
+  {
+    id: 'sample-3',
+    name: 'カラオケ 名駅南店',
+    image: '/images/shop-karaoke.webp',
+    walkingMinutes: 7,
+    distanceMeters: 500,
+    isOpen: true,
+    availableRooms: 2,
+    machines: ['DAM', 'JOYSOUND'],
+  },
+]
