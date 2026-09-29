@@ -5,12 +5,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: rem(20px);
-  padding: rem(2px) rem(10px);
+  min-height: rem(20);
+  padding: rem(2) rem(10);
   border-radius: 999px;
   color: v.$color-text-primary;
   background-color: var(--tag-custom-color, v.$color-secondary);
-  font-size: rem(12px);
+  font-size: rem(12);
   font-weight: 600;
   line-height: 1.4;
   white-space: nowrap;

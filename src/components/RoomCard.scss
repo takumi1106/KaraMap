@@ -2,14 +2,12 @@
 @use '../styles/variables' as v;
 
 .room-card {
-  --color-tag-dam: #{v.$color-pink};
-  --color-tag-joysound: #{v.$color-blue};
-
   padding: rem(17) rem(14);
-  border: 1px solid v.$color-blue;
+  border: 1px solid v.$color-border;
   border-radius: v.$radius-card;
-  background: v.$color-location;
-  box-shadow: 0 0 rem(7) rgba(v.$color-glow, 0.6);
+  background-color: v.$color-surface;
+  box-shadow: 0 0 rem(7) rgba(v.$color-border-hover, 0.6);
+  color: v.$color-text-primary;
   font-size: rem(14);
   line-height: 1.5;
 
@@ -18,8 +16,8 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     margin-bottom: rem(14);
-    object-fit: cover;
     border-radius: v.$radius-card;
+    object-fit: cover;
   }
 
   &__summary,
@@ -33,10 +31,16 @@
   &__name {
     margin: 0;
     font-size: inherit;
-    font-weight: 400;
+    font-weight: 600;
+  }
+
+  &__type,
+  &__capacity {
+    color: v.$color-text-secondary;
   }
 
   &__details {
+    justify-content: space-between;
     gap: rem(7) rem(18);
     margin-top: rem(6);
   }

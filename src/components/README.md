@@ -63,3 +63,30 @@
 - `activeItem`: 現在の項目の ID（`home`、`search`、`favorites`、`mypage`）。既定値は `home`
 - `items`: ナビゲーション項目の配列。各項目は `{ id, label, href, icon }` を受け取る
 - `icon`: `home`、`search`、`favorites`、`mypage` のいずれか
+
+## RoomCard
+
+店舗詳細に表示する部屋情報カードです。
+
+```jsx
+<RoomCard
+  room={{
+    name: 'ルーム301',
+    type: 'ノーマル',
+    capacityLabel: '4〜6名',
+    price: 600,
+    priceFrom: true,
+    priceUnit: '1時間',
+    machines: ['DAM', 'JOYSOUND'],
+  }}
+/>
+```
+
+- `room.name`: 部屋名
+- `room.type`: 部屋タイプ
+- `room.capacityLabel`: 定員表示
+- `room.price`: 料金。未指定の場合は「料金未設定」
+- `room.priceFrom`: `true` の場合、料金に「〜」を付ける
+- `room.priceUnit`: 料金単位（既定値は `1時間`）
+- `room.machines`: 対応機種の配列。DAM・JOYSOUND は対応する `Tag` variant で表示
+- `room.image` / `room.imageAlt`: 任意の室内画像と代替テキスト

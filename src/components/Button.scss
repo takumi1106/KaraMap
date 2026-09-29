@@ -2,10 +2,10 @@
 @use '../styles/variables' as v;
 
 .button {
-  min-height: rem(44px);
-  padding: rem(10px) rem(16px);
+  min-height: rem(44);
+  padding: rem(10) rem(16);
   border: 1px solid transparent;
-  border-radius: rem(8px);
+  border-radius: rem(8);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
