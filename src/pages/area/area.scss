@@ -1,0 +1,106 @@
+@use '../../styles/functions' as *;
+@use '../../styles/variables' as v;
+
+.area-page {
+  width: 100%;
+  max-width: v.$page-width;
+  min-height: 100svh;
+  margin-inline: auto;
+  color: v.$color-text;
+  background: v.$color-background;
+
+  &__main {
+    min-height: 100svh;
+    padding-bottom: rem(96);
+  }
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(96);
+    padding: 0 rem(56);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: rem(18);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  &__back.button {
+    position: absolute;
+    top: 50%;
+    left: rem(12);
+    display: grid;
+    place-items: center;
+    width: rem(44);
+    height: rem(44);
+    padding: rem(10);
+    background-color: transparent;
+    transform: translateY(-50%);
+
+    &:hover:not(:disabled) {
+      background-color: transparent;
+    }
+  }
+
+  &__back-icon {
+    width: rem(22);
+    height: rem(22);
+    transform: rotate(180deg);
+  }
+
+  &__area-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0 rem(20);
+    padding-inline: rem(3);
+    overflow: hidden;
+    border: 1px solid v.$color-blue-border;
+    border-radius: v.$radius-card;
+
+    &::before,
+    &::after {
+      display: block;
+      flex: 0 0 rem(28);
+      border-bottom: 1px solid v.$color-purple-border;
+      content: '';
+    }
+  }
+
+  &__area.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: rem(53);
+    padding: rem(7) rem(17) rem(7) rem(8);
+    border: 0;
+    border-bottom: 1px solid v.$color-purple-border;
+    border-radius: 0;
+    color: v.$color-text;
+    background: transparent;
+    font-size: rem(18);
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+
+    &:hover:not(:disabled) {
+      background: rgba(v.$color-blue, 0.2);
+    }
+
+  }
+
+  &__area-label {
+    display: block;
+  }
+
+  &__next-icon {
+    flex: 0 0 rem(22);
+    width: rem(22);
+    height: rem(22);
+  }
+}

@@ -1,16 +1,27 @@
 import { homeActions, sampleShops } from './homeData.js'
+import Area from '../area/area.jsx'
 import './home.scss'
 
 function Home({ areaLabel = '名古屋市中村区付近', shops = sampleShops }) {
+  const currentPath = window.location.pathname.replace(/\/$/, '')
+
+  if (currentPath.startsWith('/area')) {
+    return <Area onBack={() => window.location.assign(currentPath.endsWith('/results') ? '/area' : '/')} />
+  }
+
   return (
     <main className="home">
       <header className="home__hero">
         <img className="home__hero-image" src="/images/hero-karaoke.webp" alt="" width="1200" height="675" fetchPriority="high" />
         <h1 className="home__logo" aria-label="カラMAP">
-          <svg className="home__logo-icon" aria-hidden="true"><use href="/images/icons.svg#microphone" /></svg>
-          <span className="home__logo-kana">カラ</span>
-          <span className="home__logo-latin">Map</span>
-          <svg className="home__logo-icon home__logo-icon--music" aria-hidden="true"><use href="/images/icons.svg#music" /></svg>
+          <img
+            src="/images/kara-map-logo.png"
+            alt=""
+            width="252"
+            height="108"
+            fetchPriority="high"
+            style={{ width: '58%', height: 'auto', objectFit: 'contain' }}
+          />
         </h1>
       </header>
 
@@ -26,7 +37,11 @@ function Home({ areaLabel = '名古屋市中村区付近', shops = sampleShops }
 
         <nav className="home__actions" aria-label="カラオケ店を探す">
           {homeActions.map((action) => (
-            <a className={`home__action home__action--${action.id}`} key={action.id} href={action.href}>
+            <a
+              className={`home__action home__action--${action.id}`}
+              key={action.id}
+              href={action.id === 'location' ? '/area' : action.href}
+            >
               <svg className="home__action-icon" aria-hidden="true"><use href={`/images/icons.svg#${action.icon}`} /></svg>
               <span>{action.label}</span>
             </a>
