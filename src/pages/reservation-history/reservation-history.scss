@@ -1,0 +1,178 @@
+@use '../../styles/functions' as *;
+@use '../../styles/variables' as v;
+
+.reservation-history {
+  max-width: v.$page-width;
+  min-height: 100svh;
+  margin-inline: auto;
+  padding-bottom: calc(rem(90) + env(safe-area-inset-bottom));
+  background: v.$color-background;
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(94);
+    padding: rem(20) rem(55) rem(6);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: rem(20);
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  &__back.button {
+    position: absolute;
+    left: rem(14);
+    display: grid;
+    place-items: center;
+    width: rem(44);
+    height: rem(44);
+    padding: rem(10);
+    color: v.$color-text;
+    background: transparent;
+
+    &:hover:not(:disabled) {
+      background: transparent;
+    }
+  }
+
+  &__back-icon {
+    width: rem(24);
+    height: rem(24);
+    transform: rotate(180deg);
+  }
+
+  &__section {
+    padding: rem(26) rem(22) 0;
+  }
+
+  &__section-title {
+    margin: 0 0 rem(12) rem(16);
+    font-size: rem(14);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  &__list {
+    display: grid;
+    gap: rem(32);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    min-width: 0;
+  }
+
+  &__detail {
+    padding: rem(18);
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-card;
+  }
+
+  &__detail-title {
+    margin: 0 0 rem(18);
+    font-size: rem(17);
+    line-height: 1.5;
+  }
+
+  &__detail-list {
+    display: grid;
+    gap: rem(14);
+    margin: 0;
+
+    div {
+      display: grid;
+      grid-template-columns: rem(88) minmax(0, 1fr);
+      gap: rem(10);
+    }
+
+    dt {
+      color: v.$color-text-secondary;
+      font-size: rem(14);
+    }
+
+    dd {
+      margin: 0;
+      font-size: rem(14);
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__form {
+    display: grid;
+    gap: rem(18);
+    padding: rem(18);
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-card;
+  }
+
+  &__field {
+    display: grid;
+    gap: rem(8);
+    color: v.$color-text-secondary;
+    font-size: rem(14);
+
+    input,
+    select {
+      width: 100%;
+      min-height: rem(48);
+      padding: rem(10) rem(12);
+      border: 1px solid v.$color-border;
+      border-radius: rem(8);
+      color: v.$color-text;
+      background: v.$color-location;
+      font: inherit;
+      color-scheme: dark;
+    }
+
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid v.$color-focus;
+      outline-offset: 2px;
+    }
+  }
+
+  &__conditions {
+    margin: 0;
+    color: v.$color-text-secondary;
+    font-size: rem(14);
+  }
+
+  &__action.button {
+    width: 100%;
+    min-height: rem(52);
+    margin-top: rem(22);
+    font-size: rem(16);
+  }
+
+  &__form &__action.button {
+    margin-top: rem(4);
+  }
+
+  &__message {
+    margin: 0;
+    padding: rem(18);
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-card;
+    color: v.$color-text;
+    font-size: rem(15);
+    line-height: 1.7;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: rem(20) rem(16);
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-card;
+    color: v.$color-text-secondary;
+    font-size: rem(14);
+    text-align: center;
+  }
+}

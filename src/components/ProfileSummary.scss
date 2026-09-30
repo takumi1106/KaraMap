@@ -1,0 +1,62 @@
+@use '../styles/functions' as *;
+@use '../styles/variables' as v;
+
+$color-avatar-start: #6b9ad4;
+$color-avatar-end: #666cb1;
+
+.profile-summary {
+  display: flex;
+  align-items: center;
+  gap: rem(24);
+  width: 100%;
+  min-height: rem(94);
+  padding: rem(12) 0 rem(19);
+  border: 0;
+  color: v.$color-text;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid v.$color-focus;
+    outline-offset: 2px;
+  }
+
+  &__avatar {
+    flex: 0 0 rem(64);
+    width: rem(64);
+    height: rem(64);
+    overflow: hidden;
+    border-radius: 50%;
+    background: linear-gradient(60deg, $color-avatar-start, $color-avatar-end);
+    color: v.$color-text;
+  }
+
+  &__avatar-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__identity {
+    display: grid;
+    gap: rem(7);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__name {
+    font-size: rem(19);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  &__id {
+    font-size: rem(14);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+}

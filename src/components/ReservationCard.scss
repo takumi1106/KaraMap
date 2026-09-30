@@ -1,0 +1,57 @@
+@use '../styles/functions' as *;
+@use '../styles/variables' as v;
+
+.reservation-card {
+  appearance: none;
+  display: grid;
+  gap: rem(10);
+  width: 100%;
+  min-width: 0;
+  padding: rem(14) rem(16) rem(16);
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-card;
+  color: v.$color-text;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid v.$color-focus;
+    outline-offset: 3px;
+  }
+
+  &__store-name {
+    margin: 0 0 rem(1);
+    font-size: rem(14);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: center;
+    gap: rem(10);
+    min-width: 0;
+    margin: 0;
+    font-size: rem(14);
+    line-height: 1.5;
+  }
+
+  &__icon {
+    display: grid;
+    flex: 0 0 rem(20);
+    place-items: center;
+    width: rem(20);
+    height: rem(20);
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.5;
+    }
+  }
+}
