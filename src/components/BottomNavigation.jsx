@@ -3,7 +3,7 @@ import './BottomNavigation.scss'
 const defaultItems = [
   { id: 'home', label: 'ホーム', href: '/', icon: 'home' },
   { id: 'search', label: '検索', href: '/search-filter', icon: 'search' },
-  { id: 'map', label: '地図から探す', href: '/search?view=map', icon: 'map' },
+  { id: 'map', label: '地図から探す', href: '/current-location', icon: 'map' },
   { id: 'mypage', label: 'マイページ', href: '/mypage', icon: 'mypage' },
 ]
 

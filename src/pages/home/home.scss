@@ -192,7 +192,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    margin: rem(-6) calc(-1 * v.$page-gutter) 0 0;
+    margin: rem(-6) calc(-1 * v.$page-gutter) rem(42) 0;
     padding: rem(4) v.$page-gutter rem(6) 0;
     list-style: none;
 

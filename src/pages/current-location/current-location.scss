@@ -1,0 +1,158 @@
+@use '../../styles/functions' as *;
+@use '../../styles/variables' as v;
+
+.current-location {
+  max-width: v.$page-width;
+  min-height: 100svh;
+  margin-inline: auto;
+  padding-bottom: calc(rem(100) + env(safe-area-inset-bottom));
+  background: v.$color-background;
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(94);
+    padding: rem(20) rem(55) rem(6);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: rem(20);
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  &__back.button {
+    position: absolute;
+    left: rem(14);
+    display: grid;
+    place-items: center;
+    width: rem(44);
+    height: rem(44);
+    padding: rem(10);
+    color: v.$color-text;
+    background: transparent;
+
+    &:hover:not(:disabled) {
+      background: transparent;
+    }
+  }
+
+  &__back-icon {
+    width: rem(24);
+    height: rem(24);
+    transform: rotate(180deg);
+  }
+
+  &__controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: rem(24);
+    min-height: rem(50);
+    padding: rem(25) rem(20) rem(19);
+  }
+
+  &__distance,
+  &__filter {
+    position: relative;
+    min-width: 0;
+    min-height: rem(50);
+    border: 1px solid v.$color-blue;
+    border-radius: v.$radius-panel;
+    background: v.$color-location;
+    box-shadow: 0 0 rem(7) rgba(v.$color-glow, 0.6);
+    color: v.$color-text;
+    font-size: rem(13);
+  }
+
+  &__select {
+    width: 100%;
+    min-height: rem(50);
+    padding: rem(10) rem(28) rem(10) rem(10);
+    border: 0;
+    border-radius: inherit;
+    appearance: none;
+    color: inherit;
+    background: v.$color-location;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  &__filter {
+    display: flex;
+    align-items: center;
+    padding: rem(10) rem(28) rem(10) rem(10);
+    text-decoration: none;
+  }
+
+  &__chevron {
+    position: absolute;
+    top: 50%;
+    right: rem(10);
+    width: rem(14);
+    height: rem(14);
+    transform: translateY(-50%) rotate(90deg);
+    pointer-events: none;
+  }
+
+  &__map {
+      position: relative;
+      height: rem(435);
+      overflow: hidden;
+      background: v.$color-location;
+  }
+
+  &__location {
+    padding: 0 rem(20) rem(18);
+  }
+
+  &__locate.button {
+    min-height: rem(44);
+    border: 1px solid v.$color-blue-border;
+    color: v.$color-text;
+    background: v.$color-location;
+    font-size: rem(14);
+  }
+
+  &__location-message,
+  &__location-note {
+    margin: rem(8) 0 0;
+    font-size: rem(12);
+    line-height: 1.6;
+  }
+
+  &__location-note {
+    color: v.$color-text-secondary;
+  }
+
+  &__results {
+    position: relative;
+    margin-top: rem(12);
+    padding-inline: rem(19);
+  }
+
+  &__list {
+    display: grid;
+    gap: rem(14);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__card {
+    min-height: rem(138);
+  }
+
+  &__empty {
+    margin: 0;
+    padding: rem(20);
+    border: 1px solid v.$color-blue-border;
+    border-radius: v.$radius-card;
+    background: v.$color-background;
+    font-size: rem(14);
+    line-height: 1.6;
+  }
+}

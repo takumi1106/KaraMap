@@ -4,8 +4,10 @@ import SearchResults from './pages/search-results/search-results.jsx'
 import SearchFilter from './pages/search-filter/search-filter.jsx'
 import ShopDetail from './pages/shop-detail/shop-detail.jsx'
 import MyPage from './pages/mypage/mypage.jsx'
+import CurrentLocation from './pages/current-location/current-location.jsx'
 
 const pages = {
+  '/current-location': { component: CurrentLocation, activeItem: 'map' },
   '/mypage': { component: MyPage, activeItem: 'mypage' },
   '/': { component: Home, activeItem: 'home' },
   '/search': { component: SearchResults, activeItem: 'search' },
@@ -15,14 +17,14 @@ const pages = {
 
 function App() {
   const pathname = window.location.pathname.replace(/\/$/, '') || '/'
-  const route = pathname.startsWith('/shops/') ? '/shop-detail' : pathname
+  const isMapView = pathname === '/search' && new URLSearchParams(window.location.search).get('view') === 'map'
+  const route = isMapView ? '/current-location' : pathname.startsWith('/shops/') ? '/shop-detail' : pathname
   const { component: Page, activeItem } = pages[route] ?? pages['/']
-  const isMapView = route === '/search' && new URLSearchParams(window.location.search).get('view') === 'map'
 
   return (
     <>
       <Page />
-      <BottomNavigation activeItem={isMapView ? 'map' : activeItem} />
+      <BottomNavigation activeItem={activeItem} />
     </>
   )
 }

@@ -1,3 +1,6 @@
+import { useEffect } from 'react'
+import MapView from '../../components/MapView.jsx'
+import useCurrentLocation from '../../hooks/useCurrentLocation.js'
 import Button from '../../components/Button.jsx'
 import Tag from '../../components/Tag.jsx'
 import { sampleResults } from './searchResultsData.js'
@@ -43,24 +46,19 @@ function renderDefaultShop(shop) {
   )
 }
 
-// Google Maps連携時は、このコンポーネントまたは画面のmapContentを差し替える。
-function MapPreview() {
-  return (
-    <div className="map-preview" role="img" aria-label="名古屋駅周辺の地図イメージ。青い点は仮の現在地で、実際の位置情報ではありません。">
-      <img className="map-preview__image" src="/images/map-preview.svg" alt="" width="750" height="420" />
-      <span className="map-preview__location" aria-hidden="true" />
-      <span className="map-preview__label">地図イメージ</span>
-    </div>
-  )
-}
-
 function SearchResults({
   shops = sampleResults,
   onBack = returnToSource,
-  mapContent = <MapPreview />,
+  mapContent,
   renderShop = renderDefaultShop,
   bottomNavigation = null,
 }) {
+  const { status, location, error, requestLocation } = useCurrentLocation()
+
+  useEffect(() => {
+    requestLocation()
+  }, [])
+
   return (
     <div className="search-results">
       <main className="search-results__main">
@@ -70,8 +68,25 @@ function SearchResults({
           </Button>
           <h1 className="search-results__title">検索結果</h1>
         </header>
+        <section className="search-results__location" aria-label="現在地の取得">
+          {status === 'error' && (
+            <Button
+                className="search-results__locate"
+                onClick={requestLocation}
+            >
+                現在地を再取得
+            </Button>
+        )}
+          <p className="search-results__location-message" role="status">
+            {status === 'idle' && '位置情報を許可すると、現在地を中心に地図を表示します。'}
+            {status === 'loading' && '端末の位置情報を確認しています。'}
+            {status === 'error' && error}
+            {status === 'success' && '現在地を取得しました。'}
+          </p>
+          <p className="search-results__location-message">店舗一覧は仮データです。現在地による絞り込みは未連携です。</p>
+        </section>
         <section className="search-results__map" aria-label="周辺地図">
-          {mapContent}
+          {mapContent ?? <MapView location={location} shops={shops} />}
         </section>
         <section className="search-results__list-section" aria-label="検索結果の店舗一覧">
           <p className="search-results__count" role="status">全{shops.length}件</p>

@@ -1,6 +1,6 @@
 // UI確認用の仮データ。画像・距離・営業／空室情報は実店舗の情報ではありません。
 export const sampleResults = [
-  {
+    {
     id: 'sample-1',
     name: 'ジャンカラ 名駅東口店',
     image: '/images/shop-karaoke.webp',
@@ -9,6 +9,8 @@ export const sampleResults = [
     isOpen: true,
     availableRooms: 5,
     machines: ['DAM', 'JOYSOUND'],
+    latitude: 35.1715,
+    longitude: 136.8840,
   },
   {
     id: 'sample-2',

@@ -10,7 +10,6 @@
   width: min(100%, v.$page-width);
   margin-inline: auto;
   padding: rem(6) rem(8) max(rem(6), env(safe-area-inset-bottom));
-  border-top: 1px solid v.$color-border;
   background-color: v.$color-background;
 
   &__list {

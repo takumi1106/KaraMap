@@ -1,0 +1,104 @@
+.current-location {
+  max-width: 30rem;
+  min-height: 100svh;
+  margin-inline: auto;
+  padding-bottom: calc(6.25rem + env(safe-area-inset-bottom));
+  background: #030a1c;
+}
+.current-location__controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 3.125rem;
+  padding: 1.5625rem 1.25rem 1.1875rem;
+}
+.current-location__distance, .current-location__filter {
+  position: relative;
+  min-width: 0;
+  min-height: 3.125rem;
+  border: 1px solid #003da9;
+  border-radius: 1.125rem;
+  background: #031943;
+  box-shadow: 0 0 0.4375rem rgba(0, 104, 224, 0.6);
+  color: #fff;
+  font-size: 0.8125rem;
+}
+.current-location__select {
+  width: 100%;
+  min-height: 3.125rem;
+  padding: 0.625rem 1.75rem 0.625rem 0.625rem;
+  border: 0;
+  border-radius: inherit;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  color: inherit;
+  background: #031943;
+  font: inherit;
+  cursor: pointer;
+}
+.current-location__filter {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 1.75rem 0.625rem 0.625rem;
+  text-decoration: none;
+}
+.current-location__chevron {
+  position: absolute;
+  top: 50%;
+  right: 0.625rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  transform: translateY(-50%) rotate(90deg);
+  pointer-events: none;
+}
+.current-location__map {
+  position: relative;
+  height: 27.1875rem;
+  overflow: hidden;
+  background: #031943;
+}
+.current-location__location {
+  padding: 0 1.25rem 1.125rem;
+}
+.current-location__locate.button {
+  min-height: 2.75rem;
+  border: 1px solid #075bce;
+  color: #fff;
+  background: #031943;
+  font-size: 0.875rem;
+}
+.current-location__location-message, .current-location__location-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+.current-location__location-note {
+  color: #c4ccdc;
+}
+.current-location__results {
+  position: relative;
+  margin-top: 0.75rem;
+  padding-inline: 1.1875rem;
+}
+.current-location__list {
+  display: grid;
+  gap: 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.current-location__card {
+  min-height: 8.625rem;
+}
+.current-location__empty {
+  margin: 0;
+  padding: 1.25rem;
+  border: 1px solid #075bce;
+  border-radius: 0.875rem;
+  background: #030a1c;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+/*# sourceMappingURL=current-location.css.map */
