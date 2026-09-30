@@ -1,3 +1,4 @@
+import { assetUrl } from '../utils/paths.js'
 import Tag from './Tag'
 import './RoomCard.scss'
 
@@ -20,7 +21,7 @@ function RoomCard({ room }) {
       {room.image && (
         <img
           className="room-card__image"
-          src={room.image}
+          src={assetUrl(room.image)}
           alt={room.imageAlt ?? `${room.name ?? '部屋'}の室内`}
           loading="lazy"
         />

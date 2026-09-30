@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react'
 import { MapContainer, Marker, TileLayer, Tooltip, useMap } from 'react-leaflet'
 import L from 'leaflet'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerIconRetina from 'leaflet/dist/images/marker-icon-2x.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/leaflet.css'
 import './MapView.scss'
+
+// Vite が生成する公開先付き URL を使用し、画像パスの自動検出に依存しない。
+const locationIcon = L.icon({
+  ...L.Icon.Default.prototype.options,
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIconRetina,
+  shadowUrl: markerShadow,
+})
 
 function ChangeMapCenter({ location }) {
   const map = useMap()
@@ -20,9 +31,10 @@ function ChangeMapCenter({ location }) {
 function ResizeMap({ isExpanded }) {
   const map = useMap()
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       map.invalidateSize()
     }, 100)
+    return () => clearTimeout(timer)
   }, [isExpanded, map])
 
   return null
@@ -86,6 +98,7 @@ function MapView({ location, shops = [] }) {
 
     {location && (
       <Marker
+        icon={locationIcon}
         position={[
           location.latitude,
           location.longitude,

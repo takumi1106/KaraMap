@@ -1,3 +1,4 @@
+import { assetUrl, pageUrl } from '../../utils/paths.js'
 import Button from '../../components/Button.jsx'
 import './mypage.scss'
 
@@ -8,7 +9,7 @@ const menuItems = [
 ]
 
 function returnHome() {
-  window.location.assign('/')
+  window.location.assign(pageUrl('/'))
 }
 
 function MyPage({ user = previewUser, onBack = returnHome, onProfile, onMenuSelect }) {
@@ -16,7 +17,7 @@ function MyPage({ user = previewUser, onBack = returnHome, onProfile, onMenuSele
     <main className="mypage">
       <header className="mypage__header">
         <Button className="mypage__back" onClick={onBack} aria-label="ホームに戻る">
-          <svg className="mypage__back-icon" aria-hidden="true"><use href="/images/icons.svg#chevron" /></svg>
+          <svg className="mypage__back-icon" aria-hidden="true"><use href={assetUrl('/images/icons.svg#chevron')} /></svg>
         </Button>
         <h1 className="mypage__title">マイページ</h1>
       </header>
@@ -24,23 +25,23 @@ function MyPage({ user = previewUser, onBack = returnHome, onProfile, onMenuSele
         <Button className="mypage__profile" onClick={() => onProfile?.(user)} aria-disabled={!onProfile}>
           <span className="mypage__avatar">
             {user.avatar ? (
-              <img className="mypage__avatar-image" src={user.avatar} alt="" width="64" height="64" />
+              <img className="mypage__avatar-image" src={assetUrl(user.avatar)} alt="" width="64" height="64" />
             ) : (
-              <svg className="mypage__avatar-image" aria-hidden="true"><use href="/images/icon-profile.svg#profile" /></svg>
+              <svg className="mypage__avatar-image" aria-hidden="true"><use href={assetUrl('/images/icon-profile.svg#profile')} /></svg>
             )}
           </span>
           <span className="mypage__identity">
             <span className="mypage__name">{user.name}</span>
             <span className="mypage__id">ID : {user.username}</span>
           </span>
-          <svg className="mypage__profile-arrow" aria-hidden="true"><use href="/images/icons.svg#chevron" /></svg>
+          <svg className="mypage__profile-arrow" aria-hidden="true"><use href={assetUrl('/images/icons.svg#chevron')} /></svg>
         </Button>
         <ul className="mypage__menu" aria-label="アカウントメニュー">
           {menuItems.map((item) => (
             <li className="mypage__menu-item" key={item.id}>
               <Button className="mypage__menu-button" onClick={() => onMenuSelect?.(item.id)} aria-disabled={!onMenuSelect}>
                 <span>{item.label}</span>
-                <svg className="mypage__menu-arrow" aria-hidden="true"><use href="/images/icons.svg#chevron" /></svg>
+                <svg className="mypage__menu-arrow" aria-hidden="true"><use href={assetUrl('/images/icons.svg#chevron')} /></svg>
               </Button>
             </li>
           ))}

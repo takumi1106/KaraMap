@@ -1,3 +1,4 @@
+import { assetUrl, pageUrl } from '../utils/paths.js'
 import Tag from './Tag'
 import './StoreCard.scss'
 
@@ -29,11 +30,11 @@ function StoreCard({
   const storeTags = [status, ...tags]
 
   return (
-    <a className={classNames} href={href} {...props}>
+    <a className={classNames} href={pageUrl(href)} {...props}>
       {image && (
         <img
           className="store-card__image"
-          src={image}
+          src={assetUrl(image)}
           alt={imageAlt ?? name ?? ''}
           loading="lazy"
         />

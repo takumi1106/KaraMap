@@ -1,3 +1,4 @@
+import { assetUrl, pageUrl } from '../utils/paths.js'
 import './BottomNavigation.scss'
 
 const defaultItems = [
@@ -29,7 +30,7 @@ function renderIcon(icon) {
   if (icon === 'map') {
     return (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <use href="/images/icon-map-pin.svg?v=outline#map-pin" />
+        <use href={assetUrl('/images/icon-map-pin.svg?v=outline#map-pin')} />
       </svg>
     )
   }
@@ -59,7 +60,7 @@ function BottomNavigation({ activeItem = 'home', items = defaultItems }) {
             <li className="bottom-navigation__item" key={item.id}>
               <a
                 className={linkClassNames}
-                href={item.href}
+                href={pageUrl(item.href)}
                 aria-current={isActive ? 'page' : undefined}
               >
                 <span className="bottom-navigation__icon">

@@ -1,14 +1,15 @@
+import { assetUrl, pageUrl } from '../../utils/paths.js'
 import { useState } from 'react'
 import Button from '../../components/Button.jsx'
 import { filterGroups, previewFilters } from './searchFilterData.js'
 import './search-filter.scss'
 
 function returnToSearch() {
-  window.location.assign('/search?from=search-filter')
+  window.location.assign(pageUrl('/search?from=search-filter'))
 }
 
 function returnHome() {
-  window.location.assign('/')
+  window.location.assign(pageUrl('/'))
 }
 
 // 単独ではローカル状態を使用し、propsを渡すと親からも制御できる。
@@ -78,7 +79,7 @@ function SearchFilter({
       <main className="search-filter__main">
         <header className="search-filter__header">
           <Button className="search-filter__back" onClick={onBack} aria-label="ホームに戻る">
-            <svg className="search-filter__back-icon" aria-hidden="true"><use href="/images/icons.svg#chevron" /></svg>
+            <svg className="search-filter__back-icon" aria-hidden="true"><use href={assetUrl('/images/icons.svg#chevron')} /></svg>
           </Button>
           <h1 className="search-filter__title">検索条件</h1>
         </header>

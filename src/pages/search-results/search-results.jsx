@@ -1,3 +1,4 @@
+import { assetUrl, pageUrl, getPageLocation } from '../../utils/paths.js'
 import { useEffect } from 'react'
 import MapView from '../../components/MapView.jsx'
 import useCurrentLocation from '../../hooks/useCurrentLocation.js'
@@ -7,8 +8,8 @@ import { sampleResults } from './searchResultsData.js'
 import './search-results.scss'
 
 function returnToSource() {
-  const from = new URLSearchParams(window.location.search).get('from')
-  window.location.assign(from === 'search-filter' ? '/search-filter' : '/')
+  const from = getPageLocation().searchParams.get('from')
+  window.location.assign(pageUrl(from === 'search-filter' ? '/search-filter' : '/'))
 }
 
 // 共通カードが完成するまでの画面専用表示。店舗データを1つのpropで受け取る。
@@ -21,13 +22,13 @@ function renderDefaultShop(shop) {
 
   return (
     <article className="result-item">
-      <img className="result-item__image" src={shop.image} alt={`${shop.name}の店内イメージ`} width="92" height="118" loading="lazy" />
+      <img className="result-item__image" src={assetUrl(shop.image)} alt={`${shop.name}の店内イメージ`} width="92" height="118" loading="lazy" />
       <div className="result-item__content">
         <h2 className="result-item__name">{shop.name}</h2>
         <div className="result-item__details">
           <span>徒歩{shop.walkingMinutes}分 ({shop.distanceMeters}m)</span>
           <span className="result-item__business">
-            <svg className="result-item__pin" aria-hidden="true"><use href="/images/icons.svg#pin" /></svg>
+            <svg className="result-item__pin" aria-hidden="true"><use href={assetUrl('/images/icons.svg#pin')} /></svg>
             {shop.isOpen == null ? '営業状況未確認' : shop.isOpen ? '営業中' : '営業時間外'}
           </span>
         </div>
@@ -64,7 +65,7 @@ function SearchResults({
       <main className="search-results__main">
         <header className="search-results__header">
           <Button className="search-results__back" onClick={onBack} aria-label="前の画面に戻る">
-            <svg className="search-results__back-icon" aria-hidden="true"><use href="/images/icons.svg#chevron" /></svg>
+            <svg className="search-results__back-icon" aria-hidden="true"><use href={assetUrl('/images/icons.svg#chevron')} /></svg>
           </Button>
           <h1 className="search-results__title">検索結果</h1>
         </header>

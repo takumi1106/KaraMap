@@ -1,3 +1,4 @@
+import { assetUrl, pageUrl } from '../../utils/paths.js'
 import { useEffect, useState } from 'react'
 import MapView from '../../components/MapView.jsx'
 import StoreCard from '../../components/StoreCard.jsx'
@@ -7,7 +8,7 @@ import { distanceOptions, previewShops } from './currentLocationData.js'
 import './current-location.scss'
 
 function returnHome() {
-  window.location.href = '/'
+  window.location.href = pageUrl('/')
 }
 
 function CurrentLocation({
@@ -36,7 +37,7 @@ function CurrentLocation({
       <header className="current-location__header">
         <Button className="current-location__back" onClick={onBack} aria-label="ホームに戻る">
           <svg className="current-location__back-icon" aria-hidden="true">
-            <use href="/images/icons.svg#chevron" />
+            <use href={assetUrl('/images/icons.svg#chevron')} />
           </svg>
         </Button>
         <h1 className="current-location__title">現在地から探す</h1>
@@ -104,20 +105,20 @@ function CurrentLocation({
             className="current-location__chevron"
             aria-hidden="true"
           >
-            <use href="/images/icons.svg#chevron" />
+            <use href={assetUrl('/images/icons.svg#chevron')} />
           </svg>
         </div>
 
         <a
           className="current-location__filter"
-          href="/search-filter"
+          href={pageUrl('/search-filter')}
         >
           条件から絞り込む
           <svg
             className="current-location__chevron"
             aria-hidden="true"
           >
-            <use href="/images/icons.svg#chevron" />
+            <use href={assetUrl('/images/icons.svg#chevron')} />
           </svg>
         </a>
       </div>
@@ -132,7 +133,7 @@ function CurrentLocation({
               <li key={shop.id}>
                 <StoreCard
                   className="current-location__card"
-                  href={`/shops/${shop.id}`}
+                  href={pageUrl(`/shops/${shop.id}`)}
                   image={shop.image}
                   imageAlt={shop.imageAlt}
                   name={shop.name}

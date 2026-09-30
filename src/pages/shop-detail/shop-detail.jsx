@@ -1,3 +1,4 @@
+import { assetUrl, pageUrl } from '../../utils/paths.js'
 import Button from '../../components/Button.jsx'
 import Tag from '../../components/Tag.jsx'
 import RoomCard from '../../components/RoomCard.jsx'
@@ -5,7 +6,7 @@ import { sampleShop } from './shopDetailData.js'
 import './shop-detail.scss'
 
 function returnToResults() {
-  window.location.assign('/search')
+  window.location.assign(pageUrl('/search'))
 }
 
 function ShopDetail({
@@ -25,20 +26,20 @@ function ShopDetail({
       <main className="shop-detail__main">
         <header className="shop-detail__header">
           <Button className="shop-detail__back" onClick={onBack} aria-label="検索結果に戻る">
-            <svg className="shop-detail__back-icon" aria-hidden="true"><use href="/images/icons.svg#chevron" /></svg>
+            <svg className="shop-detail__back-icon" aria-hidden="true"><use href={assetUrl('/images/icons.svg#chevron')} /></svg>
           </Button>
           <h1 className="shop-detail__title">店舗情報</h1>
         </header>
-        <img className="shop-detail__hero" src={shop.image} alt={shop.imageAlt ?? `${shop.name}の店内`} width="750" height="360" fetchPriority="high" />
+        <img className="shop-detail__hero" src={assetUrl(shop.image)} alt={shop.imageAlt ?? `${shop.name}の店内`} width="750" height="360" fetchPriority="high" />
         <div className="shop-detail__content">
           <section className="shop-detail__overview" aria-labelledby="shop-name">
             <h2 className="shop-detail__name" id="shop-name">
-              <svg className="shop-detail__crown" aria-hidden="true"><use href="/images/icons.svg#crown" /></svg>
+              <svg className="shop-detail__crown" aria-hidden="true"><use href={assetUrl('/images/icons.svg#crown')} /></svg>
               <span>{shop.name}</span>
             </h2>
             <div className="shop-detail__meta">
               <span className="shop-detail__distance">
-                <svg className="shop-detail__pin" aria-hidden="true"><use href="/images/icons.svg#pin" /></svg>
+                <svg className="shop-detail__pin" aria-hidden="true"><use href={assetUrl('/images/icons.svg#pin')} /></svg>
                 徒歩{shop.walkingMinutes}分({shop.distanceMeters}m)
               </span>
               <span className="shop-detail__rating">
