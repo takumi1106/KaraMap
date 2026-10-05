@@ -172,7 +172,7 @@
 
   &__list {
     display: grid;
-    gap: rem(20);
+    gap: rem(48);
     margin-bottom: rem(100);
     padding: 0;
     list-style: none;
@@ -180,6 +180,25 @@
 
   &__item {
     min-width: 0;
+  }
+
+  &__reserve-link {
+    display: block;
+    margin-top: rem(12);
+    padding: rem(12) rem(16);
+    border: 1px solid v.$color-purple-border;
+    border-radius: v.$radius-card;
+    color: v.$color-text;
+    background: v.$color-purple;
+    font-size: rem(14);
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+
+    &:focus-visible {
+      outline: 2px solid v.$color-focus;
+      outline-offset: 3px;
+    }
   }
 
   &__empty {

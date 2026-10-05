@@ -21,6 +21,20 @@ function ShopDetail({
       ? `空室あり（残り${shop.availableRooms}部屋）`
       : '満室'
 
+  function reserveShop() {
+    if (onReserve) {
+      onReserve(shop)
+      return
+    }
+
+    const params = new URLSearchParams({
+      reserve: shop.id,
+      shopName: shop.name,
+      from: 'shop-detail',
+    })
+    window.location.assign(pageUrl(`/search?${params.toString()}`))
+  }
+
   return (
     <div className="shop-detail">
       <main className="shop-detail__main">
@@ -61,7 +75,7 @@ function ShopDetail({
               </ul>
             ) : <p className="shop-detail__empty">部屋情報は準備中です。</p>}
           </section>
-          <Button className="shop-detail__reserve" aria-disabled={!onReserve} onClick={() => onReserve?.(shop)}>
+          <Button className="shop-detail__reserve" onClick={reserveShop}>
             この店舗を予約する
           </Button>
         </div>

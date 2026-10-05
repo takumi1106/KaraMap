@@ -1,8 +1,16 @@
+import { useState } from 'react'
 import { assetUrl, pageUrl } from '../../utils/paths.js'
 import { homeActions, sampleShops } from './homeData.js'
+import Area from '../area/area.jsx'
 import './home.scss'
 
 function Home({ areaLabel = '名古屋市中村区付近', shops = sampleShops }) {
+  const [isAreaOpen, setIsAreaOpen] = useState(false)
+
+  if (isAreaOpen) {
+    return <Area onBack={() => setIsAreaOpen(false)} />
+  }
+
   return (
     <main className="home">
       <header className="home__hero">
@@ -27,8 +35,23 @@ function Home({ areaLabel = '名古屋市中村区付近', shops = sampleShops }
 
         <nav className="home__actions" aria-label="カラオケ店を探す">
           {homeActions.map((action) => (
-            <a className={`home__action home__action--${action.id}`} key={action.id} href={pageUrl(action.href)}>
-              <svg className="home__action-icon" aria-hidden="true"><use href={assetUrl(`/images/icons.svg#${action.icon}`)} /></svg>
+            <a
+              className={`home__action home__action--${action.id}`}
+              key={action.id}
+              href={action.id === 'location' ? '#area-search' : pageUrl(action.href)}
+              onClick={action.id === 'location' ? (event) => {
+                event.preventDefault()
+                setIsAreaOpen(true)
+              } : undefined}
+            >
+              {action.icon === 'user' ? (
+                <svg className="home__action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="7.5" r="4" fill="currentColor" />
+                  <path d="M4.5 21a7.5 7.5 0 0 1 15 0" fill="currentColor" />
+                </svg>
+              ) : (
+                <svg className="home__action-icon" aria-hidden="true"><use href={assetUrl(`/images/icons.svg#${action.icon}`)} /></svg>
+              )}
               <span>{action.label}</span>
             </a>
           ))}

@@ -2,8 +2,8 @@
 export const homeActions = [
   { id: 'location', label: 'エリア検索', icon: 'pin', href: '/search?mode=area' },
   { id: 'keyword', label: 'キーワード検索', icon: 'search', href: '/search-filter' },
-  { id: 'recommended', label: 'おすすめ店舗', icon: 'crown', href: '/search?sort=recommended' },
-  { id: 'promotion', label: 'プロモーション', icon: 'ticket', href: '/promotions' },
+  { id: 'mypage', label: 'マイページ', icon: 'user', href: '/mypage' },
+  { id: 'promotion', label: '予約履歴', icon: 'ticket', href: '/reservation-history' },
 ]
 
 // Figmaの表示確認用データ。写真・空室情報は実店舗の情報ではありません。

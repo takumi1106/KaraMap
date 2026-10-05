@@ -1,0 +1,105 @@
+@use '../../styles/functions' as *;
+@use '../../styles/variables' as v;
+
+.area-page {
+  width: 100%;
+  max-width: v.$page-width;
+  min-height: 100svh;
+  margin-inline: auto;
+  padding-bottom: calc(rem(90) + env(safe-area-inset-bottom));
+  color: v.$color-text;
+  background: v.$color-background;
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(96);
+    padding: 0 rem(56);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: rem(20);
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  &__back.button {
+    position: absolute;
+    left: rem(12);
+    display: grid;
+    place-items: center;
+    width: rem(44);
+    height: rem(44);
+    padding: rem(10);
+    background: transparent;
+
+    &:hover:not(:disabled) { background: transparent; }
+  }
+
+  &__back-icon,
+  &__next-icon {
+    width: rem(22);
+    height: rem(22);
+  }
+
+  &__back-icon { transform: rotate(180deg); }
+
+  &__area-list {
+    display: flex;
+    flex-direction: column;
+    margin: rem(48) rem(20) 0;
+    padding: rem(28) rem(3);
+    overflow: hidden;
+    border: 1px solid v.$color-blue-border;
+    border-radius: v.$radius-card;
+  }
+
+  &__area.button,
+  &__prefecture {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: rem(53);
+    padding: rem(7) rem(17) rem(7) rem(8);
+    border: 0;
+    border-bottom: 1px solid v.$color-purple-border;
+    border-radius: 0;
+    color: v.$color-text;
+    background: transparent;
+    font: inherit;
+    font-size: rem(18);
+    text-align: left;
+    cursor: pointer;
+
+    &:hover { background: rgba(v.$color-blue, 0.2); }
+  }
+
+  &__toggle {
+    width: rem(22);
+    font-size: rem(24);
+    line-height: 1;
+    text-align: center;
+  }
+
+  &__prefectures { padding-left: rem(18); }
+
+  &__count {
+    margin: rem(28) rem(22) rem(16);
+    font-size: rem(18);
+
+    span { color: v.$color-text-secondary; font-size: rem(13); }
+  }
+
+  &__store-list {
+    display: grid;
+    gap: rem(18);
+    margin: 0 rem(20);
+    padding: 0;
+    list-style: none;
+  }
+}

@@ -1,0 +1,191 @@
+@use '../../styles/functions' as *;
+@use '../../styles/variables' as v;
+
+.reservation-form-page {
+  max-width: v.$page-width;
+  min-height: 100svh;
+  margin-inline: auto;
+  padding-bottom: calc(rem(90) + env(safe-area-inset-bottom));
+  background: v.$color-background;
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: rem(94);
+    padding: rem(20) rem(55) rem(6);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: rem(20);
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  &__back.button {
+    position: absolute;
+    left: rem(14);
+    display: grid;
+    place-items: center;
+    width: rem(44);
+    height: rem(44);
+    padding: rem(10);
+    color: v.$color-text;
+    background: transparent;
+
+    &:hover:not(:disabled) { background: transparent; }
+  }
+
+  &__back-icon {
+    width: rem(24);
+    height: rem(24);
+    transform: rotate(180deg);
+  }
+
+  &__section { padding: rem(26) rem(22) 0; }
+
+  &__shop-name {
+    margin: 0 0 rem(18) rem(16);
+    font-size: rem(17);
+    line-height: 1.5;
+  }
+
+  &__form,
+  &__confirmation {
+    display: grid;
+    gap: rem(18);
+    padding: rem(20);
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-card;
+  }
+
+  &__field {
+    display: grid;
+    gap: rem(8);
+    color: v.$color-text-secondary;
+    font-size: rem(14);
+
+    input,
+    select {
+      width: 100%;
+      min-height: rem(48);
+      padding: rem(10) rem(12);
+      border: 1px solid v.$color-border;
+      border-radius: rem(8);
+      color: v.$color-text;
+      background: v.$color-location;
+      font: inherit;
+      color-scheme: dark;
+    }
+
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid v.$color-focus;
+      outline-offset: 2px;
+    }
+  }
+
+  &__select {
+    position: relative;
+    display: block;
+
+    select {
+      appearance: none;
+      padding-right: rem(44);
+    }
+
+    &::after {
+      position: absolute;
+      top: 50%;
+      right: rem(18);
+      width: rem(8);
+      height: rem(8);
+      border-right: 1px solid v.$color-text;
+      border-bottom: 1px solid v.$color-text;
+      content: '';
+      pointer-events: none;
+      transform: translateY(-70%) rotate(45deg);
+    }
+  }
+
+  &__conditions {
+    margin: 0;
+    color: v.$color-text-secondary;
+    font-size: rem(14);
+  }
+
+  &__machines {
+    display: grid;
+    gap: rem(12);
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    legend {
+      margin-bottom: rem(10);
+      color: v.$color-text-secondary;
+      font-size: rem(14);
+    }
+  }
+
+  &__machine-group {
+    display: grid;
+    gap: rem(8);
+
+    h3 {
+      margin: 0;
+      font-size: rem(13);
+      font-weight: 700;
+    }
+  }
+
+  &__machine-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: rem(8);
+  }
+
+  &__machine-option {
+    display: flex;
+    align-items: center;
+    gap: rem(8);
+    min-height: rem(42);
+    padding: rem(8) rem(10);
+    border: 1px solid v.$color-border;
+    border-radius: rem(8);
+    color: v.$color-text;
+    background: v.$color-location;
+    font-size: rem(12);
+    cursor: pointer;
+
+    input {
+      flex: 0 0 auto;
+      width: rem(16);
+      height: rem(16);
+      margin: 0;
+      accent-color: v.$color-purple-border;
+    }
+
+    &:has(input:checked) {
+      border-color: v.$color-purple-border;
+      box-shadow: 0 0 rem(8) rgba(v.$color-purple-border, 0.45);
+    }
+  }
+
+  &__action.button {
+    width: 100%;
+    min-height: rem(52);
+    margin-top: rem(4);
+    font-size: rem(16);
+  }
+
+  &__confirmation {
+    h2,
+    p { margin: 0; }
+
+    p { color: v.$color-text-secondary; line-height: 1.7; }
+  }
+}
