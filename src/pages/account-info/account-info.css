@@ -1,0 +1,91 @@
+.account-info {
+  max-width: 30rem;
+  min-height: 100svh;
+  margin-inline: auto;
+  padding-bottom: calc(5.625rem + env(safe-area-inset-bottom));
+  background: #030a1c;
+}
+.account-infoheader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5.875rem;
+  padding: 1.25rem 3.4375rem 0.375rem;
+}
+.account-infotitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+.account-info__back.button {
+  position: absolute;
+  left: 0.875rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0.625rem;
+  color: #fff;
+  background: transparent;
+}
+.account-info__back.button:hover:not(:disabled) {
+  background: transparent;
+}
+.account-infoback-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  transform: rotate(180deg);
+}
+.account-infocontent {
+  padding-inline: 1.1875rem;
+}
+.account-infoprofile {
+  margin-bottom: 0.5rem;
+}
+.account-infolist {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #075bce;
+  border-radius: 0.875rem;
+  list-style: none;
+}
+.account-infolist-item + .account-infolist-item {
+  border-top: 1px solid #6500c7;
+}
+.account-infoedit-form {
+  display: grid;
+  gap: 0.625rem;
+  padding-top: 0.5rem;
+}
+.account-infoedit-label {
+  color: #c4ccdc;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.account-infoedit-input {
+  width: 100%;
+  min-height: 3.375rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid #075bce;
+  border-radius: 0.875rem;
+  color: #fff;
+  background: #031943;
+  font: inherit;
+  font-size: 1.125rem;
+}
+.account-infoedit-input:focus-visible {
+  outline: 2px solid #6500c7;
+  outline-offset: 2px;
+}
+.account-infoedit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  margin-top: 0.875rem;
+}
+/*# sourceMappingURL=account-info.css.map */

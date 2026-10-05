@@ -24,7 +24,7 @@ function CurrentLocation({
 
   useEffect(() => {
     requestLocation()
-  }, [])
+  }, [requestLocation])
 
   function changeRadius(event) {
     const nextRadius = event.target.value

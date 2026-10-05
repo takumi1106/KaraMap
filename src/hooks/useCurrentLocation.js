@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const errorMessages = {
   1: '位置情報が許可されていません。ブラウザのサイト設定で許可してから、もう一度お試しください。',
@@ -12,7 +12,7 @@ export default function useCurrentLocation() {
 
   useEffect(() => () => { requestId.current += 1 }, [])
 
-  function requestLocation() {
+  const requestLocation = useCallback(() => {
     const id = ++requestId.current
     if (!window.isSecureContext || !navigator.geolocation) {
       setState({ status: 'error', location: null, error: !window.isSecureContext
@@ -44,7 +44,7 @@ export default function useCurrentLocation() {
     } catch (error) {
       fail(error)
     }
-  }
+  }, [])
 
   return { ...state, requestLocation }
 }

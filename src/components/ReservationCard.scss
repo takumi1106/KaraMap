@@ -1,0 +1,52 @@
+@use '../styles/functions' as *;
+@use '../styles/variables' as v;
+
+.settings-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(12);
+    width: 100%;
+    min-height: rem(78);
+    padding: rem(10) rem(16);
+    border: 0;
+    border-bottom: 1px solid v.$color-border;
+    color: v.$color-text;
+    background: transparent;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+
+    &:focus-visible {
+        outline: 2px solid v.$color-focus;
+        outline-offset: -3px;
+    }
+
+    &--last {
+        border-bottom: 0;
+    }
+
+    &copy {
+        display: grid;
+        gap: rem(3);
+        min-width: 0;
+    }
+
+    &label {
+        color: v.$color-text-secondary;
+        font-size: rem(13);
+        line-height: 1.4;
+    }
+
+    &value {
+        overflow-wrap: anywhere;
+        font-size: rem(18);
+        line-height: 1.5;
+    }
+
+    &arrow {
+        flex: 0 0 rem(24);
+        width: rem(24);
+        height: rem(24);
+    }
+}

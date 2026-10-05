@@ -58,7 +58,7 @@ function SearchResults({
 
   useEffect(() => {
     requestLocation()
-  }, [])
+  }, [requestLocation])
 
   return (
     <div className="search-results">

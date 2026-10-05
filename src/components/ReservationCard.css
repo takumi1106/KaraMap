@@ -1,0 +1,44 @@
+.settings-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 4.875rem;
+  padding: 0.625rem 1rem;
+  border: 0;
+  border-bottom: 1px solid #075bce;
+  color: #fff;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+}
+.settings-list-item:focus-visible {
+  outline: 2px solid #6500c7;
+  outline-offset: -3px;
+}
+.settings-list-item--last {
+  border-bottom: 0;
+}
+.settings-list-itemcopy {
+  display: grid;
+  gap: 0.1875rem;
+  min-width: 0;
+}
+.settings-list-itemlabel {
+  color: #c4ccdc;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+.settings-list-itemvalue {
+  overflow-wrap: anywhere;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+.settings-list-itemarrow {
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+/*# sourceMappingURL=ReservationCard.css.map */
