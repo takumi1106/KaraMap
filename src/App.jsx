@@ -8,8 +8,10 @@ import ShopDetail from './pages/shop-detail/shop-detail.jsx'
 import MyPage from './pages/mypage/mypage.jsx'
 import CurrentLocation from './pages/current-location/current-location.jsx'
 import AccountInfo from './pages/account-info/account-info.jsx'
+import ReservationHistory from './pages/reservation-history/reservation-history.jsx'
 
 const pages = {
+  '/reservation-history': { component: ReservationHistory, activeItem: 'mypage' },
   '/account-info': { component: AccountInfo, activeItem: 'mypage' },
   '/current-location': { component: CurrentLocation, activeItem: 'map' },
   '/mypage': { component: MyPage, activeItem: 'mypage' },
