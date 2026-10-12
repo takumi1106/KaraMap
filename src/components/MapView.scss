@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   height: 100%;
+  background: #020817;
 
   &--expanded {
       position: fixed;
@@ -14,6 +15,15 @@
   &__map {
     width: 100%;
     height: 100%;
+    background: #020817;
+
+    .leaflet-container {
+      background: #020817;
+    }
+
+    .leaflet-tile-pane {
+      filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.4) saturate(0.4);
+    }
   }
 
   &__shop-marker {
@@ -31,6 +41,17 @@
     span {
       line-height: 1;
     }
+  }
+
+  &--light &__shop-marker {
+    border-color: #3b82f6;
+    box-shadow: 0 0 8px rgb(59 130 246 / 50%), 0 0 18px rgb(236 72 153 / 25%);
+  }
+
+  &--dark &__shop-marker {
+    border-color: #8b5cf6;
+    background: rgb(15 23 42 / 95%);
+    box-shadow: 0 0 8px rgb(139 92 246 / 45%), 0 0 18px rgb(45 212 191 / 25%);
   }
 
   &__expand {

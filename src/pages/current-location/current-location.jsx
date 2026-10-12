@@ -79,6 +79,7 @@ function CurrentLocation({
           <MapView
             location={location}
             shops={shops}
+            tileStyle="dark"
           />
         )}
       </section>

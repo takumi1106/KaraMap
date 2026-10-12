@@ -117,7 +117,7 @@ function SearchResults({
           <p className="search-results__location-message">店舗一覧は仮データです。現在地による絞り込みは未連携です。</p>
         </section>}
         {!isRecommended && <section className="search-results__map" aria-label="周辺地図">
-          {mapContent ?? <MapView location={location} shops={shops} />}
+          {mapContent ?? <MapView location={location} shops={shops} tileStyle="dark" />}
         </section>}
         <section className="search-results__list-section" aria-label="検索結果の店舗一覧">
           <p className="search-results__count" role="status">全{isRecommended ? displayedShops.length : shops.length}件</p>

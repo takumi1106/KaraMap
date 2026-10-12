@@ -68,7 +68,7 @@ const karaokeIcon = L.divIcon({
   iconAnchor: [18, 18],
 })
 
-function MapView({ location, shops = [] }) {
+function MapView({ location, shops = [], tileStyle = 'dark' }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   const defaultPosition = [35.1709, 136.8815]
@@ -78,15 +78,23 @@ function MapView({ location, shops = [] }) {
     : defaultPosition
 
   return (
-    <div className={`map-view${isExpanded ? ' map-view--expanded' : ''}`}>
+    <div className={`map-view map-view--${tileStyle}${isExpanded ? ' map-view--expanded' : ''}`}>
       <MapContainer
         center={center}
         zoom={15}
         className="map-view__map"
       >
         <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution={
+            tileStyle === 'light'
+              ? '&copy; OpenStreetMap contributors'
+              : '&copy; OpenStreetMap contributors'
+          }
+          url={
+            tileStyle === 'light'
+              ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          }
         />
 
         <ChangeMapCenter location={location} />
