@@ -85,8 +85,11 @@ export function searchRooms({
       if (kind === 'verified' && (!hasId(room.provenance.sourceUrl) || !hasId(room.provenance.checkedAt))) continue
       const statuses = list(availability).filter((item) => item?.storeId === store.id && item.roomId === room.id)
       // テスト空室しか受け付けない。競合する複数レコードは不明として扱う。
-      const status = includeTestAvailability && statuses.length === 1 && statuses[0].source === 'test'
-        ? statuses[0] : null
+      const candidate = statuses.length === 0 ? room.availability
+        : statuses.length === 1 ? statuses[0] : null
+      const status = includeTestAvailability && candidate?.source === 'test' &&
+        ['vacant', 'occupied', 'unknown'].includes(candidate.status)
+        ? { ...candidate } : null
       if (matches(room, selected, status)) {
         matchedRooms.push({ room, availability: status, isTestData: kind === 'test' || status?.source === 'test' })
       }
