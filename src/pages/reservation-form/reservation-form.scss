@@ -179,7 +179,11 @@
     width: 100%;
     min-height: rem(52);
     margin-top: rem(4);
+    border-color: v.$color-blue-border;
+    background-color: v.$color-location;
     font-size: rem(16);
+
+    &:hover:not(:disabled) { background-color: v.$color-location; }
   }
 
   &__confirmation {
