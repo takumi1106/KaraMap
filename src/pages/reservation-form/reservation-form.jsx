@@ -1,38 +1,41 @@
 import { useState } from 'react'
 import { assetUrl } from '../../utils/paths.js'
 import Button from '../../components/Button.jsx'
+import { filterGroups } from '../search-filter/searchFilterData.js'
 import './reservation-form.scss'
 
-const machineOptions = [
-  { group: 'DAM', label: 'DAM', value: 'DAM' },
-  { group: 'DAM', label: 'DAM Ai', value: 'DAM Ai' },
-  { group: 'JOYSOUND', label: 'JOYSOUND', value: 'JOYSOUND' },
-  { group: 'JOYSOUND', label: 'JOYSOUND MAX GO', value: 'JOYSOUND MAX GO' },
-]
+const machineOptions = filterGroups.find((group) => group.id === 'machine').options
+const featureOptions = filterGroups.find((group) => group.id === 'features').options
 
 function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditions = '禁煙・DAM', onBack }) {
+  const conditionItems = conditions.split(/[・,、]/).map((item) => item.trim())
   const [date, setDate] = useState('')
   const [time, setTime] = useState('10:00〜13:00')
   const [partySize, setPartySize] = useState('2')
-  const [selectedMachines, setSelectedMachines] = useState(() => {
-    const conditionItems = conditions.split(/[・,、]/).map((item) => item.trim())
-    return machineOptions
-      .filter((option) => conditionItems.includes(option.group) && option.label === option.group)
-      .map((option) => option.value)
+  const [selectedMachine, setSelectedMachine] = useState(() => {
+    return conditionItems.some((item) => item.toUpperCase().startsWith('JOYSOUND')) ? 'joysound' : 'dam'
+  })
+  const [selectedFeatures, setSelectedFeatures] = useState(() => {
+    const selected = featureOptions.filter((option) => conditionItems.includes(option.label)).map((option) => option.value)
+    return selected.length > 0 ? selected : ['aiScoring']
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const otherConditions = conditions
     .split(/[・,、]/)
     .map((item) => item.trim())
-    .filter((item) => item && item !== 'DAM' && item !== 'JOYSOUND')
+    .filter((item) => item && !item.toUpperCase().startsWith('DAM') && !item.toUpperCase().startsWith('JOYSOUND') && !featureOptions.some((option) => option.label === item))
 
-  function toggleMachine(machine) {
-    setSelectedMachines((current) => current.includes(machine)
-      ? current.filter((item) => item !== machine)
-      : [...current, machine])
+  const conditionSummary = [
+    ...otherConditions,
+    machineOptions.find((option) => option.value === selectedMachine)?.label,
+    ...featureOptions.filter((option) => selectedFeatures.includes(option.value)).map((option) => option.label),
+  ].join('・') || '指定なし'
+
+  function toggleFeature(value) {
+    setSelectedFeatures((current) => current.includes(value)
+      ? current.filter((feature) => feature !== value)
+      : [...current, value])
   }
-
-  const conditionSummary = [...otherConditions, ...selectedMachines].join('・') || '指定なし'
 
   function handleBack() {
     if (isSubmitted) {
@@ -92,25 +95,44 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
                   </select>
                 </span>
               </label>
-              <fieldset className="reservation-form-page__machines">
-                <legend>希望するカラオケ機種</legend>
-                {['DAM', 'JOYSOUND'].map((group) => (
-                  <div className="reservation-form-page__machine-group" key={group}>
-                    <h3>{group}</h3>
-                    <div className="reservation-form-page__machine-options">
-                      {machineOptions.filter((option) => option.group === group).map((option) => (
-                        <label className="reservation-form-page__machine-option" key={option.value}>
-                          <input
-                            type="checkbox"
-                            checked={selectedMachines.includes(option.value)}
-                            onChange={() => toggleMachine(option.value)}
-                          />
-                          <span>{option.label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+              <fieldset className="reservation-form-page__choice-group">
+                <legend>機種</legend>
+                <div className="reservation-form-page__choice-options">
+                  {machineOptions.map((option) => (
+                    <label
+                      className={`reservation-form-page__choice${selectedMachine === option.value ? ' reservation-form-page__choice--selected' : ''}`}
+                      key={option.value}
+                    >
+                      <input
+                        type="radio"
+                        name="machine"
+                        value={option.value}
+                        checked={selectedMachine === option.value}
+                        onChange={() => setSelectedMachine(option.value)}
+                      />
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <fieldset className="reservation-form-page__choice-group">
+                <legend>採点・録音</legend>
+                <div className="reservation-form-page__choice-options">
+                  {featureOptions.map((option) => (
+                    <label
+                      className={`reservation-form-page__choice${selectedFeatures.includes(option.value) ? ' reservation-form-page__choice--selected' : ''}`}
+                      key={option.value}
+                    >
+                      <input
+                        type="checkbox"
+                        value={option.value}
+                        checked={selectedFeatures.includes(option.value)}
+                        onChange={() => toggleFeature(option.value)}
+                      />
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
               </fieldset>
               <p className="reservation-form-page__conditions">条件：{conditionSummary}</p>
               <Button className="reservation-form-page__action" type="submit">この内容で予約する</Button>

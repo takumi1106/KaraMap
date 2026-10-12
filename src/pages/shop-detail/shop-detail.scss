@@ -136,18 +136,18 @@ $color-vacancy: #00c5bc;
   }
 
   &__reserve {
-    --color-button-primary: #{v.$color-purple};
-    --color-button-primary-hover: #{v.$color-purple};
-
     width: 100%;
     min-height: rem(64);
     margin-top: rem(52);
     padding: rem(15);
-    border: 1px solid v.$color-purple-border;
+    border: 1px solid v.$color-blue-border;
     border-radius: v.$radius-panel;
+    background-color: v.$color-location;
     box-shadow: 0 0 rem(7) rgba(v.$color-glow, 0.65);
     font-size: rem(20);
     font-weight: 700;
+
+    &:hover:not(:disabled) { background-color: v.$color-location; }
 
     &[aria-disabled='true'] {
       cursor: default;

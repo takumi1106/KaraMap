@@ -1,3 +1,5 @@
+import { assessKaraokeQuality } from './assessKaraokeQuality.js'
+
 const osmTypes = new Set(['node', 'way', 'relation'])
 
 function text(value) {
@@ -42,12 +44,13 @@ export function normalizeKaraokeShops(elements) {
     if (!element || !osmTypes.has(element.type) ||
       !Number.isSafeInteger(element.id) || element.id <= 0) continue
 
-    const tags = element.tags && typeof element.tags === 'object' ? element.tags : {}
+    const tags = Object.fromEntries(Object.entries(
+      element.tags && typeof element.tags === 'object' && !Array.isArray(element.tags) ? element.tags : {},
+    ).filter(([, value]) => typeof value === 'string'))
     const position = element.type === 'node' ? element : element.center
     const id = `${element.type}/${element.id}`
-    if (shops.has(id)) continue
 
-    shops.set(id, {
+    const shop = {
       id,
       osmType: element.type,
       osmId: element.id,
@@ -55,8 +58,21 @@ export function normalizeKaraokeShops(elements) {
       latitude: coordinate(position?.lat, 90),
       longitude: coordinate(position?.lon, 180),
       address: getAddress(tags),
-    })
+      osmTags: tags,
+    }
+    const record = {
+      tags: { ...tags },
+      name: shop.name,
+      latitude: shop.latitude,
+      longitude: shop.longitude,
+      address: shop.address,
+    }
+    if (shops.has(id)) {
+      shops.get(id).sourceRecords.push(record)
+    } else {
+      shops.set(id, { ...shop, sourceRecords: [record] })
+    }
   }
 
-  return [...shops.values()]
+  return [...shops.values()].map((shop) => ({ ...shop, quality: assessKaraokeQuality(shop) }))
 }

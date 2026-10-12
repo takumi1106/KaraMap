@@ -21,7 +21,7 @@
     height: 100%;
     min-height: rem(118);
     object-fit: cover;
-    border-radius: v.$radius-card;
+    border-radius: v.$radius-panel;
   }
 
   &__content {
@@ -197,14 +197,16 @@
     display: block;
     margin-top: rem(12);
     padding: rem(12) rem(16);
-    border: 1px solid v.$color-purple-border;
+    border: 1px solid v.$color-blue-border;
     border-radius: v.$radius-card;
     color: v.$color-text;
-    background: v.$color-purple;
+    background: v.$color-location;
     font-size: rem(14);
     font-weight: 700;
     text-align: center;
     text-decoration: none;
+
+    &:hover { background: v.$color-location; }
 
     &:focus-visible {
       outline: 2px solid v.$color-focus;

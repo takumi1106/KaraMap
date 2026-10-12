@@ -108,3 +108,9 @@ npm run build
 - `src/pages/shop-detail/shop-detail.jsx`: storeIdで特定した店舗の部屋データを表示する。履歴やURLへの条件保持方法はフロント担当と合意する。
 - 調査済みデータの保存先、更新・重複確認、テスト空室の明示を整える。OSM IDと独自店舗IDの対応はDB移行後も維持する。
 - App.jsx、共通カード、MapView等の具体的な変更は、フロント側の最新props設計と統合方式が確定してから担当者と調整する。
+
+## 部屋内のテスト空室（追加仕様）
+
+各roomに`availability: { status: 'vacant'|'occupied'|'unknown', source: 'test', observedAt: null }`を登録できます。
+既存availability配列に対応するstoreId/roomIdがなければ、この部屋内の情報を使用します。外部レコードがある場合はそちらを優先し、重複や不正値なら不明として扱います。
+includeTestAvailability=trueでのみ使用し、vacantOnly=trueは同じ部屋の条件とvacantの両方が必要です。OFF時は空室では絞り込みません。
