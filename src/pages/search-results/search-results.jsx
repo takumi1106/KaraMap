@@ -125,7 +125,9 @@ function SearchResults({
             <ul className="search-results__list">
               {displayedShops.map((shop) => (
                 <li className="search-results__item" key={shop.id}>
-                  {renderShop(shop)}
+                  <a className="search-results__card-link" href={pageUrl(`/shops/${shop.id}`)}>
+                    {renderShop(shop)}
+                  </a>
                   <a className="search-results__reserve-link" href={reservationHref(shop)}>この店舗を予約する</a>
                 </li>
               ))}
