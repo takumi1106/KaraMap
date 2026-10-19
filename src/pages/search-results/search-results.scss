@@ -117,10 +117,16 @@
   &__machines {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: rem(11);
     margin: 0;
     padding: 0;
     list-style: none;
+
+    > li {
+      display: flex;
+      align-items: center;
+    }
   }
 
   @media (min-width: v.$breakpoint-desktop) {
