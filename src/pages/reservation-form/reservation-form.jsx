@@ -7,11 +7,13 @@ import './reservation-form.scss'
 const machineOptions = filterGroups.find((group) => group.id === 'machine').options
 const featureOptions = filterGroups.find((group) => group.id === 'features').options
 
-function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditions = '禁煙・DAM', onBack }) {
+function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditions = '禁煙・DAM', room, onBack }) {
   const conditionItems = conditions.split(/[・,、]/).map((item) => item.trim())
   const [date, setDate] = useState('')
   const [time, setTime] = useState('10:00〜13:00')
-  const [partySize, setPartySize] = useState('2')
+  const minGuests = room?.capacity?.min ?? 1
+  const maxGuests = room?.capacity?.max ?? 8
+  const [partySize, setPartySize] = useState(() => String(Math.min(maxGuests, Math.max(minGuests, 2))))
   const [selectedMachine, setSelectedMachine] = useState(() => {
     return conditionItems.some((item) => item.toUpperCase().startsWith('JOYSOUND')) ? 'joysound' : 'dam'
   })
@@ -25,7 +27,7 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
     .map((item) => item.trim())
     .filter((item) => item && !item.toUpperCase().startsWith('DAM') && !item.toUpperCase().startsWith('JOYSOUND') && !featureOptions.some((option) => option.label === item))
 
-  const conditionSummary = [
+  const conditionSummary = room ? `${room.machineModel}・${minGuests}〜${maxGuests}名（禁煙・喫煙、採点・録音は未確認）` : [
     ...otherConditions,
     machineOptions.find((option) => option.value === selectedMachine)?.label,
     ...featureOptions.filter((option) => selectedFeatures.includes(option.value)).map((option) => option.label),
@@ -59,13 +61,18 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
       <section className="reservation-form-page__section" aria-live="polite">
         {isSubmitted ? (
           <div className="reservation-form-page__confirmation">
-            <h2>予約を受け付けました</h2>
+            <h2>予約内容の確認（デモ）</h2>
+            <p>{shopName}</p>
+            {room && <p>{room.name}・{room.machineModel}</p>}
+            <p>{date}・{time}・{partySize}名</p>
             <p>これは画面確認用のデモです。店舗への予約送信は行われていません。</p>
-            <Button className="reservation-form-page__action" onClick={handleBack}>検索結果に戻る</Button>
+            <Button className="reservation-form-page__action" onClick={onBack}>検索結果に戻る</Button>
           </div>
         ) : (
           <>
             <h2 className="reservation-form-page__shop-name">{shopName}</h2>
+            {room && <p className="reservation-form-page__conditions">指定部屋：{room.name}（{minGuests}〜{maxGuests}名）</p>}
+            <p>この画面はデモです。店舗への予約送信・空室の確保は行いません。</p>
             <form className="reservation-form-page__form" onSubmit={(event) => {
               event.preventDefault()
               setIsSubmitted(true)
@@ -89,13 +96,13 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
                 <span>人数</span>
                 <span className="reservation-form-page__select">
                   <select value={partySize} onChange={(event) => setPartySize(event.target.value)}>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((count) => (
+                    {Array.from({ length: maxGuests - minGuests + 1 }, (_, index) => minGuests + index).map((count) => (
                       <option key={count} value={count}>{count}名</option>
                     ))}
                   </select>
                 </span>
               </label>
-              <fieldset className="reservation-form-page__choice-group">
+              {!room && <fieldset className="reservation-form-page__choice-group">
                 <legend>機種</legend>
                 <div className="reservation-form-page__choice-options">
                   {machineOptions.map((option) => (
@@ -114,8 +121,8 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
                     </label>
                   ))}
                 </div>
-              </fieldset>
-              <fieldset className="reservation-form-page__choice-group">
+              </fieldset>}
+              {!room && <fieldset className="reservation-form-page__choice-group">
                 <legend>採点・録音</legend>
                 <div className="reservation-form-page__choice-options">
                   {featureOptions.map((option) => (
@@ -133,9 +140,9 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
                     </label>
                   ))}
                 </div>
-              </fieldset>
+              </fieldset>}
               <p className="reservation-form-page__conditions">条件：{conditionSummary}</p>
-              <Button className="reservation-form-page__action" type="submit">この内容で予約する</Button>
+              <Button className="reservation-form-page__action" type="submit">予約内容を確認する（デモ）</Button>
             </form>
           </>
         )}

@@ -8,6 +8,7 @@ import Tag from '../../components/Tag.jsx'
 import ReservationForm from '../reservation-form/reservation-form.jsx'
 import { sampleResults } from './searchResultsData.js'
 import { readRoomSearch, searchRoomPageShops } from '../../services/room-search/roomSearchPage.js'
+import { roomCatalog } from '../../services/room-search/roomCatalog.js'
 import './search-results.scss'
 
 function returnToSource() {
@@ -16,7 +17,7 @@ function returnToSource() {
 }
 
 // 共通カードが完成するまでの画面専用表示。店舗データを1つのpropで受け取る。
-function renderDefaultShop(shop) {
+function renderDefaultShop(shop, { roomHref, onShopClick } = {}) {
   const availability = shop.availableRooms == null
     ? '空室状況未確認'
     : shop.availableRooms > 0
@@ -27,7 +28,9 @@ function renderDefaultShop(shop) {
     <article className={`result-item${shop.image ? ' result-item--with-image' : ''}`}>
       {shop.image && <img className="result-item__image" src={assetUrl(shop.image)} alt={`${shop.name}の店内イメージ`} width="92" height="118" loading="lazy" />}
       <div className="result-item__content">
-        <h2 className="result-item__name">{shop.name}</h2>
+        <h2 className="result-item__name">{roomHref
+          ? <a className="search-results__card-link" href="#search-results-map" onClick={onShopClick}>{shop.name}</a>
+          : shop.name}</h2>
         <div className="result-item__details">
           <span>{shop.isRealShop ? `直線距離 約${Math.round(shop.distanceMeters)}m` : `徒歩${shop.walkingMinutes}分 (${shop.distanceMeters}m)`}</span>
           <span className="result-item__business">
@@ -36,12 +39,27 @@ function renderDefaultShop(shop) {
           </span>
         </div>
         {shop.matchedRooms && <ul className="result-item__rooms" aria-label="条件に一致した部屋">
-          {shop.matchedRooms.map(({ room }) => <li className="result-item__room" key={room.id}>
-            <span className="result-item__room-name">{room.name}</span>
-            <span>{room.machineModel}・{room.capacity.min}〜{room.capacity.max}名</span>
+          {shop.matchedRooms.map(({ room, availability: roomAvailability }) => <li className="result-item__room" key={room.id}>
+            <a className="result-item__room-link" href={roomHref?.(room)} aria-label={`${room.name}を指定して予約画面へ進む`}>
+              <span className="result-item__room-name">{room.name}</span>
+              <span>{room.machineModel}・{room.capacity.min}〜{room.capacity.max}名</span>
+              <div className="result-item__tags">
+                <Tag className="result-item__tag" variant={roomAvailability?.status === 'vacant' ? 'vacant' : 'secondary'}>
+                  {roomAvailability?.source === 'test' ? 'テスト空室：' : ''}
+                  {roomAvailability?.status === 'vacant' ? '空室あり' : roomAvailability?.status === 'occupied' ? '使用中' : '空室状況未確認'}
+                </Tag>
+                <ul className="result-item__machines" aria-label="この部屋の対応機種">
+                  {(room.machines ?? []).map((machine) => <li key={machine}>
+                    <Tag className="result-item__tag" variant={machine === 'dam' ? 'dam' : machine === 'joysound' ? 'joysound' : 'secondary'}>
+                      {machine === 'dam' ? 'DAM' : machine === 'joysound' ? 'JOYSOUND' : machine}
+                    </Tag>
+                  </li>)}
+                </ul>
+              </div>
+            </a>
           </li>)}
         </ul>}
-        <div className="result-item__tags">
+        {!shop.matchedRooms?.length && <div className="result-item__tags">
           <Tag className="result-item__tag" variant={shop.availableRooms > 0 ? 'vacant' : 'secondary'}>{availability}</Tag>
           <ul className="result-item__machines" aria-label="対応機種">
             {shop.machines.map((machine) => (
@@ -50,7 +68,7 @@ function renderDefaultShop(shop) {
               </li>
             ))}
           </ul>
-        </div>
+        </div>}
       </div>
     </article>
   )
@@ -90,18 +108,33 @@ function SearchResults({
 
   if (isReservationPage) {
     const from = pageLocation.searchParams.get('from')
-    const returnPath = from === 'search-filter' ? '/search?from=search-filter' : from === 'shop-detail' ? '/shop-detail' : '/search'
+    const returnParams = new URLSearchParams(pageLocation.searchParams)
+    for (const key of ['reserve', 'shopName', 'room']) returnParams.delete(key)
+    const returnPath = from === 'shop-detail' ? '/shop-detail' : `/search?${returnParams}`
+    const roomId = pageLocation.searchParams.get('room')
+    const store = roomCatalog.find((item) => item.osmIds.includes(reservationId))
+    const room = store?.rooms.find((item) => item.id === roomId)
+    if (roomId && !room) return <main className="search-results__list-section">
+      <p role="alert">指定された部屋が見つかりません。検索結果から選び直してください。</p>
+      <Button onClick={() => window.location.assign(pageUrl(returnPath))}>検索結果に戻る</Button>
+    </main>
     return (
       <ReservationForm
-        shopName={pageLocation.searchParams.get('shopName') || reservationShop?.name}
+        key={`${reservationId}:${roomId ?? ''}`}
+        room={room}
+        shopName={store?.name || pageLocation.searchParams.get('shopName') || reservationShop?.name}
         conditions={reservationShop?.machines?.join('・') || '設備情報未確認'}
         onBack={() => window.location.assign(pageUrl(returnPath))}
       />
     )
   }
 
-  function reservationHref(shop) {
-    const params = new URLSearchParams({ reserve: shop.id, shopName: shop.name })
+  function reservationHref(shop, room) {
+    const params = new URLSearchParams(pageLocation.searchParams)
+    params.set('reserve', shop.id)
+    params.set('shopName', shop.name)
+    if (room) params.set('room', room.id)
+    else params.delete('room')
     if (pageLocation.searchParams.get('from') === 'search-filter') params.set('from', 'search-filter')
     return pageUrl(`/search?${params.toString()}`)
   }
@@ -144,14 +177,21 @@ function SearchResults({
             <ul className="search-results__list">
               {displayedShops.map((shop) => (
                 <li className="search-results__item" key={shop.id}>
-                  <a className="search-results__card-link" href={shop.isRealShop ? '#search-results-map' : pageUrl(`/shops/${shop.id}`)} onClick={shop.isRealShop ? (event) => {
+                  {shop.matchedRooms?.length ? renderShop(shop, {
+                    roomHref: (room) => reservationHref(shop, room),
+                    onShopClick: (event) => {
+                      event.preventDefault()
+                      setSelectedShopId(shop.id)
+                      document.getElementById('search-results-map')?.scrollIntoView({ block: 'center' })
+                    },
+                  }) : <a className="search-results__card-link" href={shop.isRealShop ? '#search-results-map' : pageUrl(`/shops/${shop.id}`)} onClick={shop.isRealShop ? (event) => {
                     event.preventDefault()
                     setSelectedShopId(shop.id)
                     document.getElementById('search-results-map')?.scrollIntoView({ block: 'center' })
                   } : undefined}>
                     {renderShop(shop)}
-                  </a>
-                  <a className="search-results__reserve-link" href={reservationHref(shop)}>この店舗を予約する</a>
+                  </a>}
+                  {!shop.matchedRooms?.length && <a className="search-results__reserve-link" href={reservationHref(shop)}>この店舗を予約する</a>}
                 </li>
               ))}
             </ul>
