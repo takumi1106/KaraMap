@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchNearbyKaraokeShops } from '../services/overpass/fetchNearbyKaraokeShops.js'
-import { prepareMapShops } from '../services/map-shops/prepareMapShops.js'
+import { loadSavedShops } from '../services/saved-shops/savedShops.js'
 
 const empty = []
 export default function useNearbyShops(location, radiusMeters = 5000, enabled = true) {
@@ -16,10 +15,13 @@ export default function useNearbyShops(location, radiusMeters = 5000, enabled = 
     // 範囲を素早く切り替えたときは、最後の指定のみ送信する。
     const timer = setTimeout(async () => {
       try {
-        const shops = await fetchNearbyKaraokeShops({ latitude, longitude, radiusMeters, signal: controller.signal })
-        if (!controller.signal.aborted) setState({ key, status: 'success', ...prepareMapShops({ latitude, longitude }, shops) })
-      } catch {
-        if (!controller.signal.aborted) setState({ key, status: 'error', results: empty, reviewShops: empty })
+        const result = await loadSavedShops({
+          location: { latitude, longitude }, radiusMeters, signal: controller.signal,
+          url: `${import.meta.env.BASE_URL}data/karaoke-shops.json`,
+        })
+        if (!controller.signal.aborted) setState({ key, status: 'success', ...result })
+      } catch (error) {
+        if (!controller.signal.aborted) setState({ key, status: 'error', results: empty, reviewShops: empty, message: error.message || '保存済み店舗データを読み込めませんでした。' })
       }
     }, 300)
     return () => { clearTimeout(timer); controller.abort() }

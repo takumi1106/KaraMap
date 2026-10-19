@@ -4,7 +4,7 @@
 
 ## ファイル
 
-- `roomCatalog.js`: 調査済みデータの登録先と構造の説明。現状は空配列。
+- `roomCatalog.js`: 調査済みデータの登録先と構造の説明。verifiedRoomDataを既定で使用。
 - `searchRooms.js`: OSM店舗との紐付け、条件判定、店舗単位の結果作成。
 - `sampleRoomData.js`: 開発用の架空部屋と空室データ。店舗紐付け先のみ、取得確認済みの実在OSM ID。
 - `roomSearch.test.js`: 条件・欠損・紐付け等のテスト。
@@ -60,7 +60,7 @@ const results = searchRooms({
 })
 ```
 
-catalog省略時はroomCatalog.jsの登録のみ使用します。テスト部屋・空室の利用はそれぞれ明示的なフラグが必要です。実登録がまだ空のため、既定の検索結果は0件です。
+catalog省略時はroomCatalog.jsの登録のみ使用します。テスト部屋・空室の利用はそれぞれ明示的なフラグが必要です。現在の実登録はジャンカラ名駅東口店の2室です。未確認条件を指定すると0件になる場合があります。
 
 ## 条件判定
 
@@ -114,3 +114,45 @@ npm run build
 各roomに`availability: { status: 'vacant'|'occupied'|'unknown', source: 'test', observedAt: null }`を登録できます。
 既存availability配列に対応するstoreId/roomIdがなければ、この部屋内の情報を使用します。外部レコードがある場合はそちらを優先し、重複や不正値なら不明として扱います。
 includeTestAvailability=trueでのみ使用し、vacantOnly=trueは同じ部屋の条件とvacantの両方が必要です。OFF時は空室では絞り込みません。
+
+
+## 初回の実データ登録（2026-10-19確認）
+
+- 対象: ジャンカラ 名駅東口店。公式住所・部屋別情報の出典: https://jankara.ne.jp/shop/188/
+- 登録先: `verifiedRoomData.js`。`sampleRoomData.js`とは別管理。
+- 出典URL・確認日・確認項目を店舗と各部屋のprovenanceに記録。
+- 701号室: レセプション、LIVE DAM WAO!、公式掲載人数1〜5名。
+- 702号室: ホームシアター、JOYSOUND X1、公式掲載人数1〜8名。
+- 店舗の全室を登録したわけではありません。検索の0件は「登録済み情報では一致しない」を意味します。
+- 公式の部屋分類は`officialRoomType`に保持。normal/party/kidsへの対応は未確認なので`roomType: null`。
+- 禁煙/喫煙・AI採点・録音は未確認（null）。店舗の喫煙スペースや機種の一般的仕様から個室の条件を推測していません。
+- 実空室は不明。登録データに架空の空室は付与していません。テスト中だけ別配列で仮空室を渡し、`includeTestAvailability: true`で明示許可します。
+
+### OSM照合記録
+
+`node/13943005393`（保存名ジャンカラ、35.1694276 / 136.885938）を使用。
+公式店舗ページの地図中心（35.16950159 / 136.8858977）、店舗住所・名称を手動照合しました。位置の差は約9mです。
+保存OSMのbrandはカラオケバンバンで公式情報と相違します。これは`osmLinkEvidence.discrepancy`に記録し、正式名はカタログに保持しています。OSM原本・qualityは変更していません。
+将来データ更新で移転・閉店・OSM ID変更があれば再確認してください。
+
+### 保存済みデータでの検索例
+
+```js
+import { searchSavedShops } from '../saved-shops/savedShops.js'
+import { searchRooms } from './searchRooms.js'
+
+// savedDataはpublic/data/karaoke-shops.jsonを読み込んだJSON。
+const { results: shops } = searchSavedShops(savedData, {
+  latitude: 35.1709, longitude: 136.8815,
+}, 5000)
+const results = searchRooms({
+  shops,
+  filters: { machine: 'dam', capacity: '1-2' },
+})
+// 1店舗、matchedRoomsは701号室だけ。テストデータ許可は不要。
+```
+
+`searchRooms`と`searchNearbyShops`はcatalog省略時に実登録を使用します。
+前者のshop・後者の店舗名は元のOSM表記を保持します。正式名・住所はroomCatalogをstoreIdで参照してください。
+nearby-searchの取得経路は既存どおりOverpassです。保存済み検索は上記の合成で利用できます。
+今回フロントには未接続です。画面側の条件を渡し、公式名・matchedRooms・未確認表示を使う接続は別作業です。

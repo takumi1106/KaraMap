@@ -1,11 +1,12 @@
-import { assetUrl, pageUrl } from '../../utils/paths.js'
+import { assetUrl, pageUrl, getPageLocation } from '../../utils/paths.js'
 import { useState } from 'react'
 import Button from '../../components/Button.jsx'
-import { filterGroups, previewFilters } from './searchFilterData.js'
+import { filterGroups } from './searchFilterData.js'
+import { readRoomSearch, roomSearchParams } from '../../services/room-search/roomSearchPage.js'
 import './search-filter.scss'
 
-function returnToSearch() {
-  window.location.assign(pageUrl('/search?from=search-filter'))
+function returnToSearch(conditions) {
+  window.location.assign(pageUrl(`/search?${roomSearchParams(conditions)}`))
 }
 
 function returnHome() {
@@ -22,8 +23,9 @@ function SearchFilter({
   onBack = returnHome,
   bottomNavigation = null,
 }) {
-  const [localValues, setLocalValues] = useState(previewFilters)
-  const [localRealtime, setLocalRealtime] = useState(true)
+  const [initialConditions] = useState(() => readRoomSearch(getPageLocation().searchParams))
+  const [localValues, setLocalValues] = useState(initialConditions.values)
+  const [localRealtime, setLocalRealtime] = useState(initialConditions.realtimeAvailable)
   const selectedValues = values ?? localValues
   const isRealtimeAvailable = realtimeAvailable ?? localRealtime
 
@@ -35,7 +37,7 @@ function SearchFilter({
           ? selected.includes(value)
             ? selected.filter((item) => item !== value)
             : [...selected, value]
-          : [value]
+          : selected.includes(value) ? [] : [value]
 
         return { ...previous, [group.id]: next }
       })
@@ -56,7 +58,7 @@ function SearchFilter({
         {position === 'top' && <span className="search-filter__check" aria-hidden="true" />}
         <div className="search-filter__availability-copy">
           <span className="search-filter__availability-title">リアルタイム空室</span>
-          <span className="search-filter__availability-description">今空いている部屋のみ表示</span>
+          <span className="search-filter__availability-description">空室情報は未接続のため、ONでは該当なしになります</span>
         </div>
         <Button
           className={`search-filter__switch${isRealtimeAvailable ? ' search-filter__switch--on' : ''}`}
@@ -85,6 +87,9 @@ function SearchFilter({
         </header>
         <div className="search-filter__content">
           {renderAvailability('top')}
+          <p>未選択の項目は指定なしです。選択中のボタンを再度押すと解除できます。</p>
+          <p>現在はジャンカラ名駅東口店の2室を登録しています。確認例：DAM＋1〜2名（空室OFF・その他未指定）。</p>
+          {initialConditions.error && <p role="alert">{initialConditions.error}</p>}
           <div className="search-filter__groups">
             {filterGroups.map((group) => (
               <fieldset className="search-filter__group" key={group.id}>

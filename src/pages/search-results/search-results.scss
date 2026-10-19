@@ -7,13 +7,17 @@
   --color-tag-joysound: #{v.$color-blue};
 
   display: grid;
-  grid-template-columns: rem(92) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: rem(17);
   min-height: rem(138);
   padding: rem(9) rem(7);
   border: 1px solid v.$color-blue-border;
   border-radius: v.$radius-card;
   background: v.$color-background;
+
+  &--with-image {
+    grid-template-columns: rem(92) minmax(0, 1fr);
+  }
 
   &__image {
     display: block;
@@ -58,6 +62,30 @@
     flex-shrink: 0;
   }
 
+  &__rooms {
+    display: grid;
+    gap: rem(8);
+    margin: rem(12) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: rem(13);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  &__room {
+    display: grid;
+    gap: rem(4);
+    padding-block: rem(8);
+    border-top: 1px solid v.$color-blue-border;
+    color: v.$color-text-secondary;
+  }
+
+  &__room-name {
+    color: v.$color-text;
+    font-weight: 700;
+  }
+
   &__tags {
     display: grid;
     justify-items: start;
@@ -83,7 +111,9 @@
   }
 
   @media (min-width: v.$breakpoint-desktop) {
-    grid-template-columns: rem(108) minmax(0, 1fr);
+    &--with-image {
+      grid-template-columns: rem(108) minmax(0, 1fr);
+    }
 
     &__image {
       min-height: rem(130);

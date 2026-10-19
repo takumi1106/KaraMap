@@ -1,0 +1,624 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-10-19T02:42:44Z",
+    "timestamp_areas_base": "2026-10-18T20:42:15Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 796698691,
+  "lat": 35.1668331,
+  "lon": 136.8865400,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "カラオケ クラブ ダム"
+  }
+},
+{
+  "type": "node",
+  "id": 1912844940,
+  "lat": 35.2173797,
+  "lon": 136.8832017,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "トラック"
+  }
+},
+{
+  "type": "node",
+  "id": 2090850509,
+  "lat": 35.1308883,
+  "lon": 136.9197402,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "シダックス",
+    "brand:en": "Shidax",
+    "brand:ja": "シダックス",
+    "brand:wikidata": "Q7496130",
+    "brand:wikipedia": "ja:シダックス",
+    "fee": "yes",
+    "name": "シダックス",
+    "name:en": "Shidax",
+    "name:ja": "シダックス"
+  }
+},
+{
+  "type": "node",
+  "id": 2108373590,
+  "lat": 35.1628344,
+  "lon": 136.8924559,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケ まねきねこ",
+    "brand:en": "Karaoke Manekineko",
+    "brand:ja": "カラオケ まねきねこ",
+    "brand:wikidata": "Q88326334",
+    "fee": "yes",
+    "name": "まねきねこ",
+    "name:en": "Karaoke Manekineko",
+    "name:ja": "カラオケ まねきねこ",
+    "opening_hours": "24/7"
+  }
+},
+{
+  "type": "node",
+  "id": 2471939716,
+  "lat": 35.1448924,
+  "lon": 136.9031143,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "ジャンカラ"
+  }
+},
+{
+  "type": "node",
+  "id": 2868881299,
+  "lat": 35.1696420,
+  "lon": 136.9058159,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "カラオケJOYJOY"
+  }
+},
+{
+  "type": "node",
+  "id": 3747832569,
+  "lat": 35.1677990,
+  "lon": 136.9364833,
+  "tags": {
+    "amenity": "karaoke_box",
+    "level": "0",
+    "name": "JOYJOY",
+    "source": "survey, 2015-09-16"
+  }
+},
+{
+  "type": "node",
+  "id": 3781722196,
+  "lat": 35.1688096,
+  "lon": 136.8881664,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "Joy Joy"
+  }
+},
+{
+  "type": "node",
+  "id": 4013987558,
+  "lat": 35.1616099,
+  "lon": 136.9217416,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "カラオケ　JOYJOY"
+  }
+},
+{
+  "type": "node",
+  "id": 4433617519,
+  "lat": 35.1679057,
+  "lon": 136.8551393,
+  "tags": {
+    "amenity": "karaoke_box",
+    "branch": "中村公園駅前店",
+    "name": "カラオケBanBan"
+  }
+},
+{
+  "type": "node",
+  "id": 4433633024,
+  "lat": 35.1573663,
+  "lon": 136.8581638,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "JOYJOY",
+    "opening_hours": "24/7"
+  }
+},
+{
+  "type": "node",
+  "id": 4440702374,
+  "lat": 35.1787208,
+  "lon": 136.9847667,
+  "tags": {
+    "amenity": "karaoke_box",
+    "branch": "名古屋名東店",
+    "brand": "カラオケ まねきねこ",
+    "brand:en": "Karaoke Manekineko",
+    "brand:ja": "カラオケ まねきねこ",
+    "brand:wikidata": "Q88326334",
+    "fee": "yes",
+    "name": "カラオケ まねきねこ",
+    "name:en": "Karaoke Manekineko",
+    "name:ja": "カラオケ まねきねこ"
+  }
+},
+{
+  "type": "node",
+  "id": 4447434364,
+  "lat": 35.1681357,
+  "lon": 136.8870610,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "Chikara"
+  }
+},
+{
+  "type": "node",
+  "id": 4447434377,
+  "lat": 35.1681637,
+  "lon": 136.8866532,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "Big Echo"
+  }
+},
+{
+  "type": "node",
+  "id": 5261854417,
+  "lat": 35.1135995,
+  "lon": 136.8557852,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "fee": "yes",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー"
+  }
+},
+{
+  "type": "node",
+  "id": 5790005258,
+  "lat": 35.1919953,
+  "lon": 136.9359973,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "ビックエコー",
+    "name:ko": "로손"
+  }
+},
+{
+  "type": "node",
+  "id": 6237828579,
+  "lat": 35.1692467,
+  "lon": 136.8812292,
+  "tags": {
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "check_date": "2023-04-12",
+    "disused:amenity": "karaoke_box",
+    "fee": "yes",
+    "level": "2",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー",
+    "source": "survey"
+  }
+},
+{
+  "type": "node",
+  "id": 6237846452,
+  "lat": 35.1686981,
+  "lon": 136.8815698,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "fee": "yes",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー",
+    "source": "survey"
+  }
+},
+{
+  "type": "node",
+  "id": 7958517084,
+  "lat": 35.1321354,
+  "lon": 136.9789324,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "カラオケ　JOYLAND 塩釜口駅前店"
+  }
+},
+{
+  "type": "node",
+  "id": 9747678577,
+  "lat": 35.1505412,
+  "lon": 136.8932324,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "JOYJOY"
+  }
+},
+{
+  "type": "node",
+  "id": 10221429118,
+  "lat": 35.1698313,
+  "lon": 136.8858691,
+  "tags": {
+    "amenity": "karaoke_box",
+    "check_date": "2026-06-15",
+    "name": "カラオケBIGECHO"
+  }
+},
+{
+  "type": "node",
+  "id": 10542582504,
+  "lat": 35.1969625,
+  "lon": 136.9035221,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "メロディ"
+  }
+},
+{
+  "type": "node",
+  "id": 10654287548,
+  "lat": 35.1689860,
+  "lon": 136.9112709,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "fee": "yes",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー"
+  }
+},
+{
+  "type": "node",
+  "id": 10929106513,
+  "lat": 35.1418496,
+  "lon": 136.9008034,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ジョイサウンド",
+    "brand:en": "Joysound",
+    "brand:ja": "ジョイサウンド",
+    "brand:wikidata": "Q11226033",
+    "fee": "yes",
+    "name": "ジョイサウンド",
+    "name:en": "Joysound",
+    "name:ja": "ジョイサウンド"
+  }
+},
+{
+  "type": "node",
+  "id": 11306428015,
+  "lat": 35.1693115,
+  "lon": 136.9059163,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "ジャンカラ"
+  }
+},
+{
+  "type": "node",
+  "id": 11306428016,
+  "lat": 35.1701269,
+  "lon": 136.9060471,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケ館",
+    "brand:en": "Karaoke-kan",
+    "brand:ja": "カラオケ館",
+    "brand:wikidata": "Q11294889",
+    "fee": "yes",
+    "name": "カラオケ館",
+    "name:en": "Karaoke-kan",
+    "name:ja": "カラオケ館"
+  }
+},
+{
+  "type": "node",
+  "id": 11306428017,
+  "lat": 35.1701581,
+  "lon": 136.9062448,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "fee": "yes",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー"
+  }
+},
+{
+  "type": "node",
+  "id": 12293613522,
+  "lat": 35.1679115,
+  "lon": 136.9035740,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケ まねきねこ",
+    "brand:en": "Karaoke Manekineko",
+    "brand:ja": "カラオケ まねきねこ",
+    "brand:wikidata": "Q88326334",
+    "check_date": "2024-10-27",
+    "fee": "yes",
+    "name": "カラオケ まねきねこ",
+    "name:en": "Karaoke Manekineko",
+    "name:ja": "カラオケ まねきねこ"
+  }
+},
+{
+  "type": "node",
+  "id": 12801606209,
+  "lat": 35.1846779,
+  "lon": 136.8857751,
+  "tags": {
+    "amenity": "cafe",
+    "name": "カラオケ喫茶　ちんとんしゃん"
+  }
+},
+{
+  "type": "node",
+  "id": 12995237583,
+  "lat": 35.1730350,
+  "lon": 136.8832887,
+  "tags": {
+    "amenity": "karaoke_box",
+    "branch": "名駅二丁目店",
+    "brand": "ジョイサウンド",
+    "brand:en": "Joysound",
+    "brand:ja": "ジョイサウンド",
+    "brand:wikidata": "Q11226033",
+    "check_date": "2025-07-12",
+    "fee": "yes",
+    "name": "ジョイサウンド",
+    "name:en": "Joysound",
+    "name:ja": "ジョイサウンド"
+  }
+},
+{
+  "type": "node",
+  "id": 12995326535,
+  "lat": 35.1727744,
+  "lon": 136.8852984,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "check_date": "2025-07-12",
+    "fee": "yes",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー"
+  }
+},
+{
+  "type": "node",
+  "id": 12995326536,
+  "lat": 35.1725749,
+  "lon": 136.8854535,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケ館",
+    "brand:en": "Karaoke-kan",
+    "brand:ja": "カラオケ館",
+    "brand:wikidata": "Q11294889",
+    "check_date": "2025-07-12",
+    "fee": "yes",
+    "name": "カラオケ館",
+    "name:en": "Karaoke-kan",
+    "name:ja": "カラオケ館"
+  }
+},
+{
+  "type": "node",
+  "id": 13004197614,
+  "lat": 35.1679320,
+  "lon": 136.8955908,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "check_date": "2025-07-16",
+    "fee": "yes",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー"
+  }
+},
+{
+  "type": "node",
+  "id": 13065547115,
+  "lat": 35.1588363,
+  "lon": 136.9055842,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケ まねきねこ",
+    "brand:en": "Karaoke Manekineko",
+    "brand:ja": "カラオケ まねきねこ",
+    "brand:wikidata": "Q88326334",
+    "fee": "yes",
+    "level": "6",
+    "name": "カラオケ まねきねこ",
+    "name:en": "Karaoke Manekineko",
+    "name:ja": "カラオケ まねきねこ"
+  }
+},
+{
+  "type": "node",
+  "id": 13140838768,
+  "lat": 35.2399027,
+  "lon": 136.9085707,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "ビッグエコー",
+    "brand:en": "Big Echo",
+    "brand:ja": "ビッグエコー",
+    "brand:wikidata": "Q15831707",
+    "check_date": "2025-09-13",
+    "fee": "yes",
+    "name": "ビッグエコー",
+    "name:en": "Big Echo",
+    "name:ja": "ビッグエコー"
+  }
+},
+{
+  "type": "node",
+  "id": 13451905511,
+  "lat": 35.1672547,
+  "lon": 136.9044842,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケ館",
+    "brand:en": "Karaoke-kan",
+    "brand:ja": "カラオケ館",
+    "brand:wikidata": "Q11294889",
+    "check_date": "2026-01-13",
+    "fee": "yes",
+    "name": "カラオケ館",
+    "name:en": "Karaoke-kan",
+    "name:ja": "カラオケ館"
+  }
+},
+{
+  "type": "node",
+  "id": 13694553511,
+  "lat": 35.1289840,
+  "lon": 136.9916043,
+  "tags": {
+    "amenity": "karaoke_box",
+    "check_date": "2026-03-30"
+  }
+},
+{
+  "type": "node",
+  "id": 13943005393,
+  "lat": 35.1694276,
+  "lon": 136.8859380,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケバンバン",
+    "brand:en": "Karaoke BanBan",
+    "brand:ja": "カラオケバンバン",
+    "brand:wikidata": "Q88485685",
+    "check_date": "2026-06-15",
+    "fee": "yes",
+    "name": "ジャンカラ",
+    "name:ja": "ジャンカラ"
+  }
+},
+{
+  "type": "node",
+  "id": 13943006790,
+  "lat": 35.1694798,
+  "lon": 136.8860558,
+  "tags": {
+    "amenity": "karaoke_box",
+    "brand": "カラオケ館",
+    "brand:en": "Karaoke-kan",
+    "brand:ja": "カラオケ館",
+    "brand:wikidata": "Q11294889",
+    "check_date": "2026-06-15",
+    "fee": "yes",
+    "name": "まねきねこ",
+    "name:ja": "まねきねこ"
+  }
+},
+{
+  "type": "node",
+  "id": 14228193648,
+  "lat": 35.1679909,
+  "lon": 136.8861456,
+  "tags": {
+    "amenity": "karaoke_box",
+    "name": "Joy Joy"
+  }
+},
+{
+  "type": "way",
+  "id": 620358485,
+  "center": {
+    "lat": 35.1969212,
+    "lon": 136.9112690
+  },
+  "tags": {
+    "amenity": "karaoke_box",
+    "building": "yes",
+    "name": "カラオケミッキー",
+    "source": "GSI/KIBAN 2500;NARO"
+  }
+},
+{
+  "type": "way",
+  "id": 652502972,
+  "center": {
+    "lat": 35.0962306,
+    "lon": 136.9942082
+  },
+  "tags": {
+    "amenity": "karaoke_box",
+    "branch": "鳴海店",
+    "building": "retail",
+    "building:levels": "1",
+    "ele": "31.5",
+    "height": "10.5",
+    "name": "カラオケコート・ダジュール",
+    "source": "MLIT_PLATEAU bldg_bd1de155-96eb-4645-93ce-b4276582eec7"
+  }
+},
+{
+  "type": "way",
+  "id": 1328689455,
+  "center": {
+    "lat": 35.1919476,
+    "lon": 136.9355958
+  },
+  "tags": {
+    "amenity": "karaoke_box",
+    "building": "commercial",
+    "building:levels": "5",
+    "ele": "8.8",
+    "height": "20.4",
+    "name": "ジャンカラ",
+    "source": "MLIT_PLATEAU bldg_35b6f9a2-28ca-4a2d-901b-db2931ea6309;survey"
+  }
+}
+
+  ]
+}

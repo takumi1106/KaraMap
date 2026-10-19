@@ -32,6 +32,8 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
   }, [onShopSelect])
   const [routeMode, setRouteMode] = useState('walking')
   const [routeState, setRouteState] = useState({ status: 'idle' })
+  // 店舗詳細の開閉とは独立して、表示済みの経路を保持する。
+  const [displayedRoute, setDisplayedRoute] = useState(null)
   const routeRequest = useRef(null)
   const routeDestination = shops.find((shop) => shop.id === selectedShop)
   const selectedShopInfo = getMapShopInfo(routeDestination)
@@ -52,6 +54,7 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
         signal: controller.signal, endpoint: import.meta.env.VITE_ROUTING_API_URL || undefined })
       if (controller.signal.aborted) return
       setRouteState({ status: 'success', key: routeKey, result })
+      setDisplayedRoute(result)
       const bounds = result.geometry.coordinates.reduce((b, [lng, lat]) => [Math.min(b[0], lng), Math.min(b[1], lat), Math.max(b[2], lng), Math.max(b[3], lat)], [180, 90, -180, -90])
       mapRef.current?.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
         padding: { top: 110, bottom: 180, left: 40, right: 40 }, maxZoom: 17, duration: 500,
@@ -114,22 +117,33 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
+    let drawn = false
     const draw = () => {
-      if (!map.isStyleLoaded()) return
+      if (drawn || !map.isStyleLoaded()) return
+      drawn = true
       if (map.getLayer('karamap-route')) map.removeLayer('karamap-route')
       if (map.getLayer('karamap-route-outline')) map.removeLayer('karamap-route-outline')
       if (map.getSource('karamap-route')) map.removeSource('karamap-route')
-      if (routeState.key !== routeKey || routeState.status !== 'success') return
-      map.addSource('karamap-route', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: routeState.result.geometry } })
+      if (!displayedRoute) return
+      map.addSource('karamap-route', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: displayedRoute.geometry } })
       map.addLayer({ id: 'karamap-route-outline', type: 'line', source: 'karamap-route',
         layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 8 } })
       map.addLayer({ id: 'karamap-route', type: 'line', source: 'karamap-route',
         layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#3488ff', 'line-width': 5 } })
     }
+    const redraw = () => {
+      drawn = false
+      draw()
+    }
     draw()
-    map.on('style.load', draw)
-    return () => map.off('style.load', draw)
-  }, [routeState, routeKey])
+    // fitBounds後のタイル読込中はstyle.loadが再発火しないため、idleでも再試行する。
+    map.on('idle', draw)
+    map.on('style.load', redraw)
+    return () => {
+      map.off('idle', draw)
+      map.off('style.load', redraw)
+    }
+  }, [displayedRoute])
 
   async function enableDirection() {
     if (!window.isSecureContext || !window.DeviceOrientationEvent) {

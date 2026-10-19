@@ -1,5 +1,5 @@
 /**
- * 調査済みデータの登録先。未調査のため空配列（サンプルを自動投入しない）。
+ * 調査済みデータの登録先。公式確認済み情報のみ（サンプルを自動投入しない）。
  * Store: { id: 独自店舗ID, osmIds: ['node/123'], rooms: Room[] }
  * Room: { id, name, roomType, smoking, machines, features, capacity,
  *   provenance: { kind: 'verified', sourceUrl, checkedAt } }
@@ -8,4 +8,6 @@
  * 空室は別配列 { storeId, roomId, status: 'vacant'|'occupied'|'unknown',
  *   source: 'test', observedAt } で渡す。
  */
-export const roomCatalog = []
+import { verifiedRoomCatalog } from './verifiedRoomData.js'
+
+export const roomCatalog = verifiedRoomCatalog

@@ -133,8 +133,8 @@ function CurrentLocation({
         className="current-location__results"
         aria-label="周辺の店舗"
       >
-        {suppliedShops === undefined && nearby.status === 'loading' && <p role="status">周辺のカラオケ店舗を取得しています…</p>}
-        {suppliedShops === undefined && nearby.status === 'error' && <p role="alert">店舗を取得できませんでした。<Button onClick={nearby.retry}>再試行</Button></p>}
+        {suppliedShops === undefined && nearby.status === 'loading' && <p role="status">{nearby.message ?? '周辺のカラオケ店舗を取得しています…'}</p>}
+        {suppliedShops === undefined && nearby.status === 'error' && <p role="alert">{nearby.message}<Button onClick={nearby.retry}>再試行</Button></p>}
         {shops.length ? (
           <ul className="current-location__list">
             {shops.map((shop) => (

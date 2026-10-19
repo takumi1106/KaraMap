@@ -24,14 +24,17 @@ export async function requestKaraokeShops(query, {
     controller.signal.throwIfAborted()
     const response = await fetchImpl(endpoint, {
       method: 'POST',
-      headers: {
+      // ブラウザのUser-Agentはブラウザ自身に任せる。Nodeでは識別子を付ける。
+      headers: typeof window === 'undefined' ? {
         'User-Agent': 'KaraMAP/0.0.0 (https://github.com/takumi1106/KaraMap)',
-      },
+      } : {},
       body: new URLSearchParams({ data: query }),
       signal: controller.signal,
     })
     if (!response.ok) {
-      throw new Error(`店舗取得に失敗しました（HTTP ${response.status}）。`)
+      const error = new Error(`店舗取得に失敗しました（HTTP ${response.status}）。`)
+      error.status = response.status
+      throw error
     }
     const data = await response.json()
     // HTTP 200 でも remark に実行エラーが入るため、不完全な結果を採用しない。

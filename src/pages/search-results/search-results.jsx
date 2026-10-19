@@ -7,11 +7,12 @@ import Button from '../../components/Button.jsx'
 import Tag from '../../components/Tag.jsx'
 import ReservationForm from '../reservation-form/reservation-form.jsx'
 import { sampleResults } from './searchResultsData.js'
+import { readRoomSearch, searchRoomPageShops } from '../../services/room-search/roomSearchPage.js'
 import './search-results.scss'
 
 function returnToSource() {
-  const from = getPageLocation().searchParams.get('from')
-  window.location.assign(pageUrl(from === 'search-filter' ? '/search-filter' : '/'))
+  const params = getPageLocation().searchParams
+  window.location.assign(pageUrl(params.get('from') === 'search-filter' ? `/search-filter?${params}` : '/'))
 }
 
 // 共通カードが完成するまでの画面専用表示。店舗データを1つのpropで受け取る。
@@ -23,7 +24,7 @@ function renderDefaultShop(shop) {
       : '満室'
 
   return (
-    <article className="result-item">
+    <article className={`result-item${shop.image ? ' result-item--with-image' : ''}`}>
       {shop.image && <img className="result-item__image" src={assetUrl(shop.image)} alt={`${shop.name}の店内イメージ`} width="92" height="118" loading="lazy" />}
       <div className="result-item__content">
         <h2 className="result-item__name">{shop.name}</h2>
@@ -34,6 +35,12 @@ function renderDefaultShop(shop) {
             {shop.isOpen == null ? '営業状況未確認' : shop.isOpen ? '営業中' : '営業時間外'}
           </span>
         </div>
+        {shop.matchedRooms && <ul className="result-item__rooms" aria-label="条件に一致した部屋">
+          {shop.matchedRooms.map(({ room }) => <li className="result-item__room" key={room.id}>
+            <span className="result-item__room-name">{room.name}</span>
+            <span>{room.machineModel}・{room.capacity.min}〜{room.capacity.max}名</span>
+          </li>)}
+        </ul>}
         <div className="result-item__tags">
           <Tag className="result-item__tag" variant={shop.availableRooms > 0 ? 'vacant' : 'secondary'}>{availability}</Tag>
           <ul className="result-item__machines" aria-label="対応機種">
@@ -63,7 +70,12 @@ function SearchResults({
   const isRecommended = pageLocation.searchParams.get('sort') === 'recommended'
   const [selectedShopId, setSelectedShopId] = useState(null)
   const nearby = useNearbyShops(location, 5000, suppliedShops === undefined && !isRecommended && !isReservationPage)
-  const shops = suppliedShops ?? (isRecommended ? sampleResults : nearby.results)
+  const isRoomSearch = !isRecommended && !isReservationPage && pageLocation.searchParams.get('from') === 'search-filter'
+  const conditions = readRoomSearch(pageLocation.searchParams)
+  const sourceShops = suppliedShops ?? (isRecommended ? sampleResults : nearby.results)
+  const shops = isRoomSearch
+    ? conditions.error ? [] : searchRoomPageShops(sourceShops, conditions)
+    : sourceShops
   const reservationShop = shops.find((shop) => shop.id === reservationId) 
   const displayedShops = isRecommended && shops.length > 0
     ? Array.from({ length: 12 }, (_, index) => ({
@@ -122,9 +134,11 @@ function SearchResults({
           {mapContent ?? <MapView location={location} shops={shops} tileStyle="dark" selectedShopId={selectedShopId} onShopSelect={setSelectedShopId} />}
         </section>}
         <section className="search-results__list-section" aria-label="検索結果の店舗一覧">
-          {!isRecommended && suppliedShops === undefined && nearby.status === 'loading' && <p role="status">半径5kmのカラオケ店舗を取得しています…</p>}
-          {!isRecommended && suppliedShops === undefined && nearby.status === 'error' && <p role="alert">店舗を取得できませんでした。<Button onClick={nearby.retry}>再試行</Button></p>}
-          {!isRecommended && pageLocation.searchParams.get('from') === 'search-filter' && <p>部屋・空室条件の絞り込みは準備中です。周辺店舗を表示しています。</p>}
+          {!isRecommended && suppliedShops === undefined && nearby.status === 'loading' && <p role="status">{nearby.message ?? '半径5kmのカラオケ店舗を取得しています…'}</p>}
+          {!isRecommended && suppliedShops === undefined && nearby.status === 'error' && <p role="alert">{nearby.message}<Button onClick={nearby.retry}>再試行</Button></p>}
+          {isRoomSearch && <p>現在地から半径5km以内で、確認済みの部屋情報を検索しています。登録済みは名駅東口店の2室です。未確認の設備は条件に一致しません。</p>}
+          {isRoomSearch && conditions.realtimeAvailable && <p>空室情報は未接続です。実際の空室を検索することはできません。空室条件をOFFにしてお試しください。</p>}
+          {isRoomSearch && conditions.error && <p role="alert">{conditions.error}</p>}
           <p className="search-results__count" role="status">全{isRecommended ? displayedShops.length : shops.length}件</p>
           {displayedShops.length > 0 ? (
             <ul className="search-results__list">
@@ -142,7 +156,7 @@ function SearchResults({
               ))}
             </ul>
           ) : (
-            (isRecommended || suppliedShops !== undefined || nearby.status === 'success') && <p className="search-results__empty">周辺の店舗が見つかりませんでした。</p>
+            (isRecommended || suppliedShops !== undefined || nearby.status === 'success') && <p className="search-results__empty">{isRoomSearch ? 'この範囲の登録済み部屋には、条件に一致する部屋がありません。条件や現在地をご確認ください。' : '周辺の店舗が見つかりませんでした。'}</p>
           )}
         </section>
       </main>

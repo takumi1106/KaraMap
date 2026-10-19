@@ -255,7 +255,7 @@ $map-accent: #a78bfa;
   &__expand {
     position: absolute;
     right: rem(14);
-    bottom: rem(58);
+    bottom: rem(30);
     z-index: 1000;
     display: grid;
     place-items: center;
@@ -360,7 +360,8 @@ $map-accent: #a78bfa;
 
   &__route-summary { margin: rem(8) 0; line-height: 1.5; }
 
-  &:has(&__route) &__expand { bottom: auto; top: rem(118); }
+  // 店舗情報の操作を妨げないよう、パネルを閉じるまで非表示にする。
+  &:has(&__route) &__expand { visibility: hidden; }
 }
 
 .map-view {
