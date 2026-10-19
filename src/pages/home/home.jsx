@@ -15,7 +15,7 @@ function Home({ areaLabel = '名古屋市中村区付近', shops = sampleShops }
     <main className="home">
       <header className="home__hero">
         <h1 className="home__logo" aria-label="カラMAP">
-          <img className="home__hero-image" src={assetUrl('/images/hero-karaoke.webp')} alt="" width="1200" height="675" fetchPriority="high" />
+          <img className="home__hero-image" src={assetUrl('/images/hero-karaoke.png')} alt="" width="1200" height="675" fetchPriority="high" />
         </h1>
       </header>
 
