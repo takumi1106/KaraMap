@@ -4,7 +4,8 @@ import MapView from '../../components/MapView.jsx'
 import StoreCard from '../../components/StoreCard.jsx'
 import Button from '../../components/Button.jsx'
 import useCurrentLocation from '../../hooks/useCurrentLocation.js'
-import { distanceOptions, previewShops } from './currentLocationData.js'
+import useNearbyShops from '../../hooks/useNearbyShops.js'
+import { distanceOptions } from './currentLocationData.js'
 import './current-location.scss'
 
 function returnHome() {
@@ -12,15 +13,19 @@ function returnHome() {
 }
 
 function CurrentLocation({
-  shops = previewShops,
-  initialRadius = '1',
+  shops: suppliedShops,
+  initialRadius = '5',
   onRadiusChange,
   mapContent,
   renderMap,
   onBack = returnHome,
 }) {
   const [radius, setRadius] = useState(initialRadius)
+  const [selectedShopId, setSelectedShopId] = useState(null)
   const { status, location, error, requestLocation } = useCurrentLocation()
+
+  const nearby = useNearbyShops(location, Number(radius) * 1000, suppliedShops === undefined)
+  const shops = suppliedShops ?? nearby.results
 
   useEffect(() => {
     requestLocation()
@@ -63,12 +68,10 @@ function CurrentLocation({
             `現在地を取得しました（精度の目安：約${Math.round(location.accuracy)}m）。`}
         </p>
 
-        <p className="current-location__location-note">
-          店舗情報は表示例です。現在地周辺の店舗検索は準備中です。
-        </p>
+
       </section>
 
-      <section className="current-location__map" aria-label="周辺の地図">
+      <section id="current-location-map" className="current-location__map" aria-label="周辺の地図">
         {(renderMap
           ? renderMap({
               location,
@@ -79,6 +82,8 @@ function CurrentLocation({
           <MapView
             location={location}
             shops={shops}
+            selectedShopId={selectedShopId}
+            onShopSelect={setSelectedShopId}
             tileStyle="dark"
           />
         )}
@@ -128,17 +133,24 @@ function CurrentLocation({
         className="current-location__results"
         aria-label="周辺の店舗"
       >
+        {suppliedShops === undefined && nearby.status === 'loading' && <p role="status">周辺のカラオケ店舗を取得しています…</p>}
+        {suppliedShops === undefined && nearby.status === 'error' && <p role="alert">店舗を取得できませんでした。<Button onClick={nearby.retry}>再試行</Button></p>}
         {shops.length ? (
           <ul className="current-location__list">
             {shops.map((shop) => (
               <li key={shop.id}>
                 <StoreCard
                   className="current-location__card"
-                  href={pageUrl(`/shops/${shop.id}`)}
+                  href={shop.isRealShop ? '#current-location-map' : pageUrl(`/shops/${shop.id}`)}
+                  onClick={shop.isRealShop ? (event) => {
+                    event.preventDefault()
+                    setSelectedShopId(shop.id)
+                    document.getElementById('current-location-map')?.scrollIntoView({ block: 'center' })
+                  } : undefined}
                   image={shop.image}
                   imageAlt={shop.imageAlt}
                   name={shop.name}
-                  distance={`徒歩${shop.walkingMinutes}分 (${shop.distanceMeters}m)`}
+                  distance={shop.isRealShop ? `直線距離 約${Math.round(shop.distanceMeters)}m` : `徒歩${shop.walkingMinutes}分 (${shop.distanceMeters}m)`}
                   status={shop.status}
                   tags={shop.tags}
                 />
@@ -146,8 +158,8 @@ function CurrentLocation({
             ))}
           </ul>
         ) : (
-          <p className="current-location__empty">
-            周辺の店舗が見つかりませんでした。
+          (suppliedShops !== undefined || nearby.status === 'success') && <p className="current-location__empty">
+            周辺の店舗が見つかりませんでした。検索範囲を広げてお試しください。
           </p>
         )}
       </section>

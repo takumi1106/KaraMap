@@ -1,77 +1,403 @@
+@use '../styles/functions' as *;
+@use '../styles/variables' as v;
+
+$map-shadow: rgba(v.$color-background, 0.3);
+$map-outline: rgba(v.$color-text-secondary, 0.28);
+$map-location: #3488ff;
+$map-accent: #a78bfa;
+
 .map-view {
   position: relative;
   width: 100%;
   height: 100%;
-  background: #020817;
+  border-radius: v.$radius-panel;
+  background: v.$color-background;
 
   &--expanded {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      width: 100%;
-      height: 100svh;
-    }
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    width: 100%;
+    height: 100svh;
+    border-radius: 0;
+  }
 
   &__map {
     width: 100%;
     height: 100%;
-    background: #020817;
+    border-radius: inherit;
+    background: v.$color-background;
+    font-family: v.$font-family;
 
-    .leaflet-container {
-      background: #020817;
+    // 地図操作UIだけを、この地図の内側で上書きする。
+    .maplibregl-ctrl-group {
+      overflow: hidden;
+      margin: rem(14);
+      border: 1px solid $map-outline;
+      border-radius: rem(14);
+      box-shadow: 0 rem(4) rem(16) $map-shadow;
+
+      button {
+        display: grid;
+        place-items: center;
+        width: rem(44);
+        height: rem(44);
+        border-color: $map-outline;
+        color: v.$color-text;
+        background: v.$color-surface;
+        font-family: v.$font-family;
+        font-size: rem(24);
+        font-weight: 400;
+        line-height: 1;
+        text-decoration: none;
+
+        &:hover {
+          background: v.$color-location;
+        }
+
+        &:disabled {
+          color: v.$color-text-secondary;
+          background: v.$color-surface;
+          opacity: 0.65;
+        }
+      }
     }
 
-    .leaflet-tile-pane {
-      filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.4) saturate(0.4);
+    .maplibregl-ctrl-icon {
+      filter: invert(1);
     }
+
+    .maplibregl-ctrl-attrib {
+      max-width: 100%;
+      padding: rem(3) rem(7);
+      color: v.$color-text-secondary;
+      background: rgba(v.$color-background, 0.92);
+      font-size: rem(10);
+      line-height: 1.5;
+
+      a {
+        color: v.$color-logo-blue;
+      }
+    }
+
+    .maplibregl-ctrl button:focus-visible,
+    .maplibregl-marker:focus-visible {
+      outline: 3px solid $map-accent;
+      outline-offset: -3px;
+    }
+  }
+
+  &__location-marker {
+    width: rem(40);
+    height: rem(40);
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba($map-location, 0.45);
+    border-radius: 50%;
+    background: rgba($map-location, 0.18);
+    box-shadow: 0 0 0 rem(7) rgba($map-location, 0.1);
+
+    // マーカー本体のtransformはMapLibreが位置決めに使用する。
+    // 波紋だけを動かし、現在地の座標表示には影響させない。
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba($map-location, 0.8);
+      border-radius: 50%;
+      background: rgba($map-location, 0.12);
+      pointer-events: none;
+      opacity: 0;
+      animation: map-view-location-ripple 3s ease-out infinite;
+    }
+
+    &::after {
+      animation-delay: 1.5s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::before,
+      &::after {
+        animation: none;
+      }
+    }
+  }
+
+  &__direction {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transform-origin: center;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: rem(94);
+      height: rem(94);
+      left: 50%;
+      bottom: 50%;
+      transform: translateX(-50%);
+      clip-path: polygon(50% 100%, 6% 8%, 94% 8%);
+      background: linear-gradient(to top, rgba($map-location, 0.7), rgba($map-location, 0.06));
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: calc(50% + rem(15));
+      transform: translateX(-50%);
+      border-inline: rem(6) solid transparent;
+      border-bottom: rem(10) solid v.$color-text;
+    }
+  }
+
+  &__direction-control {
+    position: absolute;
+    top: rem(14);
+    right: rem(14);
+    z-index: 2;
+    max-width: rem(190);
+    text-align: right;
+  }
+
+  &__direction-button {
+    min-height: rem(44);
+    padding: rem(8) rem(12);
+    border: 1px solid $map-outline;
+    border-radius: rem(14);
+    background: v.$color-surface;
+    color: v.$color-text;
+    font-size: rem(12);
+    cursor: pointer;
+
+    &[aria-pressed='true'] { border-color: $map-location; }
+    &:focus-visible { outline: 3px solid $map-accent; }
+  }
+
+  &__direction-message {
+    margin: rem(8) 0 0;
+    padding: rem(8);
+    border-radius: rem(8);
+    color: v.$color-text;
+    background: v.$color-surface;
+    font-size: rem(12);
+    line-height: 1.5;
+  }
+
+  &__location-dot {
+    position: relative;
+    z-index: 1;
+    width: rem(18);
+    height: rem(18);
+    box-sizing: border-box;
+    border: 3px solid v.$color-text;
+    border-radius: 50%;
+    background: $map-location;
+    box-shadow: 0 rem(2) rem(6) $map-shadow;
   }
 
   &__shop-marker {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px !important;
-    height: 36px !important;
-    border: 3px solid #7c3aed;
-    border-radius: 50%;
-    background: #ffffff;
-    font-size: 20px;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
-
-    span {
-      line-height: 1;
-    }
+    width: rem(40);
+    height: rem(40);
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    border: 2px solid $map-accent;
+    border-radius: rem(14) rem(14) rem(14) rem(4);
+    background: v.$color-purple;
+    box-shadow: 0 rem(3) rem(10) $map-shadow;
   }
 
-  &--light &__shop-marker {
-    border-color: #3b82f6;
-    box-shadow: 0 0 8px rgb(59 130 246 / 50%), 0 0 18px rgb(236 72 153 / 25%);
+  &__shop-symbol {
+    width: rem(23);
+    height: rem(23);
+    background: v.$color-text;
+    mask: url('/images/icon-map-microphone.svg') center / contain no-repeat;
   }
 
-  &--dark &__shop-marker {
-    border-color: #8b5cf6;
-    background: rgb(15 23 42 / 95%);
-    box-shadow: 0 0 8px rgb(139 92 246 / 45%), 0 0 18px rgb(45 212 191 / 25%);
+  &__tooltip {
+    position: absolute;
+    bottom: calc(100% + rem(8));
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    pointer-events: none;
+    max-width: rem(190);
+    padding: rem(6) rem(10);
+    border: 1px solid $map-outline;
+    border-radius: rem(9);
+    color: v.$color-text;
+    background: v.$color-surface;
+    box-shadow: 0 rem(3) rem(12) $map-shadow;
+    font-size: rem(12);
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+
+  }
+
+  &__error {
+    position: absolute;
+    inset: rem(110) rem(16) auto;
+    z-index: 2;
+    margin: 0;
+    padding: rem(14);
+    border-radius: v.$radius-card;
+    background: v.$color-surface;
+    color: v.$color-text;
+    font-size: rem(13);
   }
 
   &__expand {
     position: absolute;
-    right: 12px;
-    bottom: 12px;
+    right: rem(14);
+    bottom: rem(58);
     z-index: 1000;
     display: grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
+    width: rem(44);
+    height: rem(44);
     padding: 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
+    border: 1px solid $map-outline;
+    border-radius: rem(14);
+    color: v.$color-text;
+    background: v.$color-surface;
+    box-shadow: 0 rem(4) rem(16) $map-shadow;
     cursor: pointer;
+
+    &:hover {
+      background: v.$color-location;
+    }
+
+    &:focus-visible {
+      outline: 3px solid $map-accent;
+      outline-offset: 3px;
+    }
+  }
+
+  &--expanded &__expand {
+    bottom: calc(rem(58) + env(safe-area-inset-bottom));
+    right: calc(rem(14) + env(safe-area-inset-right));
   }
 
   &__expand-icon {
-    width: 22px;
-    height: 22px;
+    width: rem(22);
+    height: rem(22);
+  }
+}
+
+@keyframes map-view-location-ripple {
+  0% {
+    transform: scale(0.65);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.65;
+  }
+
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.map-view {
+  &__shop-marker { cursor: pointer; }
+
+  &__route {
+    position: absolute;
+    inset: auto rem(12) rem(10);
+    z-index: 3;
+    box-sizing: border-box;
+    max-height: 90%;
+    overflow: auto;
+    padding: rem(12);
+    border: 1px solid $map-outline;
+    border-radius: v.$radius-card;
+    background: rgba(v.$color-surface, 0.97);
+    color: v.$color-text;
+    box-shadow: 0 rem(4) rem(16) $map-shadow;
+    font-size: rem(12);
+
+    button, select {
+      min-height: rem(44);
+      padding: rem(6) rem(12);
+      border: 1px solid $map-outline;
+      border-radius: rem(8);
+      background: v.$color-location;
+      color: v.$color-text;
+      font: inherit;
+      cursor: pointer;
+
+      &:disabled { opacity: 0.5; cursor: default; }
+      &:focus-visible { outline: 2px solid $map-accent; }
+    }
+
+    a { color: v.$color-logo-blue; }
+  }
+
+  &__route-heading, &__route-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(8);
+  }
+
+  &__route-heading {
+    margin-bottom: rem(8);
+    strong { overflow-wrap: anywhere; }
+    button { flex-shrink: 0; font-size: rem(20); }
+  }
+
+  &__route-actions {
+    select { flex: 1; min-width: 0; }
+  }
+
+  &__route-summary { margin: rem(8) 0; line-height: 1.5; }
+
+  &:has(&__route) &__expand { bottom: auto; top: rem(118); }
+}
+
+.map-view {
+  &__shop-status { margin: 0 0 rem(8); font-weight: 700; }
+  &__shop-note { margin: 0 0 rem(8); color: v.$color-text-secondary; line-height: 1.5; }
+
+  &__shop-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: rem(8);
+    margin-bottom: rem(8);
+
+    a, span {
+      display: grid;
+      place-items: center;
+      min-height: rem(44);
+      padding: rem(6);
+      border: 1px solid $map-outline;
+      border-radius: rem(8);
+      color: v.$color-text;
+      background: v.$color-location;
+      text-decoration: none;
+    }
+
+    a:first-child { background: v.$color-purple; }
+    a:focus-visible { outline: 2px solid $map-accent; }
+    span { color: v.$color-text-secondary; }
+  }
+
+  &__rooms {
+    margin-bottom: rem(12);
+    border-bottom: 1px solid $map-outline;
+
+    summary { min-height: rem(44); align-content: center; cursor: pointer; }
+    summary:focus-visible { outline: 2px solid $map-accent; }
+    p { margin: rem(8) 0 rem(12); line-height: 1.5; }
+    ul { margin: 0; padding: 0; list-style: none; }
+    li { display: flex; justify-content: space-between; gap: rem(8); padding: rem(8) 0; }
   }
 }

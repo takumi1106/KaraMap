@@ -1,5 +1,6 @@
 import { assetUrl, pageUrl, getPageLocation } from '../../utils/paths.js'
-import { useEffect } from 'react'
+import useNearbyShops from '../../hooks/useNearbyShops.js'
+import { useEffect, useState } from 'react'
 import MapView from '../../components/MapView.jsx'
 import useCurrentLocation from '../../hooks/useCurrentLocation.js'
 import Button from '../../components/Button.jsx'
@@ -23,11 +24,11 @@ function renderDefaultShop(shop) {
 
   return (
     <article className="result-item">
-      <img className="result-item__image" src={assetUrl(shop.image)} alt={`${shop.name}の店内イメージ`} width="92" height="118" loading="lazy" />
+      {shop.image && <img className="result-item__image" src={assetUrl(shop.image)} alt={`${shop.name}の店内イメージ`} width="92" height="118" loading="lazy" />}
       <div className="result-item__content">
         <h2 className="result-item__name">{shop.name}</h2>
         <div className="result-item__details">
-          <span>徒歩{shop.walkingMinutes}分 ({shop.distanceMeters}m)</span>
+          <span>{shop.isRealShop ? `直線距離 約${Math.round(shop.distanceMeters)}m` : `徒歩${shop.walkingMinutes}分 (${shop.distanceMeters}m)`}</span>
           <span className="result-item__business">
             <svg className="result-item__pin" aria-hidden="true"><use href={assetUrl('/images/icons.svg#pin')} /></svg>
             {shop.isOpen == null ? '営業状況未確認' : shop.isOpen ? '営業中' : '営業時間外'}
@@ -49,7 +50,7 @@ function renderDefaultShop(shop) {
 }
 
 function SearchResults({
-  shops = sampleResults,
+  shops: suppliedShops,
   onBack = returnToSource,
   mapContent,
   renderShop = renderDefaultShop,
@@ -60,7 +61,10 @@ function SearchResults({
   const reservationId = pageLocation.searchParams.get('reserve')
   const isReservationPage = Boolean(reservationId)
   const isRecommended = pageLocation.searchParams.get('sort') === 'recommended'
-  const reservationShop = shops.find((shop) => shop.id === reservationId) ?? shops[0]
+  const [selectedShopId, setSelectedShopId] = useState(null)
+  const nearby = useNearbyShops(location, 5000, suppliedShops === undefined && !isRecommended && !isReservationPage)
+  const shops = suppliedShops ?? (isRecommended ? sampleResults : nearby.results)
+  const reservationShop = shops.find((shop) => shop.id === reservationId) 
   const displayedShops = isRecommended && shops.length > 0
     ? Array.from({ length: 12 }, (_, index) => ({
       ...shops[index % shops.length],
@@ -78,7 +82,7 @@ function SearchResults({
     return (
       <ReservationForm
         shopName={pageLocation.searchParams.get('shopName') || reservationShop?.name}
-        conditions={reservationShop?.machines?.join('・') || '禁煙・DAM'}
+        conditions={reservationShop?.machines?.join('・') || '設備情報未確認'}
         onBack={() => window.location.assign(pageUrl(returnPath))}
       />
     )
@@ -99,7 +103,7 @@ function SearchResults({
           </Button>
           <h1 className="search-results__title">{isRecommended ? 'おすすめ店舗' : '検索結果'}</h1>
         </header>
-        {!isRecommended && <section className="search-results__location" aria-label="現在地の取得">
+        {!isRecommended && status !== 'success' && <section className="search-results__location" aria-label="現在地の取得">
           {status === 'error' && (
             <Button
                 className="search-results__locate"
@@ -112,20 +116,25 @@ function SearchResults({
             {status === 'idle' && '位置情報を許可すると、現在地を中心に地図を表示します。'}
             {status === 'loading' && '端末の位置情報を確認しています。'}
             {status === 'error' && error}
-            {status === 'success' && '現在地を取得しました。'}
           </p>
-          <p className="search-results__location-message">店舗一覧は仮データです。現在地による絞り込みは未連携です。</p>
         </section>}
-        {!isRecommended && <section className="search-results__map" aria-label="周辺地図">
-          {mapContent ?? <MapView location={location} shops={shops} tileStyle="dark" />}
+        {!isRecommended && <section id="search-results-map" className="search-results__map" aria-label="周辺地図">
+          {mapContent ?? <MapView location={location} shops={shops} tileStyle="dark" selectedShopId={selectedShopId} onShopSelect={setSelectedShopId} />}
         </section>}
         <section className="search-results__list-section" aria-label="検索結果の店舗一覧">
+          {!isRecommended && suppliedShops === undefined && nearby.status === 'loading' && <p role="status">半径5kmのカラオケ店舗を取得しています…</p>}
+          {!isRecommended && suppliedShops === undefined && nearby.status === 'error' && <p role="alert">店舗を取得できませんでした。<Button onClick={nearby.retry}>再試行</Button></p>}
+          {!isRecommended && pageLocation.searchParams.get('from') === 'search-filter' && <p>部屋・空室条件の絞り込みは準備中です。周辺店舗を表示しています。</p>}
           <p className="search-results__count" role="status">全{isRecommended ? displayedShops.length : shops.length}件</p>
           {displayedShops.length > 0 ? (
             <ul className="search-results__list">
               {displayedShops.map((shop) => (
                 <li className="search-results__item" key={shop.id}>
-                  <a className="search-results__card-link" href={pageUrl(`/shops/${shop.id}`)}>
+                  <a className="search-results__card-link" href={shop.isRealShop ? '#search-results-map' : pageUrl(`/shops/${shop.id}`)} onClick={shop.isRealShop ? (event) => {
+                    event.preventDefault()
+                    setSelectedShopId(shop.id)
+                    document.getElementById('search-results-map')?.scrollIntoView({ block: 'center' })
+                  } : undefined}>
                     {renderShop(shop)}
                   </a>
                   <a className="search-results__reserve-link" href={reservationHref(shop)}>この店舗を予約する</a>
@@ -133,7 +142,7 @@ function SearchResults({
               ))}
             </ul>
           ) : (
-            <p className="search-results__empty">条件に合う店舗が見つかりませんでした。</p>
+            (isRecommended || suppliedShops !== undefined || nearby.status === 'success') && <p className="search-results__empty">周辺の店舗が見つかりませんでした。</p>
           )}
         </section>
       </main>

@@ -2,6 +2,8 @@
   position: relative;
   width: 100%;
   height: 100%;
+  border-radius: 1.125rem;
+  background: #030a1c;
 }
 .map-view--expanded {
   position: fixed;
@@ -9,43 +11,405 @@
   z-index: 2000;
   width: 100%;
   height: 100svh;
+  border-radius: 0;
 }
 .map-view__map {
   width: 100%;
   height: 100%;
+  border-radius: inherit;
+  background: #030a1c;
+  font-family: Arial, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+}
+.map-view__map .maplibregl-ctrl-group {
+  overflow: hidden;
+  margin: 0.875rem;
+  border: 1px solid rgba(196, 204, 220, 0.28);
+  border-radius: 0.875rem;
+  box-shadow: 0 0.25rem 1rem rgba(3, 10, 28, 0.3);
+}
+.map-view__map .maplibregl-ctrl-group button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-color: rgba(196, 204, 220, 0.28);
+  color: #fff;
+  background: #071735;
+  font-family: Arial, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+}
+.map-view__map .maplibregl-ctrl-group button:hover {
+  background: #031943;
+}
+.map-view__map .maplibregl-ctrl-group button:disabled {
+  color: #c4ccdc;
+  background: #071735;
+  opacity: 0.65;
+}
+.map-view__map .maplibregl-ctrl-icon {
+  filter: invert(1);
+}
+.map-view__map .maplibregl-ctrl-attrib {
+  max-width: 100%;
+  padding: 0.1875rem 0.4375rem;
+  color: #c4ccdc;
+  background: rgba(3, 10, 28, 0.92);
+  font-size: 0.625rem;
+  line-height: 1.5;
+}
+.map-view__map .maplibregl-ctrl-attrib a {
+  color: #7ce8ff;
+}
+.map-view__map .maplibregl-ctrl button:focus-visible,
+.map-view__map .maplibregl-marker:focus-visible {
+  outline: 3px solid #a78bfa;
+  outline-offset: -3px;
+}
+.map-view__location-marker {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(52, 136, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(52, 136, 255, 0.18);
+  box-shadow: 0 0 0 0.4375rem rgba(52, 136, 255, 0.1);
+}
+.map-view__location-marker::before, .map-view__location-marker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(52, 136, 255, 0.8);
+  border-radius: 50%;
+  background: rgba(52, 136, 255, 0.12);
+  pointer-events: none;
+  opacity: 0;
+  -webkit-animation: map-view-location-ripple 3s ease-out infinite;
+          animation: map-view-location-ripple 3s ease-out infinite;
+}
+.map-view__location-marker::after {
+  -webkit-animation-delay: 1.5s;
+          animation-delay: 1.5s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-view__location-marker::before, .map-view__location-marker::after {
+    -webkit-animation: none;
+            animation: none;
+  }
+}
+.map-view__direction {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: center;
+}
+.map-view__direction::before {
+  content: "";
+  position: absolute;
+  width: 5.875rem;
+  height: 5.875rem;
+  left: 50%;
+  bottom: 50%;
+  transform: translateX(-50%);
+  -webkit-clip-path: polygon(50% 100%, 6% 8%, 94% 8%);
+          clip-path: polygon(50% 100%, 6% 8%, 94% 8%);
+  background: linear-gradient(to top, rgba(52, 136, 255, 0.7), rgba(52, 136, 255, 0.06));
+}
+.map-view__direction::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% + 0.9375rem);
+  transform: translateX(-50%);
+  border-inline: 0.375rem solid transparent;
+  border-bottom: 0.625rem solid #fff;
+}
+.map-view__direction-control {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  z-index: 2;
+  max-width: 11.875rem;
+  text-align: right;
+}
+.map-view__direction-button {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(196, 204, 220, 0.28);
+  border-radius: 0.875rem;
+  background: #071735;
+  color: #fff;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.map-view__direction-button[aria-pressed=true] {
+  border-color: #3488ff;
+}
+.map-view__direction-button:focus-visible {
+  outline: 3px solid #a78bfa;
+}
+.map-view__direction-message {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  background: #071735;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.map-view__location-dot {
+  position: relative;
+  z-index: 1;
+  width: 1.125rem;
+  height: 1.125rem;
+  box-sizing: border-box;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #3488ff;
+  box-shadow: 0 0.125rem 0.375rem rgba(3, 10, 28, 0.3);
 }
 .map-view__shop-marker {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px !important;
-  height: 36px !important;
-  border: 3px solid #7c3aed;
-  border-radius: 50%;
-  background: #ffffff;
-  font-size: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border: 2px solid #a78bfa;
+  border-radius: 0.875rem 0.875rem 0.875rem 0.25rem;
+  background: #3d108d;
+  box-shadow: 0 0.1875rem 0.625rem rgba(3, 10, 28, 0.3);
 }
-.map-view__shop-marker span {
-  line-height: 1;
+.map-view__shop-symbol {
+  width: 1.4375rem;
+  height: 1.4375rem;
+  background: #fff;
+  -webkit-mask: url("/images/icon-map-microphone.svg") center/contain no-repeat;
+          mask: url("/images/icon-map-microphone.svg") center/contain no-repeat;
+}
+.map-view__tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  pointer-events: none;
+  max-width: 11.875rem;
+  padding: 0.375rem 0.625rem;
+  border: 1px solid rgba(196, 204, 220, 0.28);
+  border-radius: 0.5625rem;
+  color: #fff;
+  background: #071735;
+  box-shadow: 0 0.1875rem 0.75rem rgba(3, 10, 28, 0.3);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+.map-view__error {
+  position: absolute;
+  inset: 6.875rem 1rem auto;
+  z-index: 2;
+  margin: 0;
+  padding: 0.875rem;
+  border-radius: 0.875rem;
+  background: #071735;
+  color: #fff;
+  font-size: 0.8125rem;
 }
 .map-view__expand {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
+  right: 0.875rem;
+  bottom: 3.625rem;
   z-index: 1000;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
+  border: 1px solid rgba(196, 204, 220, 0.28);
+  border-radius: 0.875rem;
+  color: #fff;
+  background: #071735;
+  box-shadow: 0 0.25rem 1rem rgba(3, 10, 28, 0.3);
   cursor: pointer;
 }
+.map-view__expand:hover {
+  background: #031943;
+}
+.map-view__expand:focus-visible {
+  outline: 3px solid #a78bfa;
+  outline-offset: 3px;
+}
+.map-view--expanded .map-view__expand {
+  bottom: calc(3.625rem + env(safe-area-inset-bottom));
+  right: calc(0.875rem + env(safe-area-inset-right));
+}
 .map-view__expand-icon {
-  width: 22px;
-  height: 22px;
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+@-webkit-keyframes map-view-location-ripple {
+  0% {
+    transform: scale(0.65);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes map-view-location-ripple {
+  0% {
+    transform: scale(0.65);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+.map-view__shop-marker {
+  cursor: pointer;
+}
+.map-view__route {
+  position: absolute;
+  inset: auto 0.75rem 0.625rem;
+  z-index: 3;
+  box-sizing: border-box;
+  max-height: 90%;
+  overflow: auto;
+  padding: 0.75rem;
+  border: 1px solid rgba(196, 204, 220, 0.28);
+  border-radius: 0.875rem;
+  background: rgba(7, 23, 53, 0.97);
+  color: #fff;
+  box-shadow: 0 0.25rem 1rem rgba(3, 10, 28, 0.3);
+  font-size: 0.75rem;
+}
+.map-view__route button, .map-view__route select {
+  min-height: 2.75rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid rgba(196, 204, 220, 0.28);
+  border-radius: 0.5rem;
+  background: #031943;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+.map-view__route button:disabled, .map-view__route select:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.map-view__route button:focus-visible, .map-view__route select:focus-visible {
+  outline: 2px solid #a78bfa;
+}
+.map-view__route a {
+  color: #7ce8ff;
+}
+.map-view__route-heading, .map-view__route-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.map-view__route-heading {
+  margin-bottom: 0.5rem;
+}
+.map-view__route-heading strong {
+  overflow-wrap: anywhere;
+}
+.map-view__route-heading button {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+}
+.map-view__route-actions select {
+  flex: 1;
+  min-width: 0;
+}
+.map-view__route-summary {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+.map-view:has(.map-view__route) .map-view__expand {
+  bottom: auto;
+  top: 7.375rem;
+}
+
+.map-view__shop-status {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+.map-view__shop-note {
+  margin: 0 0 0.5rem;
+  color: #c4ccdc;
+  line-height: 1.5;
+}
+.map-view__shop-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.map-view__shop-actions a, .map-view__shop-actions span {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  padding: 0.375rem;
+  border: 1px solid rgba(196, 204, 220, 0.28);
+  border-radius: 0.5rem;
+  color: #fff;
+  background: #031943;
+  text-decoration: none;
+}
+.map-view__shop-actions a:first-child {
+  background: #3d108d;
+}
+.map-view__shop-actions a:focus-visible {
+  outline: 2px solid #a78bfa;
+}
+.map-view__shop-actions span {
+  color: #c4ccdc;
+}
+.map-view__rooms {
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(196, 204, 220, 0.28);
+}
+.map-view__rooms summary {
+  min-height: 2.75rem;
+  align-content: center;
+  cursor: pointer;
+}
+.map-view__rooms summary:focus-visible {
+  outline: 2px solid #a78bfa;
+}
+.map-view__rooms p {
+  margin: 0.5rem 0 0.75rem;
+  line-height: 1.5;
+}
+.map-view__rooms ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.map-view__rooms li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
 }
 /*# sourceMappingURL=MapView.css.map */
