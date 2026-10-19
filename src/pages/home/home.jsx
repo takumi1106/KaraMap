@@ -14,12 +14,8 @@ function Home({ areaLabel = '名古屋市中村区付近', shops = sampleShops }
   return (
     <main className="home">
       <header className="home__hero">
-        <img className="home__hero-image" src={assetUrl('/images/hero-karaoke.webp')} alt="" width="1200" height="675" fetchPriority="high" />
         <h1 className="home__logo" aria-label="カラMAP">
-          <svg className="home__logo-icon" aria-hidden="true"><use href={assetUrl('/images/icons.svg#microphone')} /></svg>
-          <span className="home__logo-kana">カラ</span>
-          <span className="home__logo-latin">Map</span>
-          <svg className="home__logo-icon home__logo-icon--music" aria-hidden="true"><use href={assetUrl('/images/icons.svg#music')} /></svg>
+          <img className="home__hero-image" src={assetUrl('/images/hero-karaoke.webp')} alt="" width="1200" height="675" fetchPriority="high" />
         </h1>
       </header>
 
