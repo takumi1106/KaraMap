@@ -24,12 +24,13 @@ export function parseSavedShops(data) {
   throw new Error('Overpass JSONまたはGeoJSONのファイルを指定してください。')
 }
 
+// radiusMeters: null は全保存店舗を対象にする。数値指定の既存半径検索は維持。
 export function searchSavedShops(data, location, radiusMeters) {
-  if (calculateDistanceMeters(location, location) === null || !Number.isFinite(radiusMeters) || radiusMeters <= 0) {
+  if (calculateDistanceMeters(location, location) === null || (radiusMeters !== null && (!Number.isFinite(radiusMeters) || radiusMeters <= 0))) {
     throw new RangeError('現在地と検索範囲を確認してください。')
   }
   const prepared = prepareMapShops(location, parseSavedShops(data))
-  return { ...prepared, results: prepared.results.filter((shop) => shop.distanceMeters !== null && shop.distanceMeters <= radiusMeters) }
+  return { ...prepared, results: prepared.results.filter((shop) => shop.distanceMeters !== null && (radiusMeters === null || shop.distanceMeters <= radiusMeters)) }
 }
 
 export async function loadSavedShops({ location, radiusMeters, url, signal, fetchImpl = fetch }) {

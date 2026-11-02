@@ -8,6 +8,6 @@ export const homeActions = [
 
 // Figmaの表示確認用データ。写真・空室情報は実店舗の情報ではありません。
 export const sampleShops = [
-  { id: 'big-echo-meieki-3', name: 'ビッグエコー名駅3丁目店', image: '/images/shop-karaoke.webp', availability: '空室あり' },
-  { id: 'sample-shop', name: 'カラオケ店舗', image: '/images/shop-karaoke.webp', availability: '空室あり' },
+  { id: 'big-echo-meieki-3', name: 'ビッグエコー名駅3丁目店', image: '/images/popular-shop.png', availability: '空室あり' },
+  { id: 'sample-shop', name: 'カラオケ店舗', image: '/images/popular-shop.png', availability: '空室あり' },
 ]

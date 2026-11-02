@@ -6,6 +6,8 @@ import Button from '../../components/Button.jsx'
 import useCurrentLocation from '../../hooks/useCurrentLocation.js'
 import useNearbyShops from '../../hooks/useNearbyShops.js'
 import { distanceOptions } from './currentLocationData.js'
+import { sortShopsByDistance } from '../../services/shop-distance/shopDistance.js'
+import { visibleDistanceGroups, expandDistanceGroup } from '../search-results/visibleDistanceGroups.js'
 import './current-location.scss'
 
 function returnHome() {
@@ -26,6 +28,11 @@ function CurrentLocation({
 
   const nearby = useNearbyShops(location, Number(radius) * 1000, suppliedShops === undefined)
   const shops = suppliedShops ?? nearby.results
+  const paginationKey = JSON.stringify([radius, location?.latitude, location?.longitude])
+  const [pagination, setPagination] = useState({ key: paginationKey, count: 5, nearCount: 10 })
+  if (pagination.key !== paginationKey) setPagination({ key: paginationKey, count: 5, nearCount: 10 })
+  const visibleCount = pagination.key === paginationKey ? pagination.nearCount : 10
+  const [list] = visibleDistanceGroups([{ id: 'near', shops: sortShopsByDistance(shops) }], 5, visibleCount)
 
   useEffect(() => {
     requestLocation()
@@ -136,8 +143,10 @@ function CurrentLocation({
         {suppliedShops === undefined && nearby.status === 'loading' && <p role="status">{nearby.message ?? '周辺のカラオケ店舗を取得しています…'}</p>}
         {suppliedShops === undefined && nearby.status === 'error' && <p role="alert">{nearby.message}<Button onClick={nearby.retry}>再試行</Button></p>}
         {shops.length ? (
+          <>
+          <p className="current-location__count">検索範囲内の店舗（全{shops.length}件）</p>
           <ul className="current-location__list">
-            {shops.map((shop) => (
+            {list.visibleShops.map((shop) => (
               <li key={shop.id}>
                 <StoreCard
                   className="current-location__card"
@@ -157,6 +166,12 @@ function CurrentLocation({
               </li>
             ))}
           </ul>
+          <p className="current-location__display-count" role="status">{shops.length}件中{list.visibleShops.length}件を表示{list.remainingCount === 0 ? '（すべて表示済み）' : ''}</p>
+          {list.hasMore && <Button
+            className="current-location__more-button"
+            onClick={() => setPagination((previous) => expandDistanceGroup(previous, paginationKey, 'near', shops.length))}
+          >さらに{list.nextCount}件表示（残り{list.remainingCount}件）</Button>}
+          </>
         ) : (
           (suppliedShops !== undefined || nearby.status === 'success') && <p className="current-location__empty">
             周辺の店舗が見つかりませんでした。検索範囲を広げてお試しください。

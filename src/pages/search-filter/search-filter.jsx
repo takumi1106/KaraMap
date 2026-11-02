@@ -3,10 +3,16 @@ import { useState } from 'react'
 import Button from '../../components/Button.jsx'
 import { filterGroups } from './searchFilterData.js'
 import { readRoomSearch, roomSearchParams } from '../../services/room-search/roomSearchPage.js'
+import SearchOrigin from '../../components/SearchOrigin.jsx'
+import useSearchOrigin from '../../hooks/useSearchOrigin.js'
 import './search-filter.scss'
 
 function returnToSearch(conditions) {
-  window.location.assign(pageUrl(`/search?${roomSearchParams(conditions)}`))
+  const params = roomSearchParams(conditions)
+  params.set('origin', conditions.origin)
+  // ブラウザの「戻る」でも、検索直前の条件と起点を復元する。
+  window.history.replaceState(null, '', pageUrl(`/search-filter?${params}`))
+  window.location.assign(pageUrl(`/search?${params}`))
 }
 
 function returnHome() {
@@ -23,7 +29,9 @@ function SearchFilter({
   onBack = returnHome,
   bottomNavigation = null,
 }) {
+  const [origin, setOrigin] = useSearchOrigin()
   const [initialConditions] = useState(() => readRoomSearch(getPageLocation().searchParams))
+  const [keyword, setKeyword] = useState(initialConditions.keyword)
   const [localValues, setLocalValues] = useState(initialConditions.values)
   const [localRealtime, setLocalRealtime] = useState(initialConditions.realtimeAvailable)
   const selectedValues = values ?? localValues
@@ -86,6 +94,21 @@ function SearchFilter({
           <h1 className="search-filter__title">検索条件</h1>
         </header>
         <div className="search-filter__content">
+          <SearchOrigin mode={origin} onChange={setOrigin} />
+          <div className="search-filter__name-search">
+            <label className="search-filter__name-label" htmlFor="shop-name-search">店舗名で検索</label>
+            <input
+              id="shop-name-search"
+              className="search-filter__name-input"
+              type="search"
+              name="keyword"
+              placeholder="例：ジャンカラ、ビッグエコー"
+              value={keyword}
+              onChange={(event) => setKeyword(event.target.value)}
+              aria-describedby="shop-name-help"
+            />
+            <p className="search-filter__name-help" id="shop-name-help">店舗名の一部で検索できます。未入力の場合は店舗名で絞り込みません。</p>
+          </div>
           {renderAvailability('top')}
           <p>未選択の項目は指定なしです。選択中のボタンを再度押すと解除できます。</p>
           <p>現在はジャンカラ名駅東口店の2室を登録しています。確認例：DAM＋1〜2名（空室OFF・その他未指定）。</p>
@@ -117,7 +140,7 @@ function SearchFilter({
           </div>
           <Button
             className="search-filter__reserve"
-            onClick={() => onSearch({ values: selectedValues, realtimeAvailable: isRealtimeAvailable })}
+            onClick={() => onSearch({ values: selectedValues, realtimeAvailable: isRealtimeAvailable, origin, keyword })}
           >
             この条件で検索する
           </Button>

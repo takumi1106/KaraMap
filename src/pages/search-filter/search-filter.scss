@@ -268,3 +268,25 @@ $color-switch-end: #7500ff;
     }
   }
 }
+
+.search-filter {
+  &__name-search { margin-block: rem(16) rem(24); }
+  &__name-label { display: block; margin-bottom: rem(10); font-size: rem(16); font-weight: 700; }
+  &__name-input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: rem(48);
+    padding: rem(12) rem(14);
+    border: 1px solid v.$color-blue-border;
+    border-radius: v.$radius-card;
+    background: v.$color-surface;
+    color: v.$color-text;
+    font: inherit;
+    font-size: rem(16);
+    &::placeholder { color: v.$color-text-secondary; }
+    &:focus-visible { outline: 2px solid v.$color-focus; outline-offset: 2px; }
+  }
+  &__name-help { margin: rem(8) 0 0; font-size: rem(13); line-height: 1.6; color: v.$color-text-secondary; }
+}

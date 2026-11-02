@@ -1,0 +1,12 @@
+@use '../styles/functions' as *;
+@use '../styles/variables' as v;
+
+.search-origin {
+  &__label { display: grid; gap: rem(8); font-size: rem(14); }
+  &__select {
+    width: 100%; min-height: rem(44); padding: rem(8);
+    color: v.$color-text; background: v.$color-background;
+    border: 1px solid v.$color-blue-border; border-radius: v.$radius-panel;
+  }
+  &__note { margin: rem(8) 0; font-size: rem(13); line-height: 1.6; }
+}

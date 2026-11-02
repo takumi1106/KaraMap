@@ -45,10 +45,10 @@
     transform: rotate(180deg);
   }
 
-  &__section { padding: rem(26) rem(22) 0; }
+  &__section { padding: 0 rem(22) 0; }
 
   &__shop-name {
-    margin: 0 0 rem(18) rem(16);
+    margin: 0 0 rem(18) 0;
     font-size: rem(17);
     line-height: 1.5;
   }

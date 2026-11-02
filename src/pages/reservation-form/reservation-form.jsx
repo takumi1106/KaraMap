@@ -1,43 +1,38 @@
-import { useState } from 'react'
-import { assetUrl } from '../../utils/paths.js'
+import { useEffect, useState } from 'react'
+import { assetUrl, pageUrl } from '../../utils/paths.js'
 import Button from '../../components/Button.jsx'
-import { filterGroups } from '../search-filter/searchFilterData.js'
+import { guestOptions, startTimes, validateReservation } from './reservationTime.js'
+import { saveDemoReservation, withReservationLock } from '../../services/reservation-history/reservationHistory.js'
+import useActiveReservation from '../../hooks/useActiveReservation.js'
 import './reservation-form.scss'
 
-const machineOptions = filterGroups.find((group) => group.id === 'machine').options
-const featureOptions = filterGroups.find((group) => group.id === 'features').options
-
-function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditions = '禁煙・DAM', room, onBack }) {
-  const conditionItems = conditions.split(/[・,、]/).map((item) => item.trim())
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('10:00〜13:00')
-  const minGuests = room?.capacity?.min ?? 1
-  const maxGuests = room?.capacity?.max ?? 8
-  const [partySize, setPartySize] = useState(() => String(Math.min(maxGuests, Math.max(minGuests, 2))))
-  const [selectedMachine, setSelectedMachine] = useState(() => {
-    return conditionItems.some((item) => item.toUpperCase().startsWith('JOYSOUND')) ? 'joysound' : 'dam'
-  })
-  const [selectedFeatures, setSelectedFeatures] = useState(() => {
-    const selected = featureOptions.filter((option) => conditionItems.includes(option.label)).map((option) => option.value)
-    return selected.length > 0 ? selected : ['aiScoring']
-  })
+function ReservationForm({ shopId, searchContext = '', shopName = '店舗情報未確認', conditions = '設備情報未確認', room, onBack, backLabel = '検索結果に戻る', originLabel }) {
+  const active = useActiveReservation()
+  const [saving, setSaving] = useState(false)
+  const [now, setNow] = useState(() => new Date())
+  const [time, setTime] = useState('')
+  const [duration, setDuration] = useState('1')
+  const guests = guestOptions(room)
+  const [partySize, setPartySize] = useState(() => String(guests.includes(2) ? 2 : guests[0] ?? ''))
+  const [error, setError] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const otherConditions = conditions
-    .split(/[・,、]/)
-    .map((item) => item.trim())
-    .filter((item) => item && !item.toUpperCase().startsWith('DAM') && !item.toUpperCase().startsWith('JOYSOUND') && !featureOptions.some((option) => option.label === item))
+  const options = startTimes(now)
+  const validTime = options.some((option) => option.value === time && !option.disabled)
+  const selectedTime = startTimes(new Date(Number(time) || now.getTime())).find((option) => option.value === time)?.label
+  const noStartTimes = options.every((option) => option.disabled)
+  const conditionSummary = room ? `${room.machineModel ?? '機種未確認'}・設備情報：未確認` : conditions
 
-  const conditionSummary = room ? `${room.machineModel}・${minGuests}〜${maxGuests}名（禁煙・喫煙、採点・録音は未確認）` : [
-    ...otherConditions,
-    machineOptions.find((option) => option.value === selectedMachine)?.label,
-    ...featureOptions.filter((option) => selectedFeatures.includes(option.value)).map((option) => option.label),
-  ].join('・') || '指定なし'
-
-  function toggleFeature(value) {
-    setSelectedFeatures((current) => current.includes(value)
-      ? current.filter((feature) => feature !== value)
-      : [...current, value])
-  }
+  useEffect(() => {
+    const refresh = () => setNow(new Date())
+    const timer = setInterval(refresh, 15000)
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refresh)
+    return () => {
+      clearInterval(timer)
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+    }
+  }, [])
 
   function handleBack() {
     if (isSubmitted) {
@@ -50,7 +45,7 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
   return (
     <main className="reservation-form-page">
       <header className="reservation-form-page__header">
-        <Button className="reservation-form-page__back" onClick={handleBack} aria-label="検索結果に戻る">
+        <Button className="reservation-form-page__back" onClick={handleBack} aria-label={backLabel}>
           <svg className="reservation-form-page__back-icon" aria-hidden="true">
             <use href={assetUrl('/images/icons.svg#chevron')} />
           </svg>
@@ -59,103 +54,88 @@ function ReservationForm({ shopName = 'ジャンカラ 名駅東口店', conditi
       </header>
 
       <section className="reservation-form-page__section" aria-live="polite">
+        {originLabel && <p>{originLabel}</p>}
         {isSubmitted ? (
           <div className="reservation-form-page__confirmation">
             <h2>予約内容の確認（デモ）</h2>
             <p>{shopName}</p>
             {room && <p>{room.name}・{room.machineModel}</p>}
-            <p>{date}・{time}・{partySize}名</p>
-            <p>これは画面確認用のデモです。店舗への予約送信は行われていません。</p>
-            <Button className="reservation-form-page__action" onClick={onBack}>検索結果に戻る</Button>
+            <p>開始時刻：{selectedTime}</p>
+            <p>利用時間：{duration}時間</p>
+            <p>人数：{partySize}名</p>
+            <p>これは画面確認用のデモです。店舗への予約送信・空室確保は行われていません。</p>
+            <p>このブラウザの予約履歴に保存しました（最新3件）。</p>
+            <Button className="reservation-form-page__action" onClick={() => window.location.assign(pageUrl('/reservation-history'))}>予約履歴を見る</Button>
+            <Button className="reservation-form-page__action" onClick={onBack}>{backLabel}</Button>
           </div>
         ) : (
           <>
             <h2 className="reservation-form-page__shop-name">{shopName}</h2>
-            {room && <p className="reservation-form-page__conditions">指定部屋：{room.name}（{minGuests}〜{maxGuests}名）</p>}
-            <p>この画面はデモです。店舗への予約送信・空室の確保は行いません。</p>
-            <form className="reservation-form-page__form" onSubmit={(event) => {
+            {room && <p className="reservation-form-page__conditions">指定部屋：{room.name}{guests.length > 0 ? `（${guests[0]}〜${guests[guests.length - 1]}名）` : '（定員未確認）'}</p>}
+            <p>予約は同じブラウザ内で同時に1件までです。アカウント単位の制限ではありません。デモのため店舗への予約送信・空室確保は行いません。</p>
+            {active.reservation && <p role="status">現在予約中の店舗があります。新しい予約は、利用終了後またはマイページで取り消した後にできます。</p>}
+            {active.error && <p role="alert">{active.error}</p>}
+            {(active.reservation || active.error) && <Button onClick={() => window.location.assign(pageUrl('/mypage'))}>マイページで予約を確認する</Button>}
+            <form className="reservation-form-page__form" onSubmit={async (event) => {
               event.preventDefault()
-              setIsSubmitted(true)
+              const current = new Date()
+              setNow(current)
+              const message = validateReservation({ start: time, duration, guests: partySize, room }, current)
+              setError(message ?? '')
+              if (message) return
+              setSaving(true)
+              try {
+                await withReservationLock(() => saveDemoReservation({ id: crypto.randomUUID(), shopId, shopName, room, start: time, duration, guests: partySize, context: searchContext }, window.localStorage, new Date()))
+                setIsSubmitted(true)
+              } catch (saveError) {
+                setError(saveError.code === 'ACTIVE_RESERVATION' ? '現在予約中の店舗があります' : '予約を保存できませんでした。開始時刻・ブラウザの保存設定を確認してください。')
+              } finally {
+                setSaving(false)
+                active.refresh()
+              }
             }}>
               <label className="reservation-form-page__field">
-                <span>利用日</span>
-                <input type="date" min={getToday()} value={date} required onChange={(event) => setDate(event.target.value)} />
+                <span>利用開始時間</span>
+                <span className="reservation-form-page__select">
+                  <select value={validTime ? time : ''} required onFocus={() => setNow(new Date())} onChange={(event) => { setTime(event.target.value); setError('') }}>
+                    <option value="" disabled>開始時刻を選択</option>
+                    {options.map((option) => <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>)}
+                  </select>
+                </span>
               </label>
+              {noStartTimes && <p role="status">本日選択できる開始時刻はありません。</p>}
+              {!noStartTimes && time && !validTime && <p role="status">選択した時刻を過ぎました。開始時刻を選び直してください。</p>}
               <label className="reservation-form-page__field">
                 <span>利用時間</span>
                 <span className="reservation-form-page__select">
-                  <select value={time} onChange={(event) => setTime(event.target.value)}>
-                    <option>10:00〜13:00</option>
-                    <option>13:00〜16:00</option>
-                    <option>16:00〜19:00</option>
-                    <option>19:00〜22:00</option>
+                  <select value={duration} required onChange={(event) => setDuration(event.target.value)} aria-describedby="free-time-note">
+                    <option value="1">1時間</option>
+                    <option value="2">2時間</option>
+                    <option value="3">3時間</option>
+                    <option value="free" disabled>フリータイム（利用条件未確認）</option>
                   </select>
                 </span>
               </label>
+              <p className="reservation-form-page__conditions" id="free-time-note">フリータイムは利用条件が未確認のため選択できません。営業時間・料金も未確認です。</p>
               <label className="reservation-form-page__field">
-                <span>人数</span>
+                <span>利用人数</span>
                 <span className="reservation-form-page__select">
-                  <select value={partySize} onChange={(event) => setPartySize(event.target.value)}>
-                    {Array.from({ length: maxGuests - minGuests + 1 }, (_, index) => minGuests + index).map((count) => (
-                      <option key={count} value={count}>{count}名</option>
-                    ))}
+                  <select value={partySize} required disabled={!guests.length} onChange={(event) => setPartySize(event.target.value)}>
+                    {!guests.length && <option value="">部屋の定員未確認</option>}
+                    {guests.map((count) => <option key={count} value={count}>{count}名</option>)}
                   </select>
                 </span>
               </label>
-              {!room && <fieldset className="reservation-form-page__choice-group">
-                <legend>機種</legend>
-                <div className="reservation-form-page__choice-options">
-                  {machineOptions.map((option) => (
-                    <label
-                      className={`reservation-form-page__choice${selectedMachine === option.value ? ' reservation-form-page__choice--selected' : ''}`}
-                      key={option.value}
-                    >
-                      <input
-                        type="radio"
-                        name="machine"
-                        value={option.value}
-                        checked={selectedMachine === option.value}
-                        onChange={() => setSelectedMachine(option.value)}
-                      />
-                      <span>{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>}
-              {!room && <fieldset className="reservation-form-page__choice-group">
-                <legend>採点・録音</legend>
-                <div className="reservation-form-page__choice-options">
-                  {featureOptions.map((option) => (
-                    <label
-                      className={`reservation-form-page__choice${selectedFeatures.includes(option.value) ? ' reservation-form-page__choice--selected' : ''}`}
-                      key={option.value}
-                    >
-                      <input
-                        type="checkbox"
-                        value={option.value}
-                        checked={selectedFeatures.includes(option.value)}
-                        onChange={() => toggleFeature(option.value)}
-                      />
-                      <span>{option.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>}
+              {!guests.length && <p role="status">定員を確認できる部屋を選択してください。</p>}
+              {error && <p role="alert">{error}</p>}
               <p className="reservation-form-page__conditions">条件：{conditionSummary}</p>
-              <Button className="reservation-form-page__action" type="submit">予約内容を確認する（デモ）</Button>
+              <Button className="reservation-form-page__action" type="submit" disabled={saving || Boolean(active.reservation) || Boolean(active.error) || noStartTimes || !guests.length}>{saving ? '保存中…' : 'この内容で予約する（デモ）'}</Button>
             </form>
           </>
         )}
       </section>
     </main>
   )
-}
-
-function getToday() {
-  const today = new Date()
-  const month = String(today.getMonth() + 1).padStart(2, '0')
-  const day = String(today.getDate()).padStart(2, '0')
-  return `${today.getFullYear()}-${month}-${day}`
 }
 
 export default ReservationForm

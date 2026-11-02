@@ -10,7 +10,7 @@ export const previewShops = [
   {
     id: 'sample-1',
     name: 'ジャンカラ 名駅東口店',
-    image: '/images/shop-karaoke.webp',
+    image: '/images/popular-shop.png',
     imageAlt: 'カラオケ店舗の仮イメージ',
     walkingMinutes: 3,
     distanceMeters: 200,

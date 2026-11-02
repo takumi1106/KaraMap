@@ -16,9 +16,10 @@ function hasCoordinates(point) {
     && Number.isFinite(point?.longitude) && Math.abs(point.longitude) <= 180
 }
 
-function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedShopId, onShopSelect }) {
+function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedShopId, onShopSelect, detailHref, originLabel = '現在地', fitShops = false }) {
   const containerRef = useRef(null)
   const mapRef = useRef(null)
+  const fittedBoundsKey = useRef(null)
   const directionRef = useRef(null)
   const [directionEnabled, setDirectionEnabled] = useState(false)
   const [directionMessage, setDirectionMessage] = useState('')
@@ -54,7 +55,7 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
         signal: controller.signal, endpoint: import.meta.env.VITE_ROUTING_API_URL || undefined })
       if (controller.signal.aborted) return
       setRouteState({ status: 'success', key: routeKey, result })
-      setDisplayedRoute(result)
+      setDisplayedRoute({ ...result, originKey: JSON.stringify([location?.latitude, location?.longitude]) })
       const bounds = result.geometry.coordinates.reduce((b, [lng, lat]) => [Math.min(b[0], lng), Math.min(b[1], lat), Math.max(b[2], lng), Math.max(b[3], lat)], [180, 90, -180, -90])
       mapRef.current?.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
         padding: { top: 110, bottom: 180, left: 40, right: 40 }, maxZoom: 17, duration: 500,
@@ -124,7 +125,7 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
       if (map.getLayer('karamap-route')) map.removeLayer('karamap-route')
       if (map.getLayer('karamap-route-outline')) map.removeLayer('karamap-route-outline')
       if (map.getSource('karamap-route')) map.removeSource('karamap-route')
-      if (!displayedRoute) return
+      if (!displayedRoute || displayedRoute.originKey !== JSON.stringify([location?.latitude, location?.longitude])) return
       map.addSource('karamap-route', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: displayedRoute.geometry } })
       map.addLayer({ id: 'karamap-route-outline', type: 'line', source: 'karamap-route',
         layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 8 } })
@@ -143,7 +144,7 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
       map.off('idle', draw)
       map.off('style.load', redraw)
     }
-  }, [displayedRoute])
+  }, [displayedRoute, location?.latitude, location?.longitude])
 
   async function enableDirection() {
     if (!window.isSecureContext || !window.DeviceOrientationEvent) {
@@ -217,8 +218,8 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
     if (!map || !hasCoordinates({ latitude, longitude })) return
     const element = document.createElement('div')
     element.className = 'map-view__location-marker'
-    element.title = '現在地'
-    element.setAttribute('aria-label', '現在地')
+    element.title = originLabel
+    element.setAttribute('aria-label', originLabel)
     const dot = document.createElement('span')
     dot.className = 'map-view__location-dot'
     const direction = document.createElement('span')
@@ -233,7 +234,7 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
       marker.remove()
       directionRef.current = null
     }
-  }, [latitude, longitude])
+  }, [latitude, longitude, originLabel])
 
   useEffect(() => {
     const map = mapRef.current
@@ -262,20 +263,29 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
       element.append(symbol, label)
       return new Marker({ element, anchor: 'bottom' }).setLngLat([shop.longitude, shop.latitude]).addTo(map)
     })
+    const boundsKey = JSON.stringify([shops.map((shop) => [shop.id, shop.latitude, shop.longitude]), location?.latitude, location?.longitude])
+    if (fitShops && markers.length && fittedBoundsKey.current !== boundsKey) {
+      fittedBoundsKey.current = boundsKey
+      const points = shops.filter(hasCoordinates)
+      if (hasCoordinates(location)) points.push(location)
+      const lngs = points.map((point) => point.longitude)
+      const lats = points.map((point) => point.latitude)
+      map.fitBounds([[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]], { padding: 45, maxZoom: 16, duration: 0 })
+    }
     return () => markers.forEach((marker) => marker.remove())
-  }, [shops, setSelectedShop])
+  }, [shops, setSelectedShop, fitShops, location])
 
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
     const frame = requestAnimationFrame(() => {
       map.resize()
-      if (!isExpanded && hasCoordinates({ latitude, longitude })) {
+      if (!isExpanded && !fitShops && hasCoordinates({ latitude, longitude })) {
         map.jumpTo({ center: [longitude, latitude], zoom: 16 })
       }
     })
     return () => cancelAnimationFrame(frame)
-  }, [isExpanded, latitude, longitude])
+  }, [isExpanded, latitude, longitude, fitShops])
 
   return (
     <div className={`map-view map-view--${tileStyle}${isExpanded ? ' map-view--expanded' : ''}`}>
@@ -303,7 +313,7 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
           </p>
           {selectedShopInfo.isTestData && <p className="map-view__shop-note">表示例・テストデータです。実際の空室情報ではありません。</p>}
           <div className="map-view__shop-actions">
-            <a href={pageUrl(`/search?${reservationParams.toString()}`)}>予約画面へ</a>
+            {detailHref ? <a href={detailHref(routeDestination)}>店舗詳細・部屋を見る</a> : <a href={pageUrl(`/search?${reservationParams.toString()}`)}>予約画面へ</a>}
             {selectedShopInfo.telephone
               ? <a href={selectedShopInfo.telephone} aria-label={`${routeDestination.name}に電話する`}>電話する</a>
               : <span aria-disabled="true">電話番号未登録</span>}
@@ -334,7 +344,7 @@ function MapView({ location, shops = emptyShops, tileStyle = 'dark', selectedSho
               : currentRoute.status === 'success'
                 ? `約${Math.max(1, Math.ceil(currentRoute.result.durationSeconds / 60))}分・${currentRoute.result.distanceMeters < 1000 ? `${Math.round(currentRoute.result.distanceMeters)}m` : `${(currentRoute.result.distanceMeters / 1000).toFixed(1)}km`}（目安）`
                 : currentRoute.status === 'error' ? '経路を取得できませんでした。時間をおいてお試しください。'
-                  : '現在地から選択した店舗までの経路を表示します。'}
+                  : `${originLabel}から選択した店舗までの経路を表示します。`}
           </p>
           <small>経路：<a href="https://valhalla.openstreetmap.de/" target="_blank" rel="noreferrer">Valhalla / FOSSGIS</a></small>
         </section>

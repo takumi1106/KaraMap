@@ -54,7 +54,7 @@ function Area({ onBack }) {
               <li key={store.id}>
                 <StoreCard
                   href="/search"
-                  image="/images/shop-karaoke.webp"
+                  image="/images/popular-shop.png"
                   imageAlt="店舗写真のサンプル"
                   name={store.name}
                   distance={store.distance}

@@ -10,8 +10,8 @@ const { results: shops } = searchSavedShops(saved, { latitude: 35.1709, longitud
 test('URLで選択条件・空室OFFと未指定を保持する', () => {
   const input = { values: { machine: ['dam'], capacity: ['1-2'], smoking: [] }, realtimeAvailable: false }
   const decoded = readRoomSearch(new URLSearchParams(roomSearchParams(input).toString()))
-  assert.deepEqual(decoded, { ...input, error: null })
-  assert.deepEqual(readRoomSearch(new URLSearchParams()), { values: {}, realtimeAvailable: false, error: null })
+  assert.deepEqual(decoded, { ...input, keyword: '', error: null })
+  assert.deepEqual(readRoomSearch(new URLSearchParams()), { values: {}, realtimeAvailable: false, keyword: '', error: null })
 })
 
 test('不正URLを無条件検索として受け入れない', () => {

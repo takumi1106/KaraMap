@@ -3,7 +3,7 @@ export const sampleResults = [
     {
     id: 'sample-1',
     name: 'ジャンカラ 名駅東口店',
-    image: '/images/shop-karaoke.webp',
+    image: '/images/popular-shop.png',
     walkingMinutes: 3,
     distanceMeters: 200,
     isOpen: true,
@@ -15,7 +15,7 @@ export const sampleResults = [
   {
     id: 'sample-2',
     name: 'カラオケ 名駅中央店',
-    image: '/images/shop-karaoke.webp',
+    image: '/images/popular-shop.png',
     walkingMinutes: 5,
     distanceMeters: 350,
     isOpen: true,
@@ -25,7 +25,7 @@ export const sampleResults = [
   {
     id: 'sample-3',
     name: 'カラオケ 名駅南店',
-    image: '/images/shop-karaoke.webp',
+    image: '/images/popular-shop.png',
     walkingMinutes: 7,
     distanceMeters: 500,
     isOpen: true,
