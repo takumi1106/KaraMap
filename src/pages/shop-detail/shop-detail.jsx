@@ -13,6 +13,7 @@ function ShopDetail({ shop: suppliedShop, onBack, onReserve, bottomNavigation = 
   const id = page.searchParams.get('shop') ?? (page.pathname.startsWith('/shops/') ? page.pathname.slice(7) : null)
   const saved = useSavedShop(id)
   const shop = suppliedShop ?? saved.shop
+  const hasDemoAvailability = demoRoomAvailability.some((item) => item.storeId === shop?.storeId || shop?.rooms.some((room) => room.id === item.roomId))
   const [origin] = useSearchOrigin()
   const context = searchContext(page.searchParams)
   context.set('origin', origin)
@@ -57,7 +58,7 @@ function ShopDetail({ shop: suppliedShop, onBack, onReserve, bottomNavigation = 
             <p>{shop.address || '住所未確認'}</p>
             <p>店舗写真・料金・営業時間は未確認です。</p>
             <div className="shop-detail__statuses">
-              <Tag className="shop-detail__status" variant="secondary">{demoRoomAvailability.some((item) => item.storeId === shop.storeId || shop.rooms.some((room) => room.id === item.roomId)) ? '空室条件確認（デモ）' : '空室状況未確認'}</Tag>
+              <Tag className="shop-detail__status" variant={hasDemoAvailability ? 'vacant' : 'secondary'}>{hasDemoAvailability ? '空室条件確認（デモ）' : '空室状況未確認'}</Tag>
             </div>
           </section>
           <section className="shop-detail__rooms" aria-label="登録済みの部屋一覧">
