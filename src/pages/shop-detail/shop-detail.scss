@@ -28,9 +28,8 @@ $color-vacancy: #00c5bc;
     line-height: 1.4;
   }
 
-  &__back {
-    --color-button-primary: transparent;
-    --color-button-primary-hover: #{rgba(v.$color-text, 0.08)};
+  &__back.button {
+    background-color: transparent;
 
     position: absolute;
     left: rem(12);

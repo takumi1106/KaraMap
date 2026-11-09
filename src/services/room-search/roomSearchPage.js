@@ -2,6 +2,14 @@ import { searchRooms } from './searchRooms.js'
 import { roomCatalog } from './roomCatalog.js'
 import { sortShopsByDistance } from '../shop-distance/shopDistance.js'
 
+export const demoRoomAvailability = ['701', '702'].map((number) => ({
+  storeId: 'jankara-meieki-higashiguchi',
+  roomId: `jankara-188-room-${number}`,
+  status: 'vacant',
+  source: 'test',
+  observedAt: null,
+}))
+
 function normalizeShopName(value) {
   return (value ?? '').normalize('NFKC').trim().toLowerCase()
 }
@@ -29,7 +37,7 @@ export function roomSearchParams({ values, realtimeAvailable, keyword = '' }) {
 }
 
 // 保存店舗の品質・距離を保ち、既存の同室AND検索結果を画面の店舗形式へ変換。
-// 実空室は未接続のため、テスト空室を自動付与しない。
+// 画面のデモ空室は実店舗・部屋の確認済み情報と別に管理する。
 export function searchRoomPageShops(shops, { values, realtimeAvailable, keyword = '' }) {
   const query = normalizeShopName(keyword)
   const candidates = shops.filter((shop) => {
@@ -39,6 +47,8 @@ export function searchRoomPageShops(shops, { values, realtimeAvailable, keyword 
   })
   const matches = searchRooms({
     shops: candidates,
+    availability: demoRoomAvailability,
+    includeTestAvailability: true,
     filters: { ...values, vacantOnly: realtimeAvailable },
   })
   const matchedShops = matches.map(({ shop, storeId, matchedRooms }) => {

@@ -30,7 +30,18 @@ test('保存実店舗から一致部屋・正式名・距離を返し元デー�
   assert.ok(results[0].distanceMeters > 0)
   assert.equal(results[0].availableRooms, null)
   assert.equal(JSON.stringify(shops), before)
-  assert.deepEqual(searchRoomPageShops(shops, { values: {}, realtimeAvailable: true }), [])
+  assert.equal(searchRoomPageShops(shops, { values: {}, realtimeAvailable: true }).length, 1)
   assert.deepEqual(searchRoomPageShops(shops, { values: { smoking: ['nonSmoking'] }, realtimeAvailable: false }), [])
   assert.deepEqual(searchRoomPageShops(shops.map((shop) => ({ ...shop, quality: { status: 'needs_review' } })), { values: {}, realtimeAvailable: false }), [])
 })
+
+for (const [machine, capacity, number] of [['dam', '1-2', '701'], ['joysound', '5-8', '702']]) {
+  test(`空室ONでも条件に一致する${number}号室をデモとして返す`, () => {
+    const results = searchRoomPageShops(shops, { values: { machine: [machine], capacity: [capacity] }, realtimeAvailable: true })
+    assert.equal(results.length, 1)
+    assert.equal(results[0].matchedRooms.length, 1)
+    assert.equal(results[0].matchedRooms[0].room.roomNumber, number)
+    assert.equal(results[0].matchedRooms[0].availability.source, 'test')
+    assert.deepEqual(searchRoomPageShops(shops, { values: { machine: [machine], smoking: ['nonSmoking'] }, realtimeAvailable: true }), [])
+  })
+}

@@ -4,7 +4,7 @@ import Tag from '../../components/Tag.jsx'
 import useSavedShop from '../../hooks/useSavedShop.js'
 import useSearchOrigin from '../../hooks/useSearchOrigin.js'
 import { detailPath, reservationPath, searchContext } from '../../services/search-flow/searchFlow.js'
-import { readRoomSearch } from '../../services/room-search/roomSearchPage.js'
+import { demoRoomAvailability, readRoomSearch } from '../../services/room-search/roomSearchPage.js'
 import { searchRooms } from '../../services/room-search/searchRooms.js'
 import './shop-detail.scss'
 
@@ -18,7 +18,7 @@ function ShopDetail({ shop: suppliedShop, onBack, onReserve, bottomNavigation = 
   context.set('origin', origin)
   const selectedRoom = page.searchParams.get('room')
   const conditions = readRoomSearch(context)
-  const matching = shop && !conditions.error ? searchRooms({ shops: [shop], filters: { ...conditions.values, vacantOnly: conditions.realtimeAvailable } }).flatMap((match) => match.matchedRooms.map(({ room }) => room.id)) : []
+  const matching = shop && !conditions.error ? searchRooms({ shops: [shop], availability: demoRoomAvailability, includeTestAvailability: true, filters: { ...conditions.values, vacantOnly: conditions.realtimeAvailable } }).flatMap((match) => match.matchedRooms.map(({ room }) => room.id)) : []
   const showMatches = context.get('from') === 'search-filter' && !conditions.error
   const roomGroups = showMatches ? [
     { id: 'matched', title: '条件に一致する部屋', rooms: (shop?.rooms ?? []).filter((room) => matching.includes(room.id)) },
@@ -57,7 +57,7 @@ function ShopDetail({ shop: suppliedShop, onBack, onReserve, bottomNavigation = 
             <p>{shop.address || '住所未確認'}</p>
             <p>店舗写真・料金・営業時間は未確認です。</p>
             <div className="shop-detail__statuses">
-              <Tag className="shop-detail__status" variant="secondary">空室状況未確認</Tag>
+              <Tag className="shop-detail__status" variant="secondary">{demoRoomAvailability.some((item) => item.storeId === shop.storeId || shop.rooms.some((room) => room.id === item.roomId)) ? '空室条件確認（デモ）' : '空室状況未確認'}</Tag>
             </div>
           </section>
           <section className="shop-detail__rooms" aria-label="登録済みの部屋一覧">
