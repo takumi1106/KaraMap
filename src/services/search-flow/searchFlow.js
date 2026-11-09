@@ -1,4 +1,3 @@
-import { hasVacantAvailability, withDemoShopAvailability } from '../shop-availability/demoShopAvailability.js'
 import { roomCatalog } from '../room-search/roomCatalog.js'
 import { sortShopsByDistance } from '../shop-distance/shopDistance.js'
 
@@ -38,11 +37,9 @@ export function groupByDistance(shops) {
 // 条件検索では部屋情報のある店舗を距離区分より先に表示する。
 export function groupRegisteredShopsFirst(shops) {
   const registeredIds = new Set(roomCatalog.filter((store) => store.rooms.length > 0).flatMap((store) => store.osmIds))
-  const vacant = shops.filter(hasVacantAvailability)
-  const registered = shops.filter((shop) => !hasVacantAvailability(shop) && registeredIds.has(shop.id))
-  const remaining = shops.filter((shop) => !hasVacantAvailability(shop) && !registeredIds.has(shop.id))
+  const registered = shops.filter((shop) => registeredIds.has(shop.id))
+  const remaining = shops.filter((shop) => !registeredIds.has(shop.id))
   return [
-    { id: 'vacant', label: '空室ありの店舗（デモ）', shops: sortShopsByDistance(vacant) },
     { id: 'registered', label: '部屋情報登録済みの店舗', shops: sortShopsByDistance(registered) },
     ...groupByDistance(remaining),
   ]
@@ -53,7 +50,7 @@ export function savedShopDetail(shops, id) {
   if (!shop) return null
   const store = roomCatalog.find((item) => item.osmIds.includes(id))
   return {
-    ...withDemoShopAvailability(shop),
+    ...shop,
     name: store?.name ?? shop.name,
     address: store?.address ?? shop.address,
     rooms: store?.rooms ?? [],

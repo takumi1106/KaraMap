@@ -1,4 +1,3 @@
-import { withDemoShopAvailability, hasVacantAvailability } from '../../services/shop-availability/demoShopAvailability.js'
 import { assetUrl, pageUrl, getPageLocation } from '../../utils/paths.js'
 import useNearbyShops from '../../hooks/useNearbyShops.js'
 import { useEffect, useState } from 'react'
@@ -29,9 +28,7 @@ function formatResultDistance(meters) {
 
 // 共通カードが完成するまでの画面専用表示。店舗データを1つのpropで受け取る。
 function renderDefaultShop(shop, { roomHref, shopHref } = {}) {
-  const availability = shop.demoAvailability
-    ? shop.demoAvailability === 'vacant' ? '空室あり（デモ）' : '空室なし（デモ）'
-    : shop.matchedRooms?.some(({ availability }) => availability?.source === 'test')
+  const availability = shop.matchedRooms?.some(({ availability }) => availability?.source === 'test')
     ? '空室条件確認（デモ）'
     : shop.availableRooms == null
     ? '空室状況未確認'
@@ -91,7 +88,7 @@ function renderDefaultShop(shop, { roomHref, shopHref } = {}) {
           </li>)}
         </ul>}
         {!shop.matchedRooms?.length && <div className="result-item__tags">
-          <Tag className="result-item__tag" variant={hasVacantAvailability(shop) || shop.availableRooms > 0 ? 'vacant' : 'secondary'}>{availability}</Tag>
+          <Tag className="result-item__tag" variant={shop.availableRooms > 0 ? 'vacant' : 'secondary'}>{availability}</Tag>
           <ul className="result-item__machines" aria-label="対応機種">
             {shop.machines.map((machine) => (
               <li key={machine}>
@@ -134,7 +131,7 @@ function SearchResults({
   const conditions = readRoomSearch(pageLocation.searchParams)
   const sourceShops = suppliedShops ?? (isRecommended ? sampleResults : nearby.results)
   const shops = isRoomSearch
-    ? conditions.error ? [] : searchRoomPageShops(sourceShops, conditions).map(withDemoShopAvailability)
+    ? conditions.error ? [] : searchRoomPageShops(sourceShops, conditions)
     : sourceShops
   const displayedShops = isRecommended && shops.length > 0
     ? Array.from({ length: 12 }, (_, index) => ({
@@ -214,7 +211,7 @@ function SearchResults({
           {!isRecommended && <a className="search-results__reserve-link" href={pageUrl(`/search-filter?${context}`)}>検索条件を変更する</a>}
           {!displayedShops.length && !conditions.error && (isRecommended || suppliedShops !== undefined || nearby.status === 'success') && <p className="search-results__empty" role="status">条件に合う店舗がありません</p>}
           {groups.map((group) => <section className="search-results__distance-group" key={group.id} aria-label={group.label}>
-            <h2 className="search-results__group-title">{isRecommended || group.id === 'unknown' || group.id === 'registered' || group.id === 'vacant' ? '' : origin === 'demo' ? '名古屋駅から' : '現在地から'}{group.label}（{group.shops.length}件）</h2>
+            <h2 className="search-results__group-title">{isRecommended || group.id === 'unknown' || group.id === 'registered' ? '' : origin === 'demo' ? '名古屋駅から' : '現在地から'}{group.label}（{group.shops.length}件）</h2>
             <ul className="search-results__list">
               {group.visibleShops.map((shop) => <li className="search-results__item" key={shop.id}>
                 {renderShop(shop, {

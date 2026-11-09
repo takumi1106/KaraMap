@@ -112,28 +112,9 @@ test('登録済み店舗は遠方でも最上部に一度だけ表示する', as
   ]
   const before = JSON.stringify(shops)
   const groups = groupRegisteredShopsFirst(shops)
-  assert.equal(groups.find((group) => group.id === 'registered').shops[0].id, 'node/13943005393')
+  assert.equal(groups[0].shops[0].id, 'node/13943005393')
   assert.deepEqual(groups.find((group) => group.id === 'far').shops.map((shop) => shop.distanceMeters), [6000, 9000])
   assert.equal(new Set(groups.flatMap((group) => group.shops.map((shop) => shop.id))).size, shops.length)
   assert.equal(JSON.stringify(shops), before)
   assert.equal(groupRegisteredShopsFirst([])[0].shops.length, 0)
-})
-
-test('デモ空室ありを距離区分より先に並べ、元データと店舗件数を保つ', async () => {
-  const { groupRegisteredShopsFirst } = await import('./searchFlow.js')
-  const { withDemoShopAvailability } = await import('../shop-availability/demoShopAvailability.js')
-  const shops = [
-    { id: 'node/1912844940', distanceMeters: 100 },
-    { id: 'node/796698691', distanceMeters: 8000 },
-    { id: 'node/2108373590', distanceMeters: 2000 },
-    { id: 'node/999', distanceMeters: 300 },
-  ]
-  const before = JSON.stringify(shops)
-  const decorated = shops.map(withDemoShopAvailability)
-  const groups = groupRegisteredShopsFirst(decorated)
-  assert.deepEqual(groups[0].shops.map((shop) => shop.distanceMeters), [2000, 8000])
-  assert.equal(decorated[0].demoAvailability, 'occupied')
-  assert.equal(decorated[3].demoAvailability, undefined)
-  assert.equal(groups.flatMap((group) => group.shops).length, shops.length)
-  assert.equal(JSON.stringify(shops), before)
 })
