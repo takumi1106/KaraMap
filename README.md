@@ -1,16 +1,51 @@
-# React + Vite
+# KaraMAP（カラマップ）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**「今から行ける、自分に合ったカラオケ店」を探すためのWebアプリです。**
 
-Currently, two official plugins are available:
+現在地や店舗名をもとに、希望する機種・利用人数に合ったカラオケ店を探せます。今すぐカラオケを利用したい学生・若者を想定し、外出先でもスマートフォンで使いやすいサービスを目指してグループ制作しています。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 制作背景
 
-## React Compiler
+「今からカラオケに行きたい」と思ったとき、近くにあるという理由だけでは、利用する店舗を決められないことがあります。使いたい機種があるか、一緒に行く人数に合う部屋があるか、店舗までどれくらい離れているかも、選ぶために必要な情報です。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+KaraMAPでは、こうした情報を別々に調べる手間を減らし、自分たちに合った店舗や部屋を見つけやすくしたいと考えました。
 
-## Expanding the ESLint configuration
+制作にあたって、次のような困りごとを想定しました。
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 近くのカラオケ店と、希望する機種・人数に合う部屋をまとめて探したい。
+- 複数の店舗の距離や部屋の違いを比較し、行き先を決めたい。
+- 外出先でも、スマートフォンで必要な情報を手軽に確認したい。
+
+## 課題に対して取り組んだこと
+
+| 想定した困りごと | KaraMAPでできること |
+| --- | --- |
+| 希望に合う店舗を探すのに手間がかかる | 店舗名・DAMやJOYSOUNDなどの機種・利用人数を組み合わせて、候補を絞り込めます。 |
+| 店舗ごとの違いを比較しにくい | 距離や登録済みの部屋情報をまとめて確認し、希望に合う店舗を比較できます。 |
+| 近くに条件に合う店舗が見つからない | 5kmより遠い店舗も含めて、近い順に候補を探せます。 |
+| 店舗の場所や行き方を調べたい | 地図と徒歩・車の経路で、店舗までの行き方を確認できます。 |
+| どの部屋が希望に合うのか分かりにくい | 部屋ごとの機種・定員と、検索条件に一致しているかを確認できます。 |
+| 外出先で情報を確認しづらい | スマートフォン向けに店舗と部屋の情報を整理し、読みやすさと操作しやすさを目指しました。 |
+
+これらの機能を通して、店舗を探すための手間を減らし、希望に合った行き先を選びやすくすることを目指しています。
+
+## 主な機能
+
+- **店舗検索** — 現在地や店舗名からカラオケ店を探せます。店舗名の一部でも検索できます。
+- **部屋の条件検索** — 希望する機種や利用人数に合う、登録済みの部屋を探せます。
+- **距離の比較** — 5km以内・5kmより遠い店舗を、近い順に確認できます。表示する距離は直線距離です。
+- **地図・経路の確認** — 店舗の場所と、徒歩・車での行き方を確認できます。
+- **当日予約のデモ** — 部屋と開始時刻・利用時間・人数を選び、予約内容の確認や取り消しを体験できます。
+- **名古屋駅デモモード** — 位置情報の許可なしで、名古屋駅を起点とした店舗探しを体験できます。
+
+## 現在の対応状況
+
+現在は、保存済みの実店舗情報を使った検索や比較、経路の確認、当日予約のデモに対応しています。部屋情報は、ジャンカラ名駅東口店の701号室・702号室を登録しています。
+
+**予約は発表・学習用のデモです。実際の店舗への予約・空室確保・キャンセル連絡は行われません。** 予約の保存と管理は、利用している同じブラウザ内で有効です。
+
+リアルタイムの空室情報には対応していません。料金・営業時間・設備などには未確認の項目があり、ホームの人気店舗やおすすめ表示などにはサンプル情報が含まれます。
+
+## 今後の課題
+
+実際の空室状況や料金を確認できるようにし、店舗への予約につなげることが今後の課題です。また、利用者に実際に使ってもらい、店舗選びの手間を減らせるか、スマートフォンで使いやすいかを確かめながら改善していきたいと考えています。
