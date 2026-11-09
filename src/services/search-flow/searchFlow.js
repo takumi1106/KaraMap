@@ -34,6 +34,17 @@ export function groupByDistance(shops) {
   ]
 }
 
+// 条件検索では部屋情報のある店舗を距離区分より先に表示する。
+export function groupRegisteredShopsFirst(shops) {
+  const registeredIds = new Set(roomCatalog.filter((store) => store.rooms.length > 0).flatMap((store) => store.osmIds))
+  const registered = shops.filter((shop) => registeredIds.has(shop.id))
+  const remaining = shops.filter((shop) => !registeredIds.has(shop.id))
+  return [
+    { id: 'registered', label: '部屋情報登録済みの店舗', shops: sortShopsByDistance(registered) },
+    ...groupByDistance(remaining),
+  ]
+}
+
 export function savedShopDetail(shops, id) {
   const shop = shops.find((item) => item.id === id)
   if (!shop) return null

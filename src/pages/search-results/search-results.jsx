@@ -9,7 +9,7 @@ import ReservationForm from '../reservation-form/reservation-form.jsx'
 import { sampleResults } from './searchResultsData.js'
 import { readRoomSearch, searchRoomPageShops } from '../../services/room-search/roomSearchPage.js'
 import { roomCatalog } from '../../services/room-search/roomCatalog.js'
-import { demoOrigin, detailPath, groupByDistance, searchContext } from '../../services/search-flow/searchFlow.js'
+import { demoOrigin, detailPath, groupByDistance, groupRegisteredShopsFirst, searchContext } from '../../services/search-flow/searchFlow.js'
 import SearchOrigin from '../../components/SearchOrigin.jsx'
 import useSearchOrigin from '../../hooks/useSearchOrigin.js'
 import useSavedShop from '../../hooks/useSavedShop.js'
@@ -166,7 +166,7 @@ function SearchResults({
     />
   }
 
-  const groups = visibleDistanceGroups(isRecommended ? [{ id: 'recommended', label: 'おすすめ店舗（表示サンプル）', shops: displayedShops }] : groupByDistance(displayedShops), visibleFarCount, visibleNearCount)
+  const groups = visibleDistanceGroups(isRecommended ? [{ id: 'recommended', label: 'おすすめ店舗（表示サンプル）', shops: displayedShops }] : isRoomSearch ? groupRegisteredShopsFirst(displayedShops) : groupByDistance(displayedShops), visibleFarCount, visibleNearCount)
   function selectOnMap(shop) {
     setSelectedShopId(shop.id)
     document.getElementById('search-results-map')?.scrollIntoView({ block: 'center' })
@@ -211,7 +211,7 @@ function SearchResults({
           {!isRecommended && <a className="search-results__reserve-link" href={pageUrl(`/search-filter?${context}`)}>検索条件を変更する</a>}
           {!displayedShops.length && !conditions.error && (isRecommended || suppliedShops !== undefined || nearby.status === 'success') && <p className="search-results__empty" role="status">条件に合う店舗がありません</p>}
           {groups.map((group) => <section className="search-results__distance-group" key={group.id} aria-label={group.label}>
-            <h2 className="search-results__group-title">{isRecommended || group.id === 'unknown' ? '' : origin === 'demo' ? '名古屋駅から' : '現在地から'}{group.label}（{group.shops.length}件）</h2>
+            <h2 className="search-results__group-title">{isRecommended || group.id === 'unknown' || group.id === 'registered' ? '' : origin === 'demo' ? '名古屋駅から' : '現在地から'}{group.label}（{group.shops.length}件）</h2>
             <ul className="search-results__list">
               {group.visibleShops.map((shop) => <li className="search-results__item" key={shop.id}>
                 {renderShop(shop, {

@@ -101,3 +101,20 @@ for (const [machine, capacity, roomNumber] of [['dam', '1-2', '701'], ['joysound
     assert.deepEqual(readRoomSearch(reservation.searchParams), conditions)
   })
 }
+
+test('登録済み店舗は遠方でも最上部に一度だけ表示する', async () => {
+  const { groupRegisteredShopsFirst } = await import('./searchFlow.js')
+  const shops = [
+    { id: 'node/1', distanceMeters: 100 },
+    { id: 'node/2', distanceMeters: 9000 },
+    { id: 'node/13943005393', distanceMeters: 40000 },
+    { id: 'node/3', distanceMeters: 6000 },
+  ]
+  const before = JSON.stringify(shops)
+  const groups = groupRegisteredShopsFirst(shops)
+  assert.equal(groups[0].shops[0].id, 'node/13943005393')
+  assert.deepEqual(groups.find((group) => group.id === 'far').shops.map((shop) => shop.distanceMeters), [6000, 9000])
+  assert.equal(new Set(groups.flatMap((group) => group.shops.map((shop) => shop.id))).size, shops.length)
+  assert.equal(JSON.stringify(shops), before)
+  assert.equal(groupRegisteredShopsFirst([])[0].shops.length, 0)
+})
