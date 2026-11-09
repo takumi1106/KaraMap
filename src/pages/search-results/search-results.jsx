@@ -28,7 +28,9 @@ function formatResultDistance(meters) {
 
 // 共通カードが完成するまでの画面専用表示。店舗データを1つのpropで受け取る。
 function renderDefaultShop(shop, { roomHref, shopHref } = {}) {
-  const availability = shop.availableRooms == null
+  const availability = shop.matchedRooms?.some(({ availability }) => availability?.source === 'test')
+    ? '空室条件確認（デモ）'
+    : shop.availableRooms == null
     ? '空室状況未確認'
     : shop.availableRooms > 0
       ? `空室あり（残り${shop.availableRooms}部屋）`
@@ -203,7 +205,7 @@ function SearchResults({
           {!isRecommended && suppliedShops === undefined && nearby.status === 'error' && <p role="alert">{nearby.message}<Button onClick={nearby.retry}>再試行</Button></p>}
           {isRoomSearch && <p>保存済み店舗を距離で除外せず検索しています。設備条件は確認済みの部屋情報で照合します。部屋登録済みは名駅東口店の2室です。</p>}
           {isRoomSearch && conditions.keyword.trim() && <p>店舗名：「{conditions.keyword}」の検索結果</p>}
-          {isRoomSearch && conditions.realtimeAvailable && <p>空室情報は未接続です。実際の空室を検索することはできません。空室条件をOFFにしてお試しください。</p>}
+          {isRoomSearch && conditions.realtimeAvailable && <p>ジャンカラ名駅東口店の701・702号室をデモ空室として検索しています。実際の空室状況は店舗にご確認ください。</p>}
           {isRoomSearch && conditions.error && <p role="alert">{conditions.error}</p>}
           <p className="search-results__count" role="status">全{isRecommended ? displayedShops.length : shops.length}件</p>
           {!isRecommended && <a className="search-results__reserve-link" href={pageUrl(`/search-filter?${context}`)}>検索条件を変更する</a>}

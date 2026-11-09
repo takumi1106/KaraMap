@@ -66,7 +66,7 @@ function SearchFilter({
         {position === 'top' && <span className="search-filter__check" aria-hidden="true" />}
         <div className="search-filter__availability-copy">
           <span className="search-filter__availability-title">リアルタイム空室</span>
-          <span className="search-filter__availability-description">空室情報は未接続のため、ONでは該当なしになります</span>
+          <span className="search-filter__availability-description">ONではジャンカラ名駅東口店のデモ空室を検索します（実空室は未接続）</span>
         </div>
         <Button
           className={`search-filter__switch${isRealtimeAvailable ? ' search-filter__switch--on' : ''}`}
@@ -111,7 +111,7 @@ function SearchFilter({
           </div>
           {renderAvailability('top')}
           <p>未選択の項目は指定なしです。選択中のボタンを再度押すと解除できます。</p>
-          <p>現在はジャンカラ名駅東口店の2室を登録しています。確認例：DAM＋1〜2名（空室OFF・その他未指定）。</p>
+          <p>現在はジャンカラ名駅東口店の2室を登録しています。確認例：DAM＋1〜2名（空室はデモ・その他未指定）。</p>
           {initialConditions.error && <p role="alert">{initialConditions.error}</p>}
           <div className="search-filter__groups">
             {filterGroups.map((group) => (
