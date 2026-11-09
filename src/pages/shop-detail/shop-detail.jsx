@@ -21,9 +21,12 @@ function ShopDetail({ shop: suppliedShop, onBack, onReserve, bottomNavigation = 
   const conditions = readRoomSearch(context)
   const matching = shop && !conditions.error ? searchRooms({ shops: [shop], availability: demoRoomAvailability, includeTestAvailability: true, filters: { ...conditions.values, vacantOnly: conditions.realtimeAvailable } }).flatMap((match) => match.matchedRooms.map(({ room }) => room.id)) : []
   const showMatches = context.get('from') === 'search-filter' && !conditions.error
+  const otherRooms = (shop?.rooms ?? []).filter((room) => !matching.includes(room.id))
+  const otherRoomsAreDemoVacant = otherRooms.length > 0 && otherRooms.every((room) =>
+    demoRoomAvailability.some((item) => item.roomId === room.id && item.status === 'vacant'))
   const roomGroups = showMatches ? [
     { id: 'matched', title: '条件に一致する部屋', rooms: (shop?.rooms ?? []).filter((room) => matching.includes(room.id)) },
-    { id: 'other', title: 'その他の部屋', rooms: (shop?.rooms ?? []).filter((room) => !matching.includes(room.id)) },
+    { id: 'other', title: otherRoomsAreDemoVacant ? '今空いているその他の部屋（デモ）' : 'その他の部屋', rooms: otherRooms },
   ] : [{ id: 'all', title: null, rooms: shop?.rooms ?? [] }]
   function back() {
     if (onBack) onBack()
